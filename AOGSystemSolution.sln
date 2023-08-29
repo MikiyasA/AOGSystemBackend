@@ -5,25 +5,22 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "apps", "apps", "{1A770D7F-8F4D-4A37-85B4-8DE0583E1C1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AOGSystem.Domain", "apps\AOGSystem.Domain\AOGSystem.Domain.csproj", "{DC1CD467-EBE7-4E24-ABFE-C09FD0A86060}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AOGSystem.Domain", "apps\AOGSystem.Domain\AOGSystem.Domain.csproj", "{DC1CD467-EBE7-4E24-ABFE-C09FD0A86060}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AOGSystem.Application", "apps\AOGSystem.Application\AOGSystem.Application.csproj", "{DA5BC49B-FD8E-44C8-AF7A-147AD58AEE02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AOGSystem.Application", "apps\AOGSystem.Application\AOGSystem.Application.csproj", "{DA5BC49B-FD8E-44C8-AF7A-147AD58AEE02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AOGSystem.Persistence", "apps\AOGSystem.Persistence\AOGSystem.Persistence.csproj", "{9404986D-22F5-4334-BF57-E5148BFC464D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AOGSystem.Persistence", "apps\AOGSystem.Persistence\AOGSystem.Persistence.csproj", "{9404986D-22F5-4334-BF57-E5148BFC464D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AOGSystem.API", "apps\AOGSystem.API\AOGSystem.API.csproj", "{F67ED825-9766-4DE8-9C83-339F31424E65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AOGSystem.API", "apps\AOGSystem.API\AOGSystem.API.csproj", "{F67ED825-9766-4DE8-9C83-339F31424E65}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{7E077996-6A78-4D5C-8C24-03EE67FCA474}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Packages", "libs\Core.Packages\Core.Packages.csproj", "{27066990-B35A-4753-83AF-76B8D0DACAC3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Packages", "libs\Core.Packages\Core.Packages.csproj", "{27066990-B35A-4753-83AF-76B8D0DACAC3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{DC1CD467-EBE7-4E24-ABFE-C09FD0A86060}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -47,11 +44,17 @@ Global
 		{27066990-B35A-4753-83AF-76B8D0DACAC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27066990-B35A-4753-83AF-76B8D0DACAC3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{DC1CD467-EBE7-4E24-ABFE-C09FD0A86060} = {1A770D7F-8F4D-4A37-85B4-8DE0583E1C1D}
 		{DA5BC49B-FD8E-44C8-AF7A-147AD58AEE02} = {1A770D7F-8F4D-4A37-85B4-8DE0583E1C1D}
 		{9404986D-22F5-4334-BF57-E5148BFC464D} = {1A770D7F-8F4D-4A37-85B4-8DE0583E1C1D}
 		{F67ED825-9766-4DE8-9C83-339F31424E65} = {1A770D7F-8F4D-4A37-85B4-8DE0583E1C1D}
 		{27066990-B35A-4753-83AF-76B8D0DACAC3} = {7E077996-6A78-4D5C-8C24-03EE67FCA474}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {854BD20A-78EC-41BB-AA96-B1E63869F42D}
 	EndGlobalSection
 EndGlobal
