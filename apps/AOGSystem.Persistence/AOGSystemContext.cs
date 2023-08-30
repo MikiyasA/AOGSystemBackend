@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Diagnostics;
+using AOGSystem.Persistence.EntityConfigurations.Quotation;
+using AOGSystem.Persistence.EntityConfigurations.General;
 
 namespace AOGSystem.Persistence
 {
@@ -37,7 +39,11 @@ namespace AOGSystem.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new CompanyEntityTypeConfig());
+            modelBuilder.ApplyConfiguration(new PartEntityTypeConfig());
+
             modelBuilder.ApplyConfiguration(new QuotationEntityTypeConfig());
+            modelBuilder.ApplyConfiguration(new QuotationPartListEntityTypeConfig());
             // Add other entity configurations here...
         }
 

@@ -1,0 +1,55 @@
+﻿using AOGSystem.Domain.General;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AOGSystem.Persistence.EntityConfigurations.General
+{
+    public class PartEntityTypeConfig : IEntityTypeConfiguration<Part>
+    {
+        public void Configure(EntityTypeBuilder<Part> builder)
+        {
+            builder.ToTable("parts", AOGSystemContext.DefaultSchema);
+            builder.HasKey(x => x.Id);
+
+            builder.Property(q => q.Id)
+               .HasColumnName("id")
+               .ValueGeneratedOnAdd();
+
+            builder.Property(q => q.CreatedAT)
+                .HasColumnName("created_at")
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .ValueGeneratedOnAdd();
+
+            builder.Property(q => q.UpdatedAT)
+                .HasColumnName("updated_at")
+                .HasDefaultValueSql("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+                .ValueGeneratedOnUpdate();
+
+            builder.Property(q => q.CreatedBy)
+                .HasColumnName("created_by");
+
+            builder.Property(q => q.UpdatedBy)
+                .HasColumnName("created_by");
+
+            builder.Property(x => x.PartNumber)
+                .HasColumnName("part_number")
+                .IsRequired();
+
+            builder.Property(x => x.Description)
+                .HasColumnName("description")
+                .IsRequired();
+
+            builder.Property(x => x.StockNo)
+                .HasColumnName("stock_no");
+
+            builder.Property(x => x.FinancialClass)
+                .HasColumnName("financial_class");
+
+        }
+    }
+}

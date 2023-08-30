@@ -36,7 +36,11 @@ namespace AOGSystem.Persistence.EntityConfigurations.Quotation
             builder.Property(q => q.UpdatedBy)
                 .HasColumnName("created_by");
 
-            builder.HasOne(q => q.Part); // TODO: to be finalize
+            builder.HasOne(q => q.Part)
+                .WithMany()
+                .HasForeignKey(q => q.PartId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired(); 
 
             builder.Property(q => q.CurrentPrice)
                  .HasColumnName("current_price")
@@ -57,6 +61,12 @@ namespace AOGSystem.Persistence.EntityConfigurations.Quotation
 
             builder.Property(q => q.Condition)
                 .HasColumnName("condition");
+
+            builder.HasOne<Domain.Quotation.Quotation>()
+                .WithMany(q => q.QuotationPartsLists)
+                .HasForeignKey(q => q.QuotationId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
         }
     }
 }

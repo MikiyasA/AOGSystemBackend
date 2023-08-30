@@ -11,6 +11,7 @@ namespace AOGSystem.Domain.Quotation
     {
         public Part? Part { get; private set; }
         public int PartId { get;  set; }
+        public int QuotationId { get; private set; }
         public decimal CurrentPrice { get; private set; }
         public decimal SalesPrice { get; private set; }
         public decimal LoanPrice { get; private set; }
@@ -19,6 +20,7 @@ namespace AOGSystem.Domain.Quotation
         public string? Condition { get; private set;  }
         public string? SerialNumber { get; private set; }
 
+        public void SetQuotationId(int quotationId) { this.QuotationId = quotationId; }
         public void SetCurrentPrice(decimal currentPrice) { this.CurrentPrice = currentPrice; }
         public void SetSalesPrice(decimal salesPrice) { this.SalesPrice = salesPrice; }
         public void SetLoanPrice(decimal loanPrice) { this.LoanPrice = loanPrice; }

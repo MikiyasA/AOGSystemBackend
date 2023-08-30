@@ -17,7 +17,7 @@ namespace AOGSystem.Domain.Quotation
         public string? RequestedByName { get; private set; }
         public string? RequestedByEmail { get; private set; }
         public string? RequestedByPhone { get; private set; }
-        public List<QuotationPartList>? PartList { get; private set; }
+        //public List<QuotationPartList>? PartList { get; private set; }
         // TODO: OfferedBy
 
         public void SetLoan(bool loan) { this.Loan = loan; }

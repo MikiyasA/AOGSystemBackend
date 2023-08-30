@@ -49,8 +49,8 @@ namespace AOGSystem.Persistence.EntityConfigurations
                 .HasColumnName("loan")
                 .HasDefaultValue(false);
 
-            builder.HasOne(q => q.Company) // Quotation has one Company.
-            .WithMany(c => c.Quotations) // Company has many Quotations.
+            builder.HasOne<Company>() // Quotation has one Company.
+            .WithMany() // Company has many Quotations.
             .HasForeignKey(q => q.CompanyId)
             .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();

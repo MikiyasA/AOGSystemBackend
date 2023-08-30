@@ -23,7 +23,7 @@ namespace AOGSystem.Domain.General
         public string? ShipToAddress { get; private set;}
         public string? BillToAddress { get; private set;}
         public string? PaymentTerm { get; private set; }
-        public ICollection<Quotation.Quotation>? Quotations { get; set; }
+        //public ICollection<Quotation.Quotation>? Quotations { get; set; }
 
 
         //public void SetQuotationId(int quotationId) { this.QuotationId = quotationId;}
