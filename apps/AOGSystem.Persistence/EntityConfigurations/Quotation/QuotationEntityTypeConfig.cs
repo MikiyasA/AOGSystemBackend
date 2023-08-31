@@ -22,35 +22,31 @@ namespace AOGSystem.Persistence.EntityConfigurations
                 .ValueGeneratedOnAdd();
 
             builder.Property(q => q.CreatedAT)
-                .HasColumnName("created_at")
-                .HasDefaultValueSql("CURRENT_TIMESTAMP")
-                .ValueGeneratedOnAdd();
+                .HasColumnName("created_at");
 
             builder.Property(q => q.UpdatedAT)
-                .HasColumnName("updated_at")
-                .HasDefaultValueSql("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP") 
-                .ValueGeneratedOnUpdate();
+                .HasColumnName("updated_at");
 
             builder.Property(q => q.CreatedBy)
                 .HasColumnName("created_by");
 
             builder.Property(q => q.UpdatedBy)
-                .HasColumnName("created_by");
+                .HasColumnName("updated_by");
 
             builder.Property(q => q.Loan)
                 .HasColumnName("loan")
                 .HasDefaultValue(false);
 
             builder.Property(q => q.Sales)
-                .HasColumnName("loan")
+                .HasColumnName("sales")
                 .HasDefaultValue(false);
 
             builder.Property(q => q.Exchange)
-                .HasColumnName("loan")
+                .HasColumnName("exchange")
                 .HasDefaultValue(false);
 
-            builder.HasOne<Company>() // Quotation has one Company.
-            .WithMany() // Company has many Quotations.
+            builder.HasOne<Company>()
+            .WithMany()
             .HasForeignKey(q => q.CompanyId)
             .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();

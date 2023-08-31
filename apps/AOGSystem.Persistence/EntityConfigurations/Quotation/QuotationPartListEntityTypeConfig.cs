@@ -21,20 +21,16 @@ namespace AOGSystem.Persistence.EntityConfigurations.Quotation
                .ValueGeneratedOnAdd();
 
             builder.Property(q => q.CreatedAT)
-                .HasColumnName("created_at")
-                .HasDefaultValueSql("CURRENT_TIMESTAMP")
-                .ValueGeneratedOnAdd();
+                .HasColumnName("created_at");
 
             builder.Property(q => q.UpdatedAT)
-                .HasColumnName("updated_at")
-                .HasDefaultValueSql("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-                .ValueGeneratedOnUpdate();
+                .HasColumnName("updated_at");
 
             builder.Property(q => q.CreatedBy)
                 .HasColumnName("created_by");
 
             builder.Property(q => q.UpdatedBy)
-                .HasColumnName("created_by");
+                .HasColumnName("updated_by");
 
             builder.HasOne(q => q.Part)
                 .WithMany()
@@ -47,8 +43,7 @@ namespace AOGSystem.Persistence.EntityConfigurations.Quotation
                  .IsRequired();
 
             builder.Property(q => q.SalesPrice)
-                .HasColumnName("sales_price")
-                .IsRequired(required: false);
+                .HasColumnName("sales_price");
 
             builder.Property(q => q.LoanPrice)
                 .HasColumnName("loan_price");

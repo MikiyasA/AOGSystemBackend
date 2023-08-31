@@ -13,6 +13,9 @@ using Microsoft.EntityFrameworkCore.Storage;
 using System.Diagnostics;
 using AOGSystem.Persistence.EntityConfigurations.Quotation;
 using AOGSystem.Persistence.EntityConfigurations.General;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace AOGSystem.Persistence
 {
@@ -102,6 +105,28 @@ namespace AOGSystem.Persistence
             {
                 _currentTransaction?.Dispose();
             }
+        }
+    }
+
+    public class AOGSystemContextFactory : IDesignTimeDbContextFactory<AOGSystemContext>
+    {
+        public AOGSystemContext CreateDbContext(string[] args)
+        {
+            // Build configuration from appsettings.json or any other configuration source you prefer.
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            // Get the connection string from your configuration.
+            string connectionString = configuration.GetConnectionString("DefaultConnection");
+
+            // Create DbContextOptions with the connection string.
+            DbContextOptionsBuilder<AOGSystemContext> builder = new DbContextOptionsBuilder<AOGSystemContext>();
+            builder.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 34)),
+                mySqlOptions => mySqlOptions.SchemaBehavior(MySqlSchemaBehavior.Ignore)); // Adjust the version as needed.
+
+            return new AOGSystemContext(builder.Options);
         }
     }
 
