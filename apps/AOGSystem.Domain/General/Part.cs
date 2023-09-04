@@ -19,10 +19,11 @@ namespace AOGSystem.Domain.General
         public void SetStockNo(string stockNo) { this.StockNo = stockNo; }
         public void SetFinancialClass(string financialClass) { this.FinancialClass= financialClass; }
 
-        public Part(string partNumber, string description, string financialClass)
+        public Part(string partNumber, string description, string stockNo, string financialClass)
         {
             this.SetPartNumber(partNumber);
             this.SetDescription(description);
+            this.SetStockNo(stockNo);
             this.SetFinancialClass (financialClass);
         }
     }

@@ -13,10 +13,10 @@ namespace AOGSystem.Domain.Quotation
         public bool Sales { get; private set; }
         public bool Exchange { get; private set; }
         public Company? Company { get; private set; }
-        public int CompanyId { get; set; }
         public string? RequestedByName { get; private set; }
         public string? RequestedByEmail { get; private set; }
         public string? RequestedByPhone { get; private set; }
+        //public int CompanyId { get; set; }
         //public List<QuotationPartList>? PartList { get; private set; }
         // TODO: OfferedBy
 
@@ -61,9 +61,9 @@ namespace AOGSystem.Domain.Quotation
             quotationPartList.Add(newQuotationPartList);
         }
 
-        public void AddQuotationPartList(string partNumber, string description, string financialClass, decimal currentPrice, decimal salesPrice, decimal loanPrice, decimal exchangePrice, string? stockLocation, string? condition, string? serialNumber)
+        public void AddQuotationPartList(string partNumber, string description, string stockNo, string financialClass, decimal currentPrice, decimal salesPrice, decimal loanPrice, decimal exchangePrice, string? stockLocation, string? condition, string? serialNumber)
         {
-            var newPart = new Part(partNumber, description, financialClass);
+            var newPart = new Part(partNumber, description, stockNo, financialClass);
             var newQuotationPartList = new QuotationPartList(newPart, currentPrice, salesPrice, loanPrice, exchangePrice, stockLocation, condition, serialNumber);
             quotationPartList.Add(newQuotationPartList);
         }

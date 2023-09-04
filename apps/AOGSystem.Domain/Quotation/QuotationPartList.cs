@@ -41,13 +41,13 @@ namespace AOGSystem.Domain.Quotation
 
         public QuotationPartList(Part part, decimal currentPrice, decimal salesPrice, decimal loanPrice, decimal exchangePrice, string? stockLocation, string? condition, string? serialNumber)
         {
-            this.CurrentPrice = currentPrice;
-            this.SalesPrice = salesPrice;
-            this.LoanPrice = loanPrice;
-            this.ExchangePrice = exchangePrice;
-            this.StockLocation = stockLocation;
-            this.Condition = condition;
-            this.SerialNumber = serialNumber;
+            this.SetCurrentPrice(currentPrice);
+            this.SetSalesPrice(salesPrice);
+            this.SetLoanPrice(loanPrice);
+            this.SetExchangePrice(exchangePrice);
+            this.SetStockLocation(stockLocation);
+            this.SetCondition(condition);
+            this.SetSerialNumber(serialNumber);
             this.Part =  part;
         }
 
@@ -56,9 +56,9 @@ namespace AOGSystem.Domain.Quotation
             part.Add(newPart);
         }
 
-        public void AddPart(string partNumber, string description, string financialClass)
+        public void AddPart(string partNumber, string description, string stockNo, string financialClass)
         {
-            var newPart = new Part(partNumber, description, financialClass);
+            var newPart = new Part(partNumber, description, stockNo, financialClass);
             part.Add(newPart);
         }
 

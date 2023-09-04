@@ -45,9 +45,9 @@ namespace AOGSystem.Persistence.EntityConfigurations
                 .HasColumnName("exchange")
                 .HasDefaultValue(false);
 
-            builder.HasOne<Company>()
-            .WithMany()
-            .HasForeignKey(q => q.CompanyId)
+            builder.HasOne(x => x.Company)
+            .WithOne()
+            .HasForeignKey<Company>("CompanyId")
             .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
 

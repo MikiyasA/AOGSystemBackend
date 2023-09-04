@@ -11,6 +11,6 @@ namespace AOGSystem.Domain.Quotation
         Quotation Add(Quotation quotation);
         void Update(Quotation quotation);
         void Delete(int id);
-        Task<Quotation> GetQuotationAync(int id);
+        Task<Quotation> GetQuotationAsync(int id);
     }
 }

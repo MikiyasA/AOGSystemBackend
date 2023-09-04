@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AOGSystem.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class firstmigration : Migration
+    public partial class fromStart : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,15 +19,41 @@ namespace AOGSystem.Persistence.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "quotations",
+                schema: "AOGsystem",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    loan = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false),
+                    sales = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false),
+                    exchange = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false),
+                    requested_by_name = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    requested_by_email = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    requested_by_phone = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    created_by = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    updated_by = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_quotations", x => x.id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "companies",
                 schema: "AOGsystem",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    SalesOrderId = table.Column<int>(type: "int", nullable: false),
-                    LoanOrderId = table.Column<int>(type: "int", nullable: false),
-                    ExchangeOrderId = table.Column<int>(type: "int", nullable: false),
                     name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     code = table.Column<string>(type: "longtext", nullable: false)
@@ -46,6 +72,7 @@ namespace AOGSystem.Persistence.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     payment_term = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    CompanyId = table.Column<int>(type: "int", nullable: false),
                     created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     updated_at = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     created_by = table.Column<string>(type: "longtext", nullable: true)
@@ -56,27 +83,46 @@ namespace AOGSystem.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_companies", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_companies_quotations_CompanyId",
+                        column: x => x.CompanyId,
+                        principalSchema: "AOGsystem",
+                        principalTable: "quotations",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "quotations",
+                name: "home_base_follow_ups",
                 schema: "AOGsystem",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    loan = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false),
-                    sales = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false),
-                    exchange = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false),
-                    CompanyId1 = table.Column<int>(type: "int", nullable: true),
-                    CompanyId = table.Column<int>(type: "int", nullable: false),
-                    requested_by_name = table.Column<string>(type: "longtext", nullable: true)
+                    rid = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    requested_by_email = table.Column<string>(type: "longtext", nullable: true)
+                    request_date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    air_craft = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    requested_by_phone = table.Column<string>(type: "longtext", nullable: true)
+                    tail_no = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    customer = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    po_number = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    order_type = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    quantity = table.Column<int>(type: "int", nullable: true),
+                    uom = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    vendor = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    esd = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    need_higher_mgnt_attn = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    RemarkId = table.Column<int>(type: "int", nullable: false),
+                    PartId = table.Column<int>(type: "int", nullable: false),
                     created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     updated_at = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     created_by = table.Column<string>(type: "longtext", nullable: true)
@@ -86,20 +132,44 @@ namespace AOGSystem.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_quotations", x => x.id);
+                    table.PrimaryKey("PK_home_base_follow_ups", x => x.id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "remarks",
+                schema: "AOGsystem",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    message = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    HomeBaseFollowUpId = table.Column<int>(type: "int", nullable: true),
+                    RemarkId = table.Column<int>(type: "int", nullable: false),
+                    created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    created_by = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    updated_by = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_remarks", x => x.id);
                     table.ForeignKey(
-                        name: "FK_quotations_companies_CompanyId",
-                        column: x => x.CompanyId,
+                        name: "FK_remarks_home_base_follow_ups_HomeBaseFollowUpId",
+                        column: x => x.HomeBaseFollowUpId,
                         principalSchema: "AOGsystem",
-                        principalTable: "companies",
+                        principalTable: "home_base_follow_ups",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_remarks_home_base_follow_ups_RemarkId",
+                        column: x => x.RemarkId,
+                        principalSchema: "AOGsystem",
+                        principalTable: "home_base_follow_ups",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_quotations_companies_CompanyId1",
-                        column: x => x.CompanyId1,
-                        principalSchema: "AOGsystem",
-                        principalTable: "companies",
-                        principalColumn: "id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -118,6 +188,7 @@ namespace AOGSystem.Persistence.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     financial_class = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    HomeBaseFollowUpId = table.Column<int>(type: "int", nullable: true),
                     QuotationPartListId = table.Column<int>(type: "int", nullable: true),
                     created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     updated_at = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -129,6 +200,12 @@ namespace AOGSystem.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_parts", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_parts_home_base_follow_ups_HomeBaseFollowUpId",
+                        column: x => x.HomeBaseFollowUpId,
+                        principalSchema: "AOGsystem",
+                        principalTable: "home_base_follow_ups",
+                        principalColumn: "id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -179,6 +256,25 @@ namespace AOGSystem.Persistence.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
+                name: "IX_companies_CompanyId",
+                schema: "AOGsystem",
+                table: "companies",
+                column: "CompanyId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_home_base_follow_ups_PartId",
+                schema: "AOGsystem",
+                table: "home_base_follow_ups",
+                column: "PartId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_parts_HomeBaseFollowUpId",
+                schema: "AOGsystem",
+                table: "parts",
+                column: "HomeBaseFollowUpId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_parts_QuotationPartListId",
                 schema: "AOGsystem",
                 table: "parts",
@@ -197,16 +293,26 @@ namespace AOGSystem.Persistence.Migrations
                 column: "QuotationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_quotations_CompanyId",
+                name: "IX_remarks_HomeBaseFollowUpId",
                 schema: "AOGsystem",
-                table: "quotations",
-                column: "CompanyId");
+                table: "remarks",
+                column: "HomeBaseFollowUpId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_quotations_CompanyId1",
+                name: "IX_remarks_RemarkId",
                 schema: "AOGsystem",
-                table: "quotations",
-                column: "CompanyId1");
+                table: "remarks",
+                column: "RemarkId");
+
+            migrationBuilder.AddForeignKey(
+                name: "part_id",
+                schema: "AOGsystem",
+                table: "home_base_follow_ups",
+                column: "PartId",
+                principalSchema: "AOGsystem",
+                principalTable: "parts",
+                principalColumn: "id",
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_parts_quotation_partLists_QuotationPartListId",
@@ -222,16 +328,26 @@ namespace AOGSystem.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_parts_quotation_partLists_QuotationPartListId",
+                name: "FK_quotation_partLists_quotations_QuotationId",
                 schema: "AOGsystem",
-                table: "parts");
+                table: "quotation_partLists");
+
+            migrationBuilder.DropForeignKey(
+                name: "part_id",
+                schema: "AOGsystem",
+                table: "home_base_follow_ups");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_quotation_partLists_parts_PartId",
+                schema: "AOGsystem",
+                table: "quotation_partLists");
 
             migrationBuilder.DropTable(
-                name: "quotation_partLists",
+                name: "companies",
                 schema: "AOGsystem");
 
             migrationBuilder.DropTable(
-                name: "parts",
+                name: "remarks",
                 schema: "AOGsystem");
 
             migrationBuilder.DropTable(
@@ -239,7 +355,15 @@ namespace AOGSystem.Persistence.Migrations
                 schema: "AOGsystem");
 
             migrationBuilder.DropTable(
-                name: "companies",
+                name: "parts",
+                schema: "AOGsystem");
+
+            migrationBuilder.DropTable(
+                name: "home_base_follow_ups",
+                schema: "AOGsystem");
+
+            migrationBuilder.DropTable(
+                name: "quotation_partLists",
                 schema: "AOGsystem");
         }
     }

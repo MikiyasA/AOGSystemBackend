@@ -16,6 +16,8 @@ using AOGSystem.Persistence.EntityConfigurations.General;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using AOGSystem.Domain.FollowUp;
+using AOGSystem.Persistence.EntityConfigurations.FollowUp;
 
 namespace AOGSystem.Persistence
 {
@@ -25,8 +27,12 @@ namespace AOGSystem.Persistence
 
         public DbSet<Company> Companies { get; set; }
         public DbSet<Part> Parts { get; set; }
+
         public DbSet<Quotation> Quotations { get; set; }
         public DbSet<QuotationPartList> QuotationPartLists { get; set; }
+
+        public DbSet<HomeBaseFollowUp> HomeBaseFollowUps { get; set; }
+        public DbSet<Remark> Remarks { get; set; }
 
         private readonly IMediator _mediator;
         private IDbContextTransaction _currentTransaction;
@@ -47,7 +53,10 @@ namespace AOGSystem.Persistence
 
             modelBuilder.ApplyConfiguration(new QuotationEntityTypeConfig());
             modelBuilder.ApplyConfiguration(new QuotationPartListEntityTypeConfig());
-            // Add other entity configurations here...
+
+            modelBuilder.ApplyConfiguration(new HomeBaseFollowUpEntityTypeConfig());
+            modelBuilder.ApplyConfiguration(new RemarkEntityTypeConfig());
+
         }
 
         public async Task<int> SaveEntitiesAsync(string userId = null, CancellationToken cancellationToken = default)
@@ -69,7 +78,6 @@ namespace AOGSystem.Persistence
             if (string.IsNullOrEmpty(userId)) return;
 
             // Add auditing information if needed (CreatedBy, CreatedDate, UpdatedBy, UpdatedDate).
-            // This code is commented, but you can uncomment and adapt it as required.
         }
 
         public async Task BeginTransactionAsync()

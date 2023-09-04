@@ -17,4 +17,8 @@
     <ProjectReference Include="..\AOGSystem.Domain\AOGSystem.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>
