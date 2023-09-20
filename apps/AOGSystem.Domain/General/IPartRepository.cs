@@ -13,6 +13,8 @@ namespace AOGSystem.Domain.General
         void Delete(int id);
         Task<Part> GetPartByIDAsync(int id);
         Task<Part> GetPartByPNAsync(string partNo);
+        Task<int> SaveChangesAsync(string userId = null, CancellationToken cancellationToken = default);
+
 
     }
 }

@@ -13,7 +13,7 @@ namespace AOGSystem.Persistence.Repository.General
         private readonly AOGSystemContext _context;
         public PartRepository(AOGSystemContext context)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context)); ;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public Part Add(Part part)
@@ -44,6 +44,12 @@ namespace AOGSystem.Persistence.Repository.General
                 _context.Entry(part);
             }
             return part;
+        }
+
+        public async Task<int> SaveChangesAsync(string userId = null, CancellationToken cancellationToken = default)
+        {
+            return await _context.SaveChangesAsync(cancellationToken);
+
         }
 
         public void Update(Part part)

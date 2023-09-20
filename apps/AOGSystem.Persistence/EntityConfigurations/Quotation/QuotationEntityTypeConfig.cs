@@ -45,11 +45,14 @@ namespace AOGSystem.Persistence.EntityConfigurations
                 .HasColumnName("exchange")
                 .HasDefaultValue(false);
 
-            builder.HasOne(x => x.Company)
-            .WithOne()
-            .HasForeignKey<Company>("CompanyId")
-            .OnDelete(DeleteBehavior.Cascade)
-            .IsRequired();
+            builder.Property(q => q.CompanyId)
+                .HasColumnName("company_id");
+
+            //builder.HasOne(x => x.Company)
+            //.WithOne()
+            //.HasForeignKey<Company>("CompanyId")
+            //.OnDelete(DeleteBehavior.Cascade)
+            //.IsRequired();
 
             builder.Property(q => q.RequestedByName)
                 .HasColumnName("requested_by_name");
@@ -59,6 +62,9 @@ namespace AOGSystem.Persistence.EntityConfigurations
 
             builder.Property(q => q.RequestedByPhone)
                 .HasColumnName("requested_by_phone");
+
+            builder.Property(q => q.OfferedById)
+                .HasColumnName("offered_by_id");
 
         }
     }

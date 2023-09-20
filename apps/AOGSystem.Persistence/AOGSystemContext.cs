@@ -18,6 +18,7 @@ using Microsoft.Extensions.Configuration;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using AOGSystem.Domain.FollowUp;
 using AOGSystem.Persistence.EntityConfigurations.FollowUp;
+using Polly;
 
 namespace AOGSystem.Persistence
 {
@@ -31,7 +32,7 @@ namespace AOGSystem.Persistence
         public DbSet<Quotation> Quotations { get; set; }
         public DbSet<QuotationPartList> QuotationPartLists { get; set; }
 
-        public DbSet<HomeBaseFollowUp> HomeBaseFollowUps { get; set; }
+        public DbSet<AOGFollowUp> AOGFollowUps { get; set; }
         public DbSet<Remark> Remarks { get; set; }
 
         private readonly IMediator _mediator;
@@ -54,66 +55,72 @@ namespace AOGSystem.Persistence
             modelBuilder.ApplyConfiguration(new QuotationEntityTypeConfig());
             modelBuilder.ApplyConfiguration(new QuotationPartListEntityTypeConfig());
 
-            modelBuilder.ApplyConfiguration(new HomeBaseFollowUpEntityTypeConfig());
+            modelBuilder.ApplyConfiguration(new AOGFollowUpEntityTypeConfig());
             modelBuilder.ApplyConfiguration(new RemarkEntityTypeConfig());
 
         }
 
-        public async Task<int> SaveEntitiesAsync(string userId = null, CancellationToken cancellationToken = default)
+        public async Task<int> SaveChangesAsync(string userId = null, CancellationToken cancellationToken = default)
         {
-            // await _mediator?.DispatchDomainEventsAsync(this);
+            return await base.SaveChangesAsync(cancellationToken);
 
-            AddAuditInfo(userId);
-            return await SaveChangesAsync(cancellationToken);
         }
 
-        public int SaveChanges(string userId = null)
-        {
-            AddAuditInfo(userId);
-            return base.SaveChanges();
-        }
+        //public async Task<int> SaveEntitiesAsync(string userId = null, CancellationToken cancellationToken = default)
+        //{
+        //    // await _mediator?.DispatchDomainEventsAsync(this);
 
-        private void AddAuditInfo(string userId)
-        {
-            if (string.IsNullOrEmpty(userId)) return;
+        //    AddAuditInfo(userId);
+        //    return await SaveChangesAsync(cancellationToken);
+        //}
 
-            // Add auditing information if needed (CreatedBy, CreatedDate, UpdatedBy, UpdatedDate).
-        }
+        //public int SaveChanges(string userId = null)
+        //{
+        //    AddAuditInfo(userId);
+        //    return base.SaveChanges();
+        //}
 
-        public async Task BeginTransactionAsync()
-        {
-            _currentTransaction ??= await Database.BeginTransactionAsync(IsolationLevel.ReadCommitted);
-        }
+        //private void AddAuditInfo(string userId)
+        //{
+        //    if (string.IsNullOrEmpty(userId)) return;
 
-        public async Task CommitTransactionAsync()
-        {
-            try
-            {
-                await SaveChangesAsync();
-                _currentTransaction?.Commit();
-            }
-            catch
-            {
-                RollbackTransaction();
-                throw;
-            }
-            finally
-            {
-                _currentTransaction?.Dispose();
-            }
-        }
+        //    // Add auditing information if needed (CreatedBy, CreatedDate, UpdatedBy, UpdatedDate).
+        //}
 
-        public void RollbackTransaction()
-        {
-            try
-            {
-                _currentTransaction?.Rollback();
-            }
-            finally
-            {
-                _currentTransaction?.Dispose();
-            }
-        }
+        //public async Task BeginTransactionAsync()
+        //{
+        //    _currentTransaction ??= await Database.BeginTransactionAsync(IsolationLevel.ReadCommitted);
+        //}
+
+        //public async Task CommitTransactionAsync()
+        //{
+        //    try
+        //    {
+        //        await SaveChangesAsync();
+        //        _currentTransaction?.Commit();
+        //    }
+        //    catch
+        //    {
+        //        RollbackTransaction();
+        //        throw;
+        //    }
+        //    finally
+        //    {
+        //        _currentTransaction?.Dispose();
+        //    }
+        //}
+
+        //public void RollbackTransaction()
+        //{
+        //    try
+        //    {
+        //        _currentTransaction?.Rollback();
+        //    }
+        //    finally
+        //    {
+        //        _currentTransaction?.Dispose();
+        //    }
+        //}
     }
 
     public class AOGSystemContextFactory : IDesignTimeDbContextFactory<AOGSystemContext>

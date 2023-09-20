@@ -5,17 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AOGSystem.Application.FollowUp.HomeBase.Query.Model
+namespace AOGSystem.Application.FollowUp.Query.Model
 {
     public class RemarkSummery
     {
         public int Id { get; set; }
-        public int HomeBaseFollowUpId { get; set; }
+        public int AOGFollowUpId { get; set; }
         public string? Message { get; set; }
 
         internal static Remark ToModel(RemarkSummery item)
         {
-            return new Remark(item.HomeBaseFollowUpId, item.Message);
+            return new Remark(item.AOGFollowUpId, item.Message);
         }
 
         internal static List<Remark> ToModel(List<RemarkSummery> lists)

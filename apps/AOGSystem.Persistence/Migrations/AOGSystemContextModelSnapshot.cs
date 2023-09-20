@@ -19,12 +19,20 @@ namespace AOGSystem.Persistence.Migrations
                 .HasAnnotation("ProductVersion", "7.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("AOGSystem.Domain.FollowUp.HomeBaseFollowUp", b =>
+            modelBuilder.Entity("AOGSystem.Domain.FollowUp.AOGFollowUp", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("id");
+
+                    b.Property<string>("AOGStation")
+                        .HasColumnType("longtext")
+                        .HasColumnName("aog_station");
+
+                    b.Property<string>("AWBNo")
+                        .HasColumnType("longtext")
+                        .HasColumnName("awb_no");
 
                     b.Property<string>("AirCraft")
                         .IsRequired()
@@ -44,9 +52,9 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("customer");
 
-                    b.Property<string>("ESD")
-                        .HasColumnType("longtext")
-                        .HasColumnName("esd");
+                    b.Property<DateTime?>("EDD")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("edd");
 
                     b.Property<bool>("NeedHigherMgntAttn")
                         .HasColumnType("tinyint(1)")
@@ -60,10 +68,12 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("po_number");
 
-                    b.Property<int>("PartId")
-                        .HasColumnType("int");
+                    b.Property<int?>("PartId")
+                        .IsRequired()
+                        .HasColumnType("int")
+                        .HasColumnName("part_id");
 
-                    b.Property<int?>("Quantity")
+                    b.Property<int>("Quantity")
                         .HasColumnType("int")
                         .HasColumnName("quantity");
 
@@ -72,12 +82,13 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("rid");
 
-                    b.Property<int>("RemarkId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("RequestDate")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("request_date");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("longtext")
+                        .HasColumnName("status");
 
                     b.Property<string>("TailNo")
                         .IsRequired()
@@ -88,7 +99,7 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("uom");
 
-                    b.Property<DateTime>("UpdatedAT")
+                    b.Property<DateTime?>("UpdatedAT")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
@@ -100,11 +111,15 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("vendor");
 
+                    b.Property<string>("WorkLocation")
+                        .HasColumnType("longtext")
+                        .HasColumnName("work_location");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PartId");
 
-                    b.ToTable("home_base_follow_ups", "AOGsystem");
+                    b.ToTable("aog_follow_ups", "AOGsystem");
                 });
 
             modelBuilder.Entity("AOGSystem.Domain.FollowUp.Remark", b =>
@@ -114,6 +129,9 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("int")
                         .HasColumnName("id");
 
+                    b.Property<int>("AOGFollowUpId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedAT")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
@@ -122,18 +140,12 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("created_by");
 
-                    b.Property<int?>("HomeBaseFollowUpId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Message")
                         .IsRequired()
                         .HasColumnType("longtext")
                         .HasColumnName("message");
 
-                    b.Property<int>("RemarkId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdatedAT")
+                    b.Property<DateTime?>("UpdatedAT")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
@@ -143,9 +155,7 @@ namespace AOGSystem.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("HomeBaseFollowUpId");
-
-                    b.HasIndex("RemarkId");
+                    b.HasIndex("AOGFollowUpId");
 
                     b.ToTable("remarks", "AOGsystem");
                 });
@@ -174,9 +184,6 @@ namespace AOGSystem.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("longtext")
                         .HasColumnName("code");
-
-                    b.Property<int>("CompanyId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Country")
                         .IsRequired()
@@ -208,7 +215,7 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("ship_to_address");
 
-                    b.Property<DateTime>("UpdatedAT")
+                    b.Property<DateTime?>("UpdatedAT")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
@@ -217,9 +224,6 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CompanyId")
-                        .IsUnique();
 
                     b.ToTable("companies", "AOGsystem");
                 });
@@ -248,22 +252,16 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("financial_class");
 
-                    b.Property<int?>("HomeBaseFollowUpId")
-                        .HasColumnType("int");
-
                     b.Property<string>("PartNumber")
                         .IsRequired()
                         .HasColumnType("longtext")
                         .HasColumnName("part_number");
 
-                    b.Property<int?>("QuotationPartListId")
-                        .HasColumnType("int");
-
                     b.Property<string>("StockNo")
                         .HasColumnType("longtext")
                         .HasColumnName("stock_no");
 
-                    b.Property<DateTime>("UpdatedAT")
+                    b.Property<DateTime?>("UpdatedAT")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
@@ -273,11 +271,54 @@ namespace AOGSystem.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("HomeBaseFollowUpId");
-
-                    b.HasIndex("QuotationPartListId");
-
                     b.ToTable("parts", "AOGsystem");
+                });
+
+            modelBuilder.Entity("AOGSystem.Domain.General.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAT")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("UpdatedAT")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("AOGSystem.Domain.Quotation.Quotation", b =>
@@ -286,6 +327,10 @@ namespace AOGSystem.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("id");
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int")
+                        .HasColumnName("company_id");
 
                     b.Property<DateTime>("CreatedAT")
                         .HasColumnType("datetime(6)")
@@ -307,6 +352,10 @@ namespace AOGSystem.Persistence.Migrations
                         .HasDefaultValue(false)
                         .HasColumnName("loan");
 
+                    b.Property<int?>("OfferedById")
+                        .HasColumnType("int")
+                        .HasColumnName("offered_by_id");
+
                     b.Property<string>("RequestedByEmail")
                         .HasColumnType("longtext")
                         .HasColumnName("requested_by_email");
@@ -325,7 +374,7 @@ namespace AOGSystem.Persistence.Migrations
                         .HasDefaultValue(false)
                         .HasColumnName("sales");
 
-                    b.Property<DateTime>("UpdatedAT")
+                    b.Property<DateTime?>("UpdatedAT")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
@@ -334,6 +383,10 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("OfferedById");
 
                     b.ToTable("quotations", "AOGsystem");
                 });
@@ -386,7 +439,7 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("stock_location");
 
-                    b.Property<DateTime>("UpdatedAT")
+                    b.Property<DateTime?>("UpdatedAT")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
@@ -403,47 +456,50 @@ namespace AOGSystem.Persistence.Migrations
                     b.ToTable("quotation_partLists", "AOGsystem");
                 });
 
-            modelBuilder.Entity("AOGSystem.Domain.FollowUp.HomeBaseFollowUp", b =>
+            modelBuilder.Entity("AOGSystem.Domain.FollowUp.AOGFollowUp", b =>
                 {
-                    b.HasOne("AOGSystem.Domain.General.Part", null)
+                    b.HasOne("AOGSystem.Domain.General.Part", "Part")
                         .WithMany()
                         .HasForeignKey("PartId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("part_id");
+                        .IsRequired();
+
+                    b.Navigation("Part");
                 });
 
             modelBuilder.Entity("AOGSystem.Domain.FollowUp.Remark", b =>
                 {
-                    b.HasOne("AOGSystem.Domain.FollowUp.HomeBaseFollowUp", null)
+                    b.HasOne("AOGSystem.Domain.FollowUp.AOGFollowUp", null)
                         .WithMany("Remarks")
-                        .HasForeignKey("HomeBaseFollowUpId");
-
-                    b.HasOne("AOGSystem.Domain.FollowUp.HomeBaseFollowUp", null)
-                        .WithMany()
-                        .HasForeignKey("RemarkId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("AOGSystem.Domain.General.Company", b =>
-                {
-                    b.HasOne("AOGSystem.Domain.Quotation.Quotation", null)
-                        .WithOne("Company")
-                        .HasForeignKey("AOGSystem.Domain.General.Company", "CompanyId")
+                        .HasForeignKey("AOGFollowUpId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("AOGSystem.Domain.General.Part", b =>
                 {
-                    b.HasOne("AOGSystem.Domain.FollowUp.HomeBaseFollowUp", null)
-                        .WithMany("Part")
-                        .HasForeignKey("HomeBaseFollowUpId");
-
                     b.HasOne("AOGSystem.Domain.Quotation.QuotationPartList", null)
                         .WithMany("Parts")
-                        .HasForeignKey("QuotationPartListId");
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AOGSystem.Domain.Quotation.Quotation", b =>
+                {
+                    b.HasOne("AOGSystem.Domain.General.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AOGSystem.Domain.General.User", "OfferedBy")
+                        .WithMany()
+                        .HasForeignKey("OfferedById");
+
+                    b.Navigation("Company");
+
+                    b.Navigation("OfferedBy");
                 });
 
             modelBuilder.Entity("AOGSystem.Domain.Quotation.QuotationPartList", b =>
@@ -463,17 +519,13 @@ namespace AOGSystem.Persistence.Migrations
                     b.Navigation("Part");
                 });
 
-            modelBuilder.Entity("AOGSystem.Domain.FollowUp.HomeBaseFollowUp", b =>
+            modelBuilder.Entity("AOGSystem.Domain.FollowUp.AOGFollowUp", b =>
                 {
-                    b.Navigation("Part");
-
                     b.Navigation("Remarks");
                 });
 
             modelBuilder.Entity("AOGSystem.Domain.Quotation.Quotation", b =>
                 {
-                    b.Navigation("Company");
-
                     b.Navigation("QuotationPartsLists");
                 });
 

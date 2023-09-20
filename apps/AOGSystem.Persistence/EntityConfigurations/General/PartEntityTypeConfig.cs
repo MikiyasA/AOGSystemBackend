@@ -1,4 +1,6 @@
-﻿using AOGSystem.Domain.General;
+﻿using AOGSystem.Domain.FollowUp;
+using AOGSystem.Domain.General;
+using AOGSystem.Domain.Quotation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -45,6 +47,20 @@ namespace AOGSystem.Persistence.EntityConfigurations.General
 
             builder.Property(x => x.FinancialClass)
                 .HasColumnName("financial_class");
+
+
+            builder.HasMany<AOGFollowUp>()
+                .WithOne(x => x.Part)
+                .HasForeignKey(x => x.PartId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
+
+            builder.HasOne<QuotationPartList>()
+                .WithMany(x => x.Parts)
+                .HasForeignKey(x => x.Id)  // id for Part TODO to be check the relation 
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
+
 
         }
     }

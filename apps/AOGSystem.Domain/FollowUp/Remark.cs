@@ -8,16 +8,16 @@ namespace AOGSystem.Domain.FollowUp
 {
     public class Remark : BaseEntity
     {
-        public int HomeBaseFollowUpId { get; private set; }
+        public int AOGFollowUpId { get; private set; }
         public string? Message { get; private set; }
 
-        public void SetHomebaseFollowUpId(int homeBaseFollowUpId) { this.HomeBaseFollowUpId= homeBaseFollowUpId; }
+        public void SetAOGFollowUpId(int AOGFollowUpId) { this.AOGFollowUpId= AOGFollowUpId; }
         public void SetMessage(string? message) { this.Message = message; }
 
-        public Remark(int homeBaseFollowUpId, string? message)
+        public Remark(int AOGFollowUpId, string? message)
         {
             this.SetMessage(message);
-            this.SetHomebaseFollowUpId(homeBaseFollowUpId);
+            this.SetAOGFollowUpId(AOGFollowUpId);
         }
     }
 }

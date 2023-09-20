@@ -35,6 +35,11 @@ namespace AOGSystem.Persistence.EntityConfigurations.FollowUp
             builder.Property(x => x.Message)
                 .HasColumnName("message")
                 .IsRequired();
+
+            builder.HasOne<AOGFollowUp>()
+                .WithMany(x => x.Remarks)
+                .HasForeignKey(x => x.AOGFollowUpId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

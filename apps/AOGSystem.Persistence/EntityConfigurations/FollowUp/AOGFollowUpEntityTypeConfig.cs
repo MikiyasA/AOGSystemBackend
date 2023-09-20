@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace AOGSystem.Persistence.EntityConfigurations.FollowUp
 {
-    internal class HomeBaseFollowUpEntityTypeConfig : IEntityTypeConfiguration<HomeBaseFollowUp>
+    internal class AOGFollowUpEntityTypeConfig : IEntityTypeConfiguration<AOGFollowUp>
     {
-        public void Configure(EntityTypeBuilder<HomeBaseFollowUp> builder)
+        public void Configure(EntityTypeBuilder<AOGFollowUp> builder)
         {
-            builder.ToTable("home_base_follow_ups", AOGSystemContext.DefaultSchema);
+            builder.ToTable("aog_follow_ups", AOGSystemContext.DefaultSchema);
             builder.HasKey(x => x.Id);
 
             builder.Property(q => q.Id)
@@ -25,7 +25,8 @@ namespace AOGSystem.Persistence.EntityConfigurations.FollowUp
                 .HasColumnName("created_at");
 
             builder.Property(q => q.UpdatedAT)
-                .HasColumnName("updated_at");
+                .HasColumnName("updated_at")
+                .IsRequired(false);
 
             builder.Property(q => q.CreatedBy)
                 .HasColumnName("created_by");
@@ -45,6 +46,12 @@ namespace AOGSystem.Persistence.EntityConfigurations.FollowUp
                 .HasColumnName("air_craft")
                 .IsRequired();
 
+            builder.Property(x => x.WorkLocation)
+                .HasColumnName("work_location");
+
+            builder.Property(x => x.AOGStation)
+                .HasColumnName("aog_station");
+
             builder.Property(x => x.TailNo)
                 .HasColumnName("tail_no")
                 .IsRequired();
@@ -52,12 +59,8 @@ namespace AOGSystem.Persistence.EntityConfigurations.FollowUp
             builder.Property(x => x.Customer)
                 .HasColumnName("customer")
                 .IsRequired();
-
-            builder.HasOne<Part>()
-                .WithMany()
-                .HasForeignKey("PartId")
-                .HasConstraintName("part_id")
-                .OnDelete(DeleteBehavior.Cascade)
+            builder.Property(x => x.PartId)
+                .HasColumnName("part_id")
                 .IsRequired();
 
             builder.Property(x => x.PONumber)
@@ -75,18 +78,19 @@ namespace AOGSystem.Persistence.EntityConfigurations.FollowUp
             builder.Property(x => x.Vendor)
                 .HasColumnName("vendor");
 
-            builder.Property(x => x.ESD)
-                .HasColumnName("esd");
+            builder.Property(x => x.EDD)
+                .HasColumnName("edd");
+
+            builder.Property(x => x.Status)
+                .HasColumnName("status");
+
+            builder.Property(x => x.AWBNo)
+                .HasColumnName("awb_no");
 
             builder.Property(x => x.NeedHigherMgntAttn)
                 .HasColumnName("need_higher_mgnt_attn");
 
-            builder.HasMany<Remark>()//(hf => hf.Remarks)
-                .WithOne()
-                .HasForeignKey("RemarkId")
-                //.HasConstraintName("remark")
-                .OnDelete(DeleteBehavior.Cascade)
-                .IsRequired();
+            
         }
     }
 }

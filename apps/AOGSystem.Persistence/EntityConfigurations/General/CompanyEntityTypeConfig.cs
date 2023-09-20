@@ -62,6 +62,11 @@ namespace AOGSystem.Persistence.EntityConfigurations.General
 
             builder.Property(x => x.PaymentTerm)
                 .HasColumnName("payment_term");
+
+            builder.HasMany<Domain.Quotation.Quotation>()
+                .WithOne(x => x.Company)
+                .HasForeignKey(x => x.CompanyId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

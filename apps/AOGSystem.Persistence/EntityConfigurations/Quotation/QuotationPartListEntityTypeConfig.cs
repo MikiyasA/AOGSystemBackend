@@ -60,8 +60,7 @@ namespace AOGSystem.Persistence.EntityConfigurations.Quotation
             builder.HasOne<Domain.Quotation.Quotation>()
                 .WithMany(q => q.QuotationPartsLists)
                 .HasForeignKey(q => q.QuotationId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .IsRequired();
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
