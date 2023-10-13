@@ -1,4 +1,5 @@
 ﻿using AOGSystem.Application.FollowUp.Query.Model;
+using AOGSystem.Domain.CoreFollowUps;
 using AOGSystem.Domain.FollowUp;
 using AOGSystem.Domain.General;
 using MediatR;
@@ -16,13 +17,16 @@ namespace AOGSystem.Application.FollowUp.Commands
 
         private readonly IAOGFollowUpRepository _AOGFollowUpRepository;
         private readonly IPartRepository _partRepository;
+        private readonly ICoreFollowUpRepository _coreFollowUpRepository;
         private readonly IMediator _mediator;
         public CreateAOGFPCommandHandler(IAOGFollowUpRepository AOGFollowUpRepository,
             IPartRepository partRepository,
+            ICoreFollowUpRepository coreFollowUpRepository,
             IMediator mediator)
         {
             _AOGFollowUpRepository = AOGFollowUpRepository;
             _partRepository = partRepository;
+            _coreFollowUpRepository = coreFollowUpRepository;
             _mediator = mediator;
         }
 
@@ -58,6 +62,47 @@ namespace AOGSystem.Application.FollowUp.Commands
                     request.NeedHigherMgntAttn);
             model.CreatedAT = DateTime.UtcNow;
 
+            #region Core follow up logic 
+            var coreFPExists = await _coreFollowUpRepository.GetCoreFollowUpByPONoAsync(model.PONumber);
+            if (coreFPExists == null)
+            {
+                if (model.OrderType == CoreFollowUp.ORDER_TYPE_EXCHANGE)
+                {
+                    var returnDueDate = DateTime.UtcNow.AddDays(10);
+                    var coreFollowup = new CoreFollowUp(model.PONumber, DateTime.UtcNow, model.AirCraft, model.TailNo, part.PartNumber,
+                        part.Description, part.StockNo, model.Vendor, returnDueDate);
+                    coreFollowup.CreatedAT = DateTime.UtcNow;
+                    _coreFollowUpRepository.Add(coreFollowup);
+                    await _coreFollowUpRepository.SaveChangesAsync();
+                }
+
+            }
+            else
+            {
+                if (model.OrderType == CoreFollowUp.ORDER_TYPE_EXCHANGE)
+                {
+                    coreFPExists.SetPONo(model.PONumber);
+                    coreFPExists.SetAircraft(model.AirCraft);
+                    coreFPExists.SetTailNo(model.TailNo);
+                    coreFPExists.SetPartNumber(request.PartNumber);
+                    coreFPExists.SetDescription(request.Description);
+                    coreFPExists.SetStockNo(request.StockNo);
+                    coreFPExists.SetVendor(model.Vendor);
+                    coreFPExists.UpdatedAT = DateTime.UtcNow;
+                    _coreFollowUpRepository.Update(coreFPExists);
+                    var r = await _coreFollowUpRepository.SaveChangesAsync();
+                }
+                else
+                {
+                    coreFPExists.SetStatus(CoreFollowUp.STATUS_TRANSACTION_CHANGED);
+                    _coreFollowUpRepository.Update(coreFPExists);
+                }
+            }
+            #endregion
+            var newRemark = new Remark(model.Id, request.Message);
+            newRemark.CreatedAT = DateTime.UtcNow;
+            model.AddRemark(newRemark);
+
             _AOGFollowUpRepository.Add(model);
 
             var result = await _AOGFollowUpRepository.SaveChangesAsync();
@@ -85,6 +130,7 @@ namespace AOGSystem.Application.FollowUp.Commands
                 Status = model.Status,
                 AWBNo = model.AWBNo,
                 NeedHigherMgntAttn = model.NeedHigherMgntAttn,
+                Remark = newRemark
             };
         }
     }
@@ -112,6 +158,7 @@ namespace AOGSystem.Application.FollowUp.Commands
         public string? Status { get; set; }
         public string? AWBNo { get; set; }
         public bool NeedHigherMgntAttn { get; set; }
+        public string Message { get; set; }
 
         public CreateAOGFPCommand() { }
 

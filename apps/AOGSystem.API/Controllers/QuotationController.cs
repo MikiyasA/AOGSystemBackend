@@ -1,37 +1,38 @@
 ﻿using AOGSystem.Application.FollowUp.Commands;
-using AOGSystem.Domain.FollowUp;
+using AOGSystem.Application.Quotations.Commands;
+using AOGSystem.Domain.Quotation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace AOGSystem.API.Controllers.AOGFollowUp
+namespace AOGSystem.API.Controllers
 {
     [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]/[Action]")]
-    public class AOGFollowUpController : Controller
+    public class QuotationController : Controller
     {
-        private readonly IMediator _mediator;
-        private readonly IAOGFollowUpRepository _AOGFollowUpRepository;
-        public AOGFollowUpController(IMediator mediator, 
-            IAOGFollowUpRepository AOGFollowUpRepository)
+
+        private readonly IMediator _mediator; 
+        private readonly IQuotationRepository _quotationRepository;
+        public QuotationController(IMediator mediator, IQuotationRepository quotationRepository)
         {
-            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-            _AOGFollowUpRepository = AOGFollowUpRepository;
+            _mediator = mediator;
+            _quotationRepository = quotationRepository;
         }
 
 
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> CreateAOGFollowUp([FromBody]CreateAOGFPCommand command)
+        public async Task<IActionResult> CreateQuotation([FromBody] CreateQuotationCommand command)
         {
             try
             {
                 var commandResult = await _mediator.Send(command);
 
-                return commandResult != null ? Ok(commandResult) : (IActionResult)BadRequest();
+                return commandResult != null ? Ok(commandResult) : BadRequest();
             }
             catch (Exception ex)
             {
@@ -42,13 +43,13 @@ namespace AOGSystem.API.Controllers.AOGFollowUp
         [HttpPut]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> UpdateAOGFollowUp([FromBody] UpdateAOGFPCommand command)
+        public async Task<IActionResult> UpdateQuotation([FromBody] UpdateQuotationCommand command)
         {
             try
             {
                 var commandResult = await _mediator.Send(command);
 
-                return commandResult != null ? Ok(commandResult) : (IActionResult)BadRequest();
+                return commandResult != null ? Ok(commandResult) : BadRequest();
             }
             catch (Exception ex)
             {
@@ -59,13 +60,13 @@ namespace AOGSystem.API.Controllers.AOGFollowUp
         [HttpDelete]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> DeleteAOGFollowUp([FromBody] DeleteAOGFPCommand command)
+        public async Task<IActionResult> DeleteQuotation([FromBody] DeleteQuotationCommand command)
         {
             try
             {
                 var commandResult = await _mediator.Send(command);
 
-                return commandResult > 0 ? Ok(commandResult) : (IActionResult)BadRequest();
+                return commandResult > 0 ? Ok($"{commandResult} - requested object deleted successfully") : BadRequest();
             }
             catch (Exception ex)
             {
@@ -76,26 +77,11 @@ namespace AOGSystem.API.Controllers.AOGFollowUp
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> GetAllAOGFollowUp()
+        public async Task<IActionResult> GetAllQuotations()
         {
             try
             {
-                return Ok(await _AOGFollowUpRepository.GetAllAOGFollowUpAsync());
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
-        }
-
-        [HttpGet]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> GetAllActiveFollowUpAsync()
-        {
-            try
-            {
-                return Ok(await _AOGFollowUpRepository.GetAllActiveFollowUpAsync());
+                return Ok(await _quotationRepository.GetAllQuotations());
             }
             catch (Exception ex)
             {
@@ -107,11 +93,11 @@ namespace AOGSystem.API.Controllers.AOGFollowUp
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> GetAOGFollowUpByID(int id)
+        public async Task<IActionResult> GetQuotationByID(int id)
         {
             try
             {
-                var result = await _AOGFollowUpRepository.GetAOGFollowUpByIDAsync(id);
+                var result = await _quotationRepository.GetQuotationByIdAsync(id);
                 if (result != null)
                 {
                     return Ok(result);
@@ -127,13 +113,13 @@ namespace AOGSystem.API.Controllers.AOGFollowUp
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> AddRemarkInAOGFollowUp([FromBody] AddRemarkInAOGFPCommand command)
+        public async Task<IActionResult> AddPartListQuotation([FromBody] AddPartListInQuotationCommand command)
         {
             try
             {
                 var commandResult = await _mediator.Send(command);
 
-                return commandResult != null ? Ok(commandResult) : (IActionResult)BadRequest();
+                return commandResult != null ? Ok(commandResult) : BadRequest();
             }
             catch (Exception ex)
             {
@@ -144,13 +130,13 @@ namespace AOGSystem.API.Controllers.AOGFollowUp
         [HttpPut]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> UpdateRemarkInAOGFollowUp([FromBody] UpdateRemarkInAOGFPCommand command)
+        public async Task<IActionResult> UpdatePartListInQuotation([FromBody] UpdatePartListInQuotationCommand command)
         {
             try
             {
                 var commandResult = await _mediator.Send(command);
 
-                return commandResult != null ? Ok(commandResult) : (IActionResult)BadRequest();
+                return commandResult != null ? Ok(commandResult) : BadRequest();
             }
             catch (Exception ex)
             {

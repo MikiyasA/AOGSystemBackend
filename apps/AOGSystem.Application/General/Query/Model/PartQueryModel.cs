@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace AOGSystem.Application.General.Query.Model
 {
-    public class PartQuerySummer
+    public class PartQuerySummary
     {
         public int Id { get; set; }
-        public string PartNumber { get; private set; }
-        public string Description { get; private set; }
-        public string StockNo { get; private set; }
-        public string FinancialClass { get; private set; }
+        public string PartNumber { get; set; }
+        public string Description { get; set; }
+        public string StockNo { get; set; }
+        public string FinancialClass { get; set; }
 
-        internal static Part ToModel(PartQuerySummer item)
+        internal static Part ToModel(PartQuerySummary item)
         {
             return new Part(
                 item.PartNumber,
@@ -23,13 +23,13 @@ namespace AOGSystem.Application.General.Query.Model
                 item.StockNo,
                 item.FinancialClass);
         }
-        internal static List<Part> ToModel(List<PartQuerySummer> lists)
+        internal static List<Part> ToModel(List<PartQuerySummary> lists)
         {
             return lists.Select(x => ToModel(x)).ToList();
 
         }
     }
-    public class PartQueryModel : PartQuerySummer
+    public class PartQueryModel : PartQuerySummary
     {
     }
 }

@@ -3,6 +3,7 @@ using System;
 using AOGSystem.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,108 +11,16 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AOGSystem.Persistence.Migrations
 {
     [DbContext(typeof(AOGSystemContext))]
-    partial class AOGSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20230924062031_addFixedAndLoanPerDatPrice")]
+    partial class addFixedAndLoanPerDatPrice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
-
-            modelBuilder.Entity("AOGSystem.Domain.CoreFollowUps.CoreFollowUp", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
-
-                    b.Property<string>("AWBNo")
-                        .HasColumnType("longtext")
-                        .HasColumnName("awb_no");
-
-                    b.Property<string>("Aircraft")
-                        .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("aircraft");
-
-                    b.Property<DateTime>("CreatedAT")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("created_at");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext")
-                        .HasColumnName("created_by");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("longtext")
-                        .HasColumnName("description");
-
-                    b.Property<DateTime>("POCreatedDate")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("po_created_date");
-
-                    b.Property<DateTime?>("PODDate")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("pod_date");
-
-                    b.Property<string>("PONo")
-                        .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("po_no");
-
-                    b.Property<string>("PartNumber")
-                        .HasColumnType("longtext")
-                        .HasColumnName("part_number");
-
-                    b.Property<DateTime?>("PartReceiveDate")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("part_receive_date");
-
-                    b.Property<string>("Remark")
-                        .HasColumnType("longtext")
-                        .HasColumnName("remark");
-
-                    b.Property<DateTime>("ReturnDueDate")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("return_due_date");
-
-                    b.Property<DateTime?>("ReturnProcessedDate")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("return_processed_date");
-
-                    b.Property<string>("ReturnedPart")
-                        .HasColumnType("longtext")
-                        .HasColumnName("returned_part");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("longtext")
-                        .HasColumnName("status");
-
-                    b.Property<string>("StockNo")
-                        .HasColumnType("longtext")
-                        .HasColumnName("stock_no");
-
-                    b.Property<string>("TailNo")
-                        .HasColumnType("longtext")
-                        .HasColumnName("tail_no");
-
-                    b.Property<DateTime?>("UpdatedAT")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("updated_at");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("longtext")
-                        .HasColumnName("updated_by");
-
-                    b.Property<string>("Vendor")
-                        .HasColumnType("longtext")
-                        .HasColumnName("vendor");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("core_follow_ups", "AOGsystem");
-                });
 
             modelBuilder.Entity("AOGSystem.Domain.FollowUp.AOGFollowUp", b =>
                 {

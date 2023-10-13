@@ -14,7 +14,8 @@ namespace AOGSystem.Domain.Quotation
         public int QuotationId { get; private set; }
         public decimal CurrentPrice { get; private set; }
         public decimal SalesPrice { get; private set; }
-        public decimal LoanPrice { get; private set; }
+        public decimal FixedLoanPrice { get; private set; }
+        public decimal LoanPricePerDay { get; private set; }
         public decimal ExchangePrice { get; private set; }
         public string? StockLocation { get; private set; }
         public string? Condition { get; private set;  }
@@ -24,7 +25,8 @@ namespace AOGSystem.Domain.Quotation
         public void SetQuotationId(int quotationId) { this.QuotationId = quotationId; }
         public void SetCurrentPrice(decimal currentPrice) { this.CurrentPrice = currentPrice; }
         public void SetSalesPrice(decimal salesPrice) { this.SalesPrice = salesPrice; }
-        public void SetLoanPrice(decimal loanPrice) { this.LoanPrice = loanPrice; }
+        public void SetFixedLoanPrice(decimal fixedLoanPrice) { this.FixedLoanPrice = fixedLoanPrice; }
+        public void SetLoanPricePerDay(decimal loanPricePerDay) { this.LoanPricePerDay = loanPricePerDay; }
         public void SetExchangePrice(decimal exchangePrice) { this.ExchangePrice = exchangePrice; }
         public void SetStockLocation(string stockLocation) { this.StockLocation = stockLocation; }
         public void SetCondition(string condition) { this.Condition = condition; }
@@ -40,16 +42,18 @@ namespace AOGSystem.Domain.Quotation
             parts = new List<Part>();
         }
 
-        public QuotationPartList(Part part, decimal currentPrice, decimal salesPrice, decimal loanPrice, decimal exchangePrice, string? stockLocation, string? condition, string? serialNumber)
+        public QuotationPartList(int partId, decimal currentPrice, decimal salesPrice, decimal fixedLoanPrice, decimal loanPricePerDay,
+            decimal exchangePrice, string? stockLocation, string? condition, string? serialNumber)
         {
+            this.SetPartId(partId);
             this.SetCurrentPrice(currentPrice);
             this.SetSalesPrice(salesPrice);
-            this.SetLoanPrice(loanPrice);
+            this.SetFixedLoanPrice(fixedLoanPrice);
+            this.SetLoanPricePerDay(loanPricePerDay);
             this.SetExchangePrice(exchangePrice);
             this.SetStockLocation(stockLocation);
             this.SetCondition(condition);
             this.SetSerialNumber(serialNumber);
-            this.Part =  part;
         }
 
         public void AddPart(Part newPart)
