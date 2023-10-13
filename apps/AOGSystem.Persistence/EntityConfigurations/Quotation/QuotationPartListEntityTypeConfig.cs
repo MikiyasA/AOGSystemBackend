@@ -45,8 +45,11 @@ namespace AOGSystem.Persistence.EntityConfigurations.Quotation
             builder.Property(q => q.SalesPrice)
                 .HasColumnName("sales_price");
 
-            builder.Property(q => q.LoanPrice)
-                .HasColumnName("loan_price");
+            builder.Property(q => q.FixedLoanPrice)
+                .HasColumnName("fixed_loan_price");
+
+            builder.Property(q => q.LoanPricePerDay)
+                .HasColumnName("loan_price_per_day");
 
             builder.Property(q => q.ExchangePrice)
                 .HasColumnName("exchange_price");

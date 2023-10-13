@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AOGSystem.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class updateOnQuotationAndAddUserTableFmStart : Migration
+    public partial class fmStartFixPartAndAddUser : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -214,7 +214,8 @@ namespace AOGSystem.Persistence.Migrations
                 schema: "AOGsystem",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     part_number = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     description = table.Column<string>(type: "longtext", nullable: false)
@@ -223,6 +224,7 @@ namespace AOGSystem.Persistence.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     financial_class = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    QuotationPartListId = table.Column<int>(type: "int", nullable: true),
                     created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     updated_at = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     created_by = table.Column<string>(type: "longtext", nullable: true)
@@ -289,6 +291,12 @@ namespace AOGSystem.Persistence.Migrations
                 column: "part_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_parts_QuotationPartListId",
+                schema: "AOGsystem",
+                table: "parts",
+                column: "QuotationPartListId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_quotation_partLists_PartId",
                 schema: "AOGsystem",
                 table: "quotation_partLists",
@@ -329,14 +337,13 @@ namespace AOGSystem.Persistence.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_parts_quotation_partLists_id",
+                name: "FK_parts_quotation_partLists_QuotationPartListId",
                 schema: "AOGsystem",
                 table: "parts",
-                column: "id",
+                column: "QuotationPartListId",
                 principalSchema: "AOGsystem",
                 principalTable: "quotation_partLists",
-                principalColumn: "id",
-                onDelete: ReferentialAction.Cascade);
+                principalColumn: "id");
         }
 
         /// <inheritdoc />

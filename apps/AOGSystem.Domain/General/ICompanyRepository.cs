@@ -11,6 +11,10 @@ namespace AOGSystem.Domain.General
         Company Add(Company company);
         void Update(Company company);
         void Delete(int id);
-        Task<Company> GetCompanyAsync(int id);
+        Task<List<Company>> GetAllCompanyAsync();
+        Task<Company> GetCompanyByIDAsync(int id);
+        Task<Company> GetCompanyByCodeAsync(string code);
+        Task<int> SaveChangesAsync(string userId = null, CancellationToken cancellationToken = default);
+
     }
 }

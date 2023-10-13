@@ -26,7 +26,7 @@ namespace AOGSystem.Domain.FollowUp
         public string? AWBNo { get; private set; }
         public bool NeedHigherMgntAttn { get; private set; }
         public Part? Part { get; set; }
-        public int? PartId { get; set; }
+        public int PartId { get; set; }
 
 
         public void SetRID(string rid) { this.RID = rid; }
@@ -47,6 +47,10 @@ namespace AOGSystem.Domain.FollowUp
         public void SetAWBNo(string awbNo) { this.AWBNo= awbNo; }
         public void SetNeedHigherMgntAttn(bool needHigherMgntAttn) { this.NeedHigherMgntAttn = needHigherMgntAttn; }
 
+        //private readonly List<Part> parts;
+        //public IReadOnlyCollection<Part> Parts => parts;
+
+        
 
         private readonly List<Remark> remarks;
         public IReadOnlyCollection<Remark> Remarks => remarks;
@@ -54,10 +58,11 @@ namespace AOGSystem.Domain.FollowUp
         protected AOGFollowUp() 
         { 
             remarks = new List<Remark>();
+            //parts = new List<Part>();
         }
 
-        public AOGFollowUp(string? rID, DateTime requestDate, string? airCraft, string? tailNo, string? workLocation, string? aogStation, 
-            string? customer, int partId, string? pONumber, string? orderType, int quantity, string? uOM, string? vendor, DateTime? eSD, 
+        public AOGFollowUp(string rID, DateTime requestDate, string airCraft, string tailNo, string workLocation, string aogStation, 
+            string customer, int partId, string pONumber, string? orderType, int quantity, string uOM, string vendor, DateTime? eSD, 
             string status, string awbNo, bool needHigherMgntAttn) : this ()
         {
             this.SetRID(rID);

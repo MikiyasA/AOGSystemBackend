@@ -31,13 +31,19 @@ namespace AOGSystem.Persistence.Repository.FollowUp
         {
             var followUp = await _context.AOGFollowUps
                 .Where(x => x.Status != "Closed")
+                .OrderByDescending(x => x.RequestDate)
                 .ToListAsync();
-            foreach(var fp in followUp)
+            foreach (var fp in followUp)
             {
                 await _context.Entry(fp)
                     .Collection(x => x.Remarks)
                     .LoadAsync();
             }
+            //var followUp = await _context.AOGFollowUps
+            //    .Where(x => x.Status != "Closed")
+            //    .Include(x => x.Remarks)  // Include Remarks collection
+            //    .Include(x => x.Part)       // Include PN collection
+            //    .ToListAsync();
             return followUp;
         }
 

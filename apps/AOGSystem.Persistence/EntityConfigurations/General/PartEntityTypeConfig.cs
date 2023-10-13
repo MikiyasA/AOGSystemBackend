@@ -55,9 +55,9 @@ namespace AOGSystem.Persistence.EntityConfigurations.General
                 .OnDelete(DeleteBehavior.Cascade)
                 .IsRequired();
 
-            builder.HasOne<QuotationPartList>()
-                .WithMany(x => x.Parts)
-                .HasForeignKey(x => x.Id)  // id for Part TODO to be check the relation 
+            builder.HasMany<QuotationPartList>()
+                .WithOne(x => x.Part)
+                .HasForeignKey(x => x.PartId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .IsRequired();
 

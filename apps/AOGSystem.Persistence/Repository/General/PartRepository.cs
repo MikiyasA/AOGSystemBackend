@@ -26,6 +26,11 @@ namespace AOGSystem.Persistence.Repository.General
             _context.Remove(_context.Parts.FindAsync(id).Result);
         }
 
+        public Task<List<Part>> GetAllParts()
+        {
+            return _context.Parts.ToListAsync();
+        }
+
         public async Task<Part> GetPartByIDAsync(int id)
         {
             var part = await _context.Parts.FindAsync(id);

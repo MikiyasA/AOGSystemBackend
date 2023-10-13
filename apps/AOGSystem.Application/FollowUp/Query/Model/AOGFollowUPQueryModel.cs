@@ -28,6 +28,7 @@ namespace AOGSystem.Application.FollowUp.Query.Model
         public string? Status { get; set; }
         public string? AWBNo { get; set; }
         public bool NeedHigherMgntAttn { get; set; }
+        public Remark Remark { get; set; }
 
         public static AOGFollowUp ToModel(AOGFollowUPSummery item)
         {

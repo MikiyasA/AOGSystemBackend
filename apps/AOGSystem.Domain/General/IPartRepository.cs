@@ -11,6 +11,7 @@ namespace AOGSystem.Domain.General
         Part Add(Part part);
         void Update(Part part);
         void Delete(int id);
+        Task<List<Part>> GetAllParts();
         Task<Part> GetPartByIDAsync(int id);
         Task<Part> GetPartByPNAsync(string partNo);
         Task<int> SaveChangesAsync(string userId = null, CancellationToken cancellationToken = default);

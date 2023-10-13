@@ -19,6 +19,8 @@ using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using AOGSystem.Domain.FollowUp;
 using AOGSystem.Persistence.EntityConfigurations.FollowUp;
 using Polly;
+using AOGSystem.Persistence.EntityConfigurations.CoreFollowUps;
+using AOGSystem.Domain.CoreFollowUps;
 
 namespace AOGSystem.Persistence
 {
@@ -34,6 +36,7 @@ namespace AOGSystem.Persistence
 
         public DbSet<AOGFollowUp> AOGFollowUps { get; set; }
         public DbSet<Remark> Remarks { get; set; }
+        public DbSet<CoreFollowUp> CoreFollowUps { get; set; }
 
         private readonly IMediator _mediator;
         private IDbContextTransaction _currentTransaction;
@@ -57,6 +60,8 @@ namespace AOGSystem.Persistence
 
             modelBuilder.ApplyConfiguration(new AOGFollowUpEntityTypeConfig());
             modelBuilder.ApplyConfiguration(new RemarkEntityTypeConfig());
+
+            modelBuilder.ApplyConfiguration(new CoreFollowUpEntityTypeConfig());
 
         }
 

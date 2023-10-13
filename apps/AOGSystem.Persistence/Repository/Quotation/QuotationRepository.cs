@@ -26,14 +26,24 @@ namespace AOGSystem.Persistence.Repository.Quotation
             _context.Remove(_context.Quotations.FindAsync(id).Result);
         }
 
-        public async Task<Domain.Quotation.Quotation> GetQuotationAsync(int id)
+        public async Task<List<Domain.Quotation.Quotation>> GetAllQuotations()
+        {
+            return await _context.Quotations.ToListAsync();
+        }
+
+        public async Task<Domain.Quotation.Quotation> GetQuotationByIdAsync(int id)
         {
             var quotation = await _context.Quotations.FindAsync(id);
             if (quotation != null)
             {
-                _context.Entry(quotation);
+                await _context.Entry(quotation).Collection(x => x.QuotationPartsLists).LoadAsync();
             }
             return quotation;
+        }
+
+        public async Task<int> SaveChangesAsync(string userId = null, CancellationToken cancellationToken = default)
+        {
+            return await _context.SaveChangesAsync(cancellationToken);
         }
 
         public void Update(Domain.Quotation.Quotation quotation)

@@ -39,5 +39,21 @@ namespace AOGSystem.Domain.General
         public void SetShipToAddres(string shipToAddress) { this.ShipToAddress = shipToAddress;}
         public void SetBillToAddress(string billToAddress) { this.BillToAddress= billToAddress;}
         public void SetPaymentTerm(string paymentTerm) { this.PaymentTerm = paymentTerm;}
+
+        public Company() { }
+
+        public Company(string? name, string? code, string? address, string? city, string? country, string? phone, string? shipToAddress,
+            string? billToAddress, string? paymentTerm) : this ()
+        {
+            this.SetName(name);
+            this.SetCode(code); 
+            this.SetAddress(address);
+            this.SetCity(city); 
+            this.SetCountry(country);
+            this.SetPhone(phone);
+            this.SetShipToAddres(shipToAddress); 
+            this.SetBillToAddress(billToAddress);
+            this.SetPaymentTerm(paymentTerm);
+        }
     }
 }
