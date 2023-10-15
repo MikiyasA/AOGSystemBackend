@@ -10,8 +10,12 @@ using AOGSystem.Persistence.Repository.FollowUp;
 using AOGSystem.Persistence.Repository.General;
 using AOGSystem.Persistence.Repository.Quotation;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +25,6 @@ builder.Services.AddCors(option => { option.AddDefaultPolicy(policy => {
     policy.AllowAnyMethod();
 }); }); // "http://localhost:3000" TODO - check cors origin for PUT
 // Add services to the container.
-builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -36,6 +39,46 @@ builder.Services.AddDbContext<AOGSystemContext>(options =>
         );
 });
 
+//builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+//        .AddEntityFrameworkStores<AOGSystemContext>();
+
+// Configure JWT authentication
+var key = Encoding.ASCII.GetBytes(builder.Configuration["JwtSettings:Secret"]);
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = false,
+        ValidateAudience = false,
+    };
+});
+
+// Add Authorization policies if needed
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+    // Add more policies as needed
+});
+
+
+builder.Services.AddIdentity<User, IdentityRole>()
+    .AddEntityFrameworkStores<AOGSystemContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.AddScoped<UserManager<User>>();
+
+builder.Services.AddControllers();
+
+
 builder.Services.AddScoped<IAOGFollowUpRepository, AOGFollowUpRepository>();
 builder.Services.AddScoped<IActiveAOGFollowupQuery, ActiveAOGFollowupQuery>();
 builder.Services.AddScoped<IRemarkRepository, RemarkRepository>();
@@ -43,6 +86,7 @@ builder.Services.AddScoped<IPartRepository, PartRepository>();
 builder.Services.AddScoped<IQuotationRepository, QuotationRepository>();
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddScoped<ICoreFollowUpRepository, CoreFollowUpRepository>();
+builder.Services.AddScoped<IJwtService, JwtService>();
 
 
 builder.Services.AddMediatR(typeof(ApplicationModule).GetTypeInfo().Assembly);

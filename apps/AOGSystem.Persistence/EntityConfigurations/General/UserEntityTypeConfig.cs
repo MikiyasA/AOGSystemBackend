@@ -32,14 +32,14 @@ namespace AOGSystem.Persistence.EntityConfigurations.General
             builder.Property(x => x.UpdatedBy)
                 .HasColumnName("updated_by");
 
-            builder.Property(x => x.Username)
-                .HasColumnName("username")
-                .IsUnicode()
-                .IsRequired();
+            //builder.Property(x => x.Username)
+            //    .HasColumnName("username")
+            //    .IsUnicode()
+            //    .IsRequired();
 
-            builder.Property(x => x.Password)
-                .HasColumnName("password")
-                .IsRequired();
+            //builder.Property(x => x.Password)
+            //    .HasColumnName("password")
+            //    .IsRequired();
 
             builder.Property(x => x.Email)
                 .HasColumnName("email");

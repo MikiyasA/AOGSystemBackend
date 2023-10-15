@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -7,58 +8,28 @@ using System.Threading.Tasks;
 
 namespace AOGSystem.Domain.General
 {
-    public class User : BaseEntity
+    public class User : IdentityUser
     {
-        public string Username { get; private set; }
-        public string Password { get; private set; }
-        public string FirstName { get; private set; }
-        public string LastName { get; private set; }
-        public string Email { get; private set; }
-        public string PhoneNumber { get; private set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public DateTime CreatedAT { get; set; }
+        public DateTime? UpdatedAT { get; set; }
+        public string? CreatedBy { get; set; }
+        public string? UpdatedBy { get; set; }
+        public bool IsActive { get; set; }
+        public ICollection<IdentityUserRole<string>> Roles { get; } = new List<IdentityUserRole<string>>();
 
-        public void SetUsername(string username) { Username = username; }
-        public void SetFirstName(string firstName) { FirstName = firstName; }
-        public void SetLastName(string lastName) { LastName = lastName; }
-        public void SetEmail(string email) { Email = email; }
-        public void SetPhoneNumber(string phoneNumber) { PhoneNumber = phoneNumber; }
-        public void SetPassword(string password)
+
+        public User(string firstName, string lastName, string userName, string phoneNumber, string email)
         {
-            // Generate a random salt
-            byte[] salt = new byte[16];
-            using (var rng = new RNGCryptoServiceProvider())
-            {
-                rng.GetBytes(salt);
-            }
-
-            // Hash the password with the salt
-            using (var hasher = new Rfc2898DeriveBytes(password, salt, 10000, HashAlgorithmName.SHA256))
-            {
-                byte[] hashedPassword = hasher.GetBytes(32); // 32 bytes is the size of a SHA-256 hash
-                byte[] hashedWithSalt = new byte[hashedPassword.Length + salt.Length];
-                Array.Copy(hashedPassword, hashedWithSalt, hashedPassword.Length);
-                Array.Copy(salt, 0, hashedWithSalt, hashedPassword.Length, salt.Length);
-                Password = Convert.ToBase64String(hashedWithSalt);
-            }
+            FirstName = firstName; 
+            LastName = lastName;
+            UserName = userName;
+            PhoneNumber = phoneNumber;
+            Email = email;
         }
 
-        public bool VerifyPassword(string password)
-        {
-            byte[] hashedWithSalt = Convert.FromBase64String(Password);
-            byte[] salt = new byte[16];
-            Array.Copy(hashedWithSalt, hashedWithSalt.Length - 16, salt, 0, 16);
 
-            using (var hasher = new Rfc2898DeriveBytes(password, salt, 10000, HashAlgorithmName.SHA256))
-            {
-                byte[] newHashedPassword = hasher.GetBytes(32);
-                for (int i = 0; i < 32; i++)
-                {
-                    if (newHashedPassword[i] != hashedWithSalt[i])
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            }
-        }
+        
     }
 }

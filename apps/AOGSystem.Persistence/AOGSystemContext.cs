@@ -21,6 +21,7 @@ using AOGSystem.Persistence.EntityConfigurations.FollowUp;
 using Polly;
 using AOGSystem.Persistence.EntityConfigurations.CoreFollowUps;
 using AOGSystem.Domain.CoreFollowUps;
+using Microsoft.AspNetCore.Identity;
 
 namespace AOGSystem.Persistence
 {
@@ -63,7 +64,16 @@ namespace AOGSystem.Persistence
 
             modelBuilder.ApplyConfiguration(new CoreFollowUpEntityTypeConfig());
 
+            //base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<User>().ToTable("Users");
+            modelBuilder.Entity<IdentityRole>().ToTable("Roles");
+            modelBuilder.Entity<IdentityUserRole<string>>().ToTable("UserRoles").HasKey(p => new { p.UserId, p.RoleId });
+            modelBuilder.Entity<IdentityUserClaim<string>>().ToTable("UserClaims");
+            modelBuilder.Entity<IdentityUserLogin<string>>().ToTable("UserLogins");
+            modelBuilder.Entity<IdentityUserToken<string>>().ToTable("UserTokens");
+            modelBuilder.Entity<IdentityRoleClaim<string>>().ToTable("RoleClaims");
         }
+    }
 
         public async Task<int> SaveChangesAsync(string userId = null, CancellationToken cancellationToken = default)
         {

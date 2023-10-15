@@ -3,6 +3,7 @@ using System;
 using AOGSystem.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AOGSystem.Persistence.Migrations
 {
     [DbContext(typeof(AOGSystemContext))]
-    partial class AOGSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20231015134621_includeUseRoleAndActive")]
+    partial class includeUseRoleAndActive
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
