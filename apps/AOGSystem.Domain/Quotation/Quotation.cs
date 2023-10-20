@@ -18,7 +18,7 @@ namespace AOGSystem.Domain.Quotation
         public string? RequestedByEmail { get; private set; }
         public string? RequestedByPhone { get; private set; }
         public User? OfferedBy { get; private set; }
-        public int? OfferedById { get; private set; }
+        public Guid? OfferedById { get; private set; }
 
         public void SetLoan(bool loan) { this.Loan = loan; }
         public void SetSales(bool sales) { this.Sales = sales; }
@@ -27,7 +27,7 @@ namespace AOGSystem.Domain.Quotation
         public void SetRequestedByName(string requestedByName) { this.RequestedByName = requestedByName; }
         public void SetRequestedByEmail(string requestedByEmail) { this.RequestedByEmail = requestedByEmail; }
         public void SetRequestedByPhone(string requestedByPhone) { this.RequestedByPhone = requestedByPhone; }
-        public void SetOfferedById(int offeredById) { this.OfferedById = offeredById; }
+        public void SetOfferedById(Guid offeredById) { this.OfferedById = offeredById; }
 
 
         private readonly List<QuotationPartList> quotationPartLists;

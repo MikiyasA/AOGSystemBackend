@@ -22,11 +22,16 @@ using Polly;
 using AOGSystem.Persistence.EntityConfigurations.CoreFollowUps;
 using AOGSystem.Domain.CoreFollowUps;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace AOGSystem.Persistence
 {
-    public class AOGSystemContext : DbContext
+    public class AOGSystemContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {
+        public AOGSystemContext(DbContextOptions<AOGSystemContext> options)
+        : base(options) { }
+
+
         public const string DefaultSchema = "AOGsystem";
 
         public DbSet<Company> Companies { get; set; }
@@ -38,6 +43,8 @@ namespace AOGSystem.Persistence
         public DbSet<AOGFollowUp> AOGFollowUps { get; set; }
         public DbSet<Remark> Remarks { get; set; }
         public DbSet<CoreFollowUp> CoreFollowUps { get; set; }
+        public DbSet<User> Users { get; set; }
+
 
         private readonly IMediator _mediator;
         private IDbContextTransaction _currentTransaction;
@@ -63,17 +70,19 @@ namespace AOGSystem.Persistence
             modelBuilder.ApplyConfiguration(new RemarkEntityTypeConfig());
 
             modelBuilder.ApplyConfiguration(new CoreFollowUpEntityTypeConfig());
+            modelBuilder.ApplyConfiguration(new UserEntityTypeConfig());
 
-            //base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<User>().ToTable("Users");
-            modelBuilder.Entity<IdentityRole>().ToTable("Roles");
-            modelBuilder.Entity<IdentityUserRole<string>>().ToTable("UserRoles").HasKey(p => new { p.UserId, p.RoleId });
-            modelBuilder.Entity<IdentityUserClaim<string>>().ToTable("UserClaims");
-            modelBuilder.Entity<IdentityUserLogin<string>>().ToTable("UserLogins");
-            modelBuilder.Entity<IdentityUserToken<string>>().ToTable("UserTokens");
-            modelBuilder.Entity<IdentityRoleClaim<string>>().ToTable("RoleClaims");
+            modelBuilder.Entity<User>().ToTable("users");
+            modelBuilder.Entity<IdentityRole<Guid>>().ToTable("roles");
+            modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("UserRoles").HasKey(p => new { p.UserId, p.RoleId });
+            modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("UserClaims"); 
+            modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("UserLogins"); 
+            modelBuilder.Entity<IdentityUserToken<Guid>>().ToTable("UserTokens"); 
+            modelBuilder.Entity<IdentityRoleClaim<Guid>>().ToTable("RoleClaims"); 
+            base.OnModelCreating(modelBuilder);
+
         }
-    }
+
 
         public async Task<int> SaveChangesAsync(string userId = null, CancellationToken cancellationToken = default)
         {
@@ -81,61 +90,6 @@ namespace AOGSystem.Persistence
 
         }
 
-        //public async Task<int> SaveEntitiesAsync(string userId = null, CancellationToken cancellationToken = default)
-        //{
-        //    // await _mediator?.DispatchDomainEventsAsync(this);
-
-        //    AddAuditInfo(userId);
-        //    return await SaveChangesAsync(cancellationToken);
-        //}
-
-        //public int SaveChanges(string userId = null)
-        //{
-        //    AddAuditInfo(userId);
-        //    return base.SaveChanges();
-        //}
-
-        //private void AddAuditInfo(string userId)
-        //{
-        //    if (string.IsNullOrEmpty(userId)) return;
-
-        //    // Add auditing information if needed (CreatedBy, CreatedDate, UpdatedBy, UpdatedDate).
-        //}
-
-        //public async Task BeginTransactionAsync()
-        //{
-        //    _currentTransaction ??= await Database.BeginTransactionAsync(IsolationLevel.ReadCommitted);
-        //}
-
-        //public async Task CommitTransactionAsync()
-        //{
-        //    try
-        //    {
-        //        await SaveChangesAsync();
-        //        _currentTransaction?.Commit();
-        //    }
-        //    catch
-        //    {
-        //        RollbackTransaction();
-        //        throw;
-        //    }
-        //    finally
-        //    {
-        //        _currentTransaction?.Dispose();
-        //    }
-        //}
-
-        //public void RollbackTransaction()
-        //{
-        //    try
-        //    {
-        //        _currentTransaction?.Rollback();
-        //    }
-        //    finally
-        //    {
-        //        _currentTransaction?.Dispose();
-        //    }
-        //}
     }
 
     public class AOGSystemContextFactory : IDesignTimeDbContextFactory<AOGSystemContext>

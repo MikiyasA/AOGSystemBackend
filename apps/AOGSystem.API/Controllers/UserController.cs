@@ -15,8 +15,8 @@ namespace AOGSystem.API.Controllers
     public class UserController : Controller
     {
         private readonly IMediator _mediator;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        public UserController(IMediator mediator, RoleManager<IdentityRole> roleManager)
+        private readonly RoleManager<IdentityRole<Guid>> _roleManager;
+        public UserController(IMediator mediator, RoleManager<IdentityRole<Guid>> roleManager)
         {
             _mediator = mediator;
             _roleManager = roleManager;

@@ -30,12 +30,13 @@ namespace AOGSystem.Application.General.Commands.Users
             if (user != null && await _userManager.CheckPasswordAsync(user, request.Password))
             {
                 var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, user.Id),
-                // Add more claims as needed
-            };
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
+                    new Claim(ClaimTypes.Email, user.Email)
+                };
 
-                var token = _jwtService.GenerateToken(user.Id, claims);
+                var token = _jwtService.GenerateToken(user.Id.ToString(), claims);
 
                 return new LoginResponse
                 {

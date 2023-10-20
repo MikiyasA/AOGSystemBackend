@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AOGSystem.Domain.General
 {
-    public class User : IdentityUser
+    public class User : IdentityUser<Guid>
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -17,7 +17,8 @@ namespace AOGSystem.Domain.General
         public string? CreatedBy { get; set; }
         public string? UpdatedBy { get; set; }
         public bool IsActive { get; set; }
-        public ICollection<IdentityUserRole<string>> Roles { get; } = new List<IdentityUserRole<string>>();
+        public string UserStatus { get; set; }
+        //public ICollection<IdentityUserRole<string>> Roles { get; } = new List<IdentityUserRole<string>>();
 
 
         public User(string firstName, string lastName, string userName, string phoneNumber, string email)
@@ -27,6 +28,8 @@ namespace AOGSystem.Domain.General
             UserName = userName;
             PhoneNumber = phoneNumber;
             Email = email;
+            IsActive = false;
+            UserStatus= "Not Approved";
         }
 
 

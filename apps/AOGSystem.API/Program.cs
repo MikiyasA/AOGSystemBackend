@@ -30,10 +30,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AOGSystemContext>(options =>
-{
-    //builder.Configuration.AddJsonFile("appsettings.json"); // Load appsettings.json
-    //builder.Configuration.AddJsonFile("appsettings.Development.json", true); // Load appsettings.Development.json
-    
+{    
     options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
         new MySqlServerVersion(new Version(8, 0, 34))
         );
@@ -70,7 +67,7 @@ builder.Services.AddAuthorization(options =>
 });
 
 
-builder.Services.AddIdentity<User, IdentityRole>()
+builder.Services.AddIdentity<User, IdentityRole<Guid>>()
     .AddEntityFrameworkStores<AOGSystemContext>()
     .AddDefaultTokenProviders();
 
