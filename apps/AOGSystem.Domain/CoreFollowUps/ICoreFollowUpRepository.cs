@@ -12,7 +12,8 @@ namespace AOGSystem.Domain.CoreFollowUps
         CoreFollowUp Add(CoreFollowUp coreFollowUp);
         void Update(CoreFollowUp coreFollowUp);
         void Delete(int id);
-        Task<List<CoreFollowUp>> GetAllCoreFollowUps();
+        Task<List<CoreFollowUp>> GetAllCoreFollowUps(int pageNo, int pageSize);
+        Task<List<CoreFollowUp>> GetActiveCoreFollowUps();
         Task<CoreFollowUp> GetCoreFollowUpByIDAsync(int id);
         Task<CoreFollowUp> GetCoreFollowUpByPONoAsync(string pONo);
         Task<int> SaveChangesAsync(string userId = null, CancellationToken cancellationToken = default);

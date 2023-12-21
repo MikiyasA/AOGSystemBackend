@@ -51,6 +51,12 @@ namespace AOGSystem.Persistence.Repository.General
             return part;
         }
 
+        public List<Part> GetPartByPartialPN(string partNo)
+        {
+            var parts = _context.Parts.Where(x => x.PartNumber.Contains(partNo)).ToList();
+            return parts;
+        }
+
         public async Task<int> SaveChangesAsync(string userId = null, CancellationToken cancellationToken = default)
         {
             return await _context.SaveChangesAsync(cancellationToken);

@@ -29,7 +29,7 @@ namespace AOGSystem.Application.CoreFollowUps.Commands
             var model = new CoreFollowUp(request.PONo, request.POCreatedDate, request.Aircraft, request.TailNo, request.PartNumber,
                 request.Description, request.StockNo, request.Vendor, request.PartReceiveDate, request.ReturnDueDate, request.ReturnProcessedDate,
                 request.AWBNo, request.ReturnedPart, request.PODDate, request.Remark, request.Status);
-            model.CreatedAT = DateTime.UtcNow;
+            model.CreatedAT = DateTime.Now;
             _coreFollowUpRepository.Add(model);
             var result = await _coreFollowUpRepository.SaveChangesAsync();
             if(result == 0)

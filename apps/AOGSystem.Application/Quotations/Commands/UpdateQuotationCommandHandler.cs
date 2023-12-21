@@ -35,7 +35,7 @@ namespace AOGSystem.Application.Quotations.Commands
                 model.SetRequestedByName(model.RequestedByName);
                 model.SetRequestedByEmail(model.RequestedByEmail);
                 model.SetRequestedByPhone(model.RequestedByPhone);
-                model.UpdatedAT = DateTime.UtcNow;
+                model.UpdatedAT = DateTime.Now;
                 _quotationRepository.Update(model);
             }
 

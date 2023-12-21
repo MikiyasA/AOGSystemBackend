@@ -43,7 +43,7 @@ namespace AOGSystem.Application.Quotations.Commands
             if(part == null)
             {
                 part = new Part(request.PartNumber, request.Description, request.StockNo, request.FinancialClass);
-                part.CreatedAT = DateTime.UtcNow;
+                part.CreatedAT = DateTime.Now;
                 _partRepository.Add(part);
                 await _partRepository.SaveChangesAsync();
             }

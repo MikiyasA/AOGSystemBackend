@@ -47,6 +47,25 @@ namespace AOGSystem.Persistence.Repository.FollowUp
             return followUp;
         }
 
+        public async Task<List<AOGFollowUp>> GetAllActiveFollowUpByTabIdAsync(int id)
+        {
+            var followUp = await _context.AOGFollowUps
+                    .Where(x => x.FollowUpTabsId == id)
+                    .ToListAsync();
+
+            foreach (var fu in followUp)
+            {
+                await _context.Entry(fu)
+                    .Collection(x => x.Remarks)
+                    .Query()
+                    .OrderByDescending(x => x.CreatedAT)
+                    .ThenByDescending(x => x.UpdatedAT)
+                    .LoadAsync();
+            }
+
+            return followUp;
+        }
+
         public Task<List<AOGFollowUp>> GetAllAOGFollowUpAsync()
         {
             return _context.AOGFollowUps.ToListAsync();

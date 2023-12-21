@@ -16,15 +16,102 @@ namespace AOGSystem.API.Controllers
         private readonly IMediator _mediator;
         private readonly IAOGFollowUpRepository _AOGFollowUpRepository;
         private readonly IActiveAOGFollowupQuery _activeAOGFollowupQuery;
+        private readonly IFollowUpTabsRepository _followUpTabsRepository;
         public AOGFollowUpController(IMediator mediator,
             IAOGFollowUpRepository AOGFollowUpRepository,
-            IActiveAOGFollowupQuery activeAOGFollowupQuery)
+            IActiveAOGFollowupQuery activeAOGFollowupQuery,
+            IFollowUpTabsRepository followUpTabsRepository)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             _AOGFollowUpRepository = AOGFollowUpRepository;
             _activeAOGFollowupQuery = activeAOGFollowupQuery;
+            _followUpTabsRepository = followUpTabsRepository;
         }
 
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> CreateFollowUpTab([FromBody] CreateFPTabCommand command)
+        {
+            try
+            {
+                var commandResult = await _mediator.Send(command);
+
+                return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpGet]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> GetAllFollowUpTabs()
+        {
+            try
+            {
+                return Ok(await _followUpTabsRepository.GetAllFollowUpTabsAsync());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpGet]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> GetAllActiveFollowUpTabs()
+        {
+            try
+            {
+                return Ok(await _activeAOGFollowupQuery.GetAllActiveFollowUpTabsAsync());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpGet("{id}")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> GetFollowTabUpByID(int id)
+        {
+            try
+            {
+                var result = await _followUpTabsRepository.GetFollowUpTabsByIDAsync(id);
+                if (result != null)
+                {
+                    return Ok(result);
+                }
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpPut]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> UpdateFollowUpTab([FromBody] UpdateFPTabCommand command)
+        {
+            try
+            {
+                var commandResult = await _mediator.Send(command);
+
+                return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
 
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -52,7 +139,7 @@ namespace AOGSystem.API.Controllers
             {
                 var commandResult = await _mediator.Send(command);
 
-                return commandResult != null ? Ok(commandResult) : BadRequest();
+                return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();
             }
             catch (Exception ex)
             {
@@ -99,7 +186,6 @@ namespace AOGSystem.API.Controllers
         {
             try
             {
-                //return Ok(await _AOGFollowUpRepository.GetAllActiveFollowUpAsync());
                 return Ok(await _activeAOGFollowupQuery.GetAllActiveFollowUpAsync());
             }
             catch (Exception ex)
@@ -162,5 +248,38 @@ namespace AOGSystem.API.Controllers
                 return BadRequest(ex);
             }
         }
+
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> ExportAOGFPTOExcel()
+        {
+            try
+            {
+                byte[] excelData = await _mediator.Send(new ExportAOGFPTOExcelCommand());
+
+                if (excelData != null)
+                {
+                    var today = DateTime.Now;
+
+                    string date = today.ToString("dd-MMM-yyyy");
+                    int hour = int.Parse(today.ToString("HH"));
+
+                    string shift = hour < 3 ? "Evening" : hour < 9 ? "Night" : hour < 18 ? "Day" : "";
+
+                    return File(excelData, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"AOG Part Status For {date} {shift} Shift.xlsx");
+                }
+                else
+                {
+                    return BadRequest("Error exporting Excel data");
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+
     }
 }

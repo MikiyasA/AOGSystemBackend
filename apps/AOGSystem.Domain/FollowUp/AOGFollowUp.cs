@@ -24,9 +24,12 @@ namespace AOGSystem.Domain.FollowUp
         public DateTime? EDD { get; private set; } // Estimated Deliver Date
         public string? Status { get; private set; }
         public string? AWBNo { get; private set; }
+        public string FlightNo { get; private set; }
         public bool NeedHigherMgntAttn { get; private set; }
         public Part? Part { get; set; }
         public int PartId { get; set; }
+
+        public int FollowUpTabsId { get; private set; }
 
 
         public void SetRID(string rid) { this.RID = rid; }
@@ -45,12 +48,16 @@ namespace AOGSystem.Domain.FollowUp
         public void SetEDD(DateTime? esd) { this.EDD = esd; }
         public void SetStatus(string status) { this.Status = status; }
         public void SetAWBNo(string awbNo) { this.AWBNo= awbNo; }
+        public void SetFlightNo(string flightNo) { this.FlightNo = flightNo; }
         public void SetNeedHigherMgntAttn(bool needHigherMgntAttn) { this.NeedHigherMgntAttn = needHigherMgntAttn; }
+
+        public void SetFollowUpTabsId(int followUpTabsId) { FollowUpTabsId = followUpTabsId; }
+
 
         //private readonly List<Part> parts;
         //public IReadOnlyCollection<Part> Parts => parts;
 
-        
+
 
         private readonly List<Remark> remarks;
         public IReadOnlyCollection<Remark> Remarks => remarks;
@@ -63,7 +70,7 @@ namespace AOGSystem.Domain.FollowUp
 
         public AOGFollowUp(string rID, DateTime requestDate, string airCraft, string tailNo, string workLocation, string aogStation, 
             string customer, int partId, string pONumber, string? orderType, int quantity, string uOM, string vendor, DateTime? eSD, 
-            string status, string awbNo, bool needHigherMgntAttn) : this ()
+            string status, string awbNo, string flightNo, bool needHigherMgntAttn) : this ()
         {
             this.SetRID(rID);
             this.SetRequestDate(requestDate); 
@@ -81,6 +88,7 @@ namespace AOGSystem.Domain.FollowUp
             this.SetEDD(eSD);
             this.SetStatus(status);
             this.SetAWBNo(awbNo);
+            this.SetFlightNo(flightNo);
             this.SetNeedHigherMgntAttn(needHigherMgntAttn);
         }
 

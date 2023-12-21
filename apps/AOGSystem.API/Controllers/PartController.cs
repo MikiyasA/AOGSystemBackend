@@ -3,8 +3,11 @@ using AOGSystem.Application.General.Commands.Part;
 using AOGSystem.Application.Quotations.Commands;
 using AOGSystem.Domain.General;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Security.Claims;
 
 namespace AOGSystem.API.Controllers
 {
@@ -14,10 +17,12 @@ namespace AOGSystem.API.Controllers
     {
         private readonly IMediator _mediator;
         private readonly IPartRepository _partRepository;
-        public PartController(IMediator mediator, IPartRepository partRepository)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public PartController(IMediator mediator, IPartRepository partRepository, IHttpContextAccessor httpContextAccessor)
         {
             _mediator = mediator;
             _partRepository = partRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpPost]
@@ -29,7 +34,7 @@ namespace AOGSystem.API.Controllers
             {
                 var commandResult = await _mediator.Send(command);
 
-                return commandResult != null ? Ok(commandResult) : BadRequest();
+                return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();
             }
             catch (Exception ex)
             {
@@ -38,15 +43,20 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> UpdatePart([FromBody] UpdatePartCommand command)
         {
             try
             {
+                string username = _httpContextAccessor.HttpContext.User.Identity.Name;
+                command.SetUpdatedBy(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
                 var commandResult = await _mediator.Send(command);
 
-                return commandResult != null ? Ok(commandResult) : BadRequest();
+                return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();
             }
             catch (Exception ex)
             {
@@ -95,6 +105,47 @@ namespace AOGSystem.API.Controllers
             try
             {
                 var result = await _partRepository.GetPartByIDAsync(id);
+                if (result != null)
+                {
+                    return Ok(result);
+                }
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpGet("{pn}")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> GetPartByPN(string pn)
+        {
+            try
+            {
+                var result = await _partRepository.GetPartByPNAsync(pn);
+                if (result != null)
+                {
+                    return Ok(result);
+                }
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+        [HttpGet("{pn}")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> GetPartByPartialPN(string pn)
+        {
+            try
+            {
+                var result =  _partRepository.GetPartByPartialPN(pn);
                 if (result != null)
                 {
                     return Ok(result);

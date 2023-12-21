@@ -36,7 +36,7 @@ namespace AOGSystem.Application.Quotations.Commands
                 request.RequestedByName,
                 request.RequestedByEmail,
                 request.RequestedByPhone);
-            model.CreatedAT= DateTime.UtcNow;
+            model.CreatedAT= DateTime.Now;
              _quotationRepository.Add(model);
             var result = await _quotationRepository.SaveChangesAsync();
 

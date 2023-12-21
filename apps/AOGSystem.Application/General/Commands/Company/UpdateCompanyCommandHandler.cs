@@ -29,7 +29,7 @@ namespace AOGSystem.Application.General.Commands.Company
             model.SetShipToAddres(request.ShipToAddress);
             model.SetBillToAddress(request.BillToAddress);
             model.SetPaymentTerm(request.PaymentTerm);
-            model.UpdatedAT = DateTime.UtcNow;
+            model.UpdatedAT = DateTime.Now;
 
             _companyRepository.Update(model);
 

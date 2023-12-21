@@ -44,6 +44,9 @@ namespace AOGSystem.Persistence
         public DbSet<Remark> Remarks { get; set; }
         public DbSet<CoreFollowUp> CoreFollowUps { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<FollowUpTabs> FollowUpTabs { get; set; }
+        public DbSet<Assignment> Assignments { get; set; }
+        
 
 
         private readonly IMediator _mediator;
@@ -68,6 +71,8 @@ namespace AOGSystem.Persistence
 
             modelBuilder.ApplyConfiguration(new AOGFollowUpEntityTypeConfig());
             modelBuilder.ApplyConfiguration(new RemarkEntityTypeConfig());
+            modelBuilder.ApplyConfiguration(new FollowUpTabsEntityTypeConfig());
+            modelBuilder.ApplyConfiguration(new AssignmentEntityTypeConfig());
 
             modelBuilder.ApplyConfiguration(new CoreFollowUpEntityTypeConfig());
             modelBuilder.ApplyConfiguration(new UserEntityTypeConfig());

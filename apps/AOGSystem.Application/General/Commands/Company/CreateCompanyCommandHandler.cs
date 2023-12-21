@@ -27,7 +27,7 @@ namespace AOGSystem.Application.General.Commands.Company
 
             var model = new Domain.General.Company(request.Name, request.Code, request.Address, request.City, request.Country, request.Phone,
                 request.ShipToAddress, request.BillToAddress, request.PaymentTerm);
-            model.CreatedAT = DateTime.UtcNow;
+            model.CreatedAT = DateTime.Now;
             _companyRepository.Add(model);
             var result = await _companyRepository.SaveChangesAsync();
             if (result == 0)

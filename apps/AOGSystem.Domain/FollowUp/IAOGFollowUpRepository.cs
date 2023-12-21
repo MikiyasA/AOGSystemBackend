@@ -14,6 +14,7 @@ namespace AOGSystem.Domain.FollowUp
         void Delete(int id);
         Task<List<AOGFollowUp>> GetAllAOGFollowUpAsync();
         Task<List<AOGFollowUp>> GetAllActiveFollowUpAsync();
+        Task<List<AOGFollowUp>> GetAllActiveFollowUpByTabIdAsync(int id);
         Task<AOGFollowUp> GetAOGFollowUpByIDAsync(int id);
 
     }

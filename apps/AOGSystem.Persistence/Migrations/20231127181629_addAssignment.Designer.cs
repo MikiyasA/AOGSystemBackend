@@ -11,16 +11,110 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AOGSystem.Persistence.Migrations
 {
     [DbContext(typeof(AOGSystemContext))]
-    [Migration("20230924062031_addFixedAndLoanPerDatPrice")]
-    partial class addFixedAndLoanPerDatPrice
+    [Migration("20231127181629_addAssignment")]
+    partial class addAssignment
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.10")
+                .HasAnnotation("ProductVersion", "7.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("AOGSystem.Domain.CoreFollowUps.CoreFollowUp", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<string>("AWBNo")
+                        .HasColumnType("longtext")
+                        .HasColumnName("awb_no");
+
+                    b.Property<string>("Aircraft")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("aircraft");
+
+                    b.Property<DateTime>("CreatedAT")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext")
+                        .HasColumnName("created_by");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext")
+                        .HasColumnName("description");
+
+                    b.Property<DateTime>("POCreatedDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("po_created_date");
+
+                    b.Property<DateTime?>("PODDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("pod_date");
+
+                    b.Property<string>("PONo")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("po_no");
+
+                    b.Property<string>("PartNumber")
+                        .HasColumnType("longtext")
+                        .HasColumnName("part_number");
+
+                    b.Property<DateTime?>("PartReceiveDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("part_receive_date");
+
+                    b.Property<string>("Remark")
+                        .HasColumnType("longtext")
+                        .HasColumnName("remark");
+
+                    b.Property<DateTime>("ReturnDueDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("return_due_date");
+
+                    b.Property<DateTime?>("ReturnProcessedDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("return_processed_date");
+
+                    b.Property<string>("ReturnedPart")
+                        .HasColumnType("longtext")
+                        .HasColumnName("returned_part");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("longtext")
+                        .HasColumnName("status");
+
+                    b.Property<string>("StockNo")
+                        .HasColumnType("longtext")
+                        .HasColumnName("stock_no");
+
+                    b.Property<string>("TailNo")
+                        .HasColumnType("longtext")
+                        .HasColumnName("tail_no");
+
+                    b.Property<DateTime?>("UpdatedAT")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("updated_at");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("longtext")
+                        .HasColumnName("updated_by");
+
+                    b.Property<string>("Vendor")
+                        .HasColumnType("longtext")
+                        .HasColumnName("vendor");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("core_follow_ups", "AOGsystem");
+                });
 
             modelBuilder.Entity("AOGSystem.Domain.FollowUp.AOGFollowUp", b =>
                 {
@@ -59,6 +153,15 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("edd");
 
+                    b.Property<string>("FlightNo")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("flight_no");
+
+                    b.Property<int>("FollowUpTabsId")
+                        .HasColumnType("int")
+                        .HasColumnName("follow_up_tabs");
+
                     b.Property<bool>("NeedHigherMgntAttn")
                         .HasColumnType("tinyint(1)")
                         .HasColumnName("need_higher_mgnt_attn");
@@ -71,8 +174,7 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("po_number");
 
-                    b.Property<int?>("PartId")
-                        .IsRequired()
+                    b.Property<int>("PartId")
                         .HasColumnType("int")
                         .HasColumnName("part_id");
 
@@ -120,9 +222,112 @@ namespace AOGSystem.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("FollowUpTabsId");
+
                     b.HasIndex("PartId");
 
                     b.ToTable("aog_follow_ups", "AOGsystem");
+                });
+
+            modelBuilder.Entity("AOGSystem.Domain.FollowUp.Assignment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("CreatedAT")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext")
+                        .HasColumnName("created_by");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext")
+                        .HasColumnName("description");
+
+                    b.Property<DateTime?>("DueDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("due_date");
+
+                    b.Property<DateTime?>("ExpectedFinishedDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("expected_finished_date");
+
+                    b.Property<DateTime?>("FinishedDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("finished_date");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("start_date");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("status");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("title");
+
+                    b.Property<DateTime?>("UpdatedAT")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("updated_at");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("longtext")
+                        .HasColumnName("updated_by");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("assignment", "AOGsystem");
+                });
+
+            modelBuilder.Entity("AOGSystem.Domain.FollowUp.FollowUpTabs", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("color");
+
+                    b.Property<DateTime>("CreatedAT")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext")
+                        .HasColumnName("created_by");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("name");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("status");
+
+                    b.Property<DateTime?>("UpdatedAT")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("updated_at");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("longtext")
+                        .HasColumnName("updated_by");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("follow_tabs", "AOGsystem");
                 });
 
             modelBuilder.Entity("AOGSystem.Domain.FollowUp.Remark", b =>
@@ -284,49 +489,103 @@ namespace AOGSystem.Persistence.Migrations
 
             modelBuilder.Entity("AOGSystem.Domain.General.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)")
+                        .HasColumnName("id");
+
+                    b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("longtext");
+
                     b.Property<DateTime>("CreatedAT")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("created_at");
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
+                        .HasColumnType("longtext")
+                        .HasColumnName("created_by");
 
                     b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)")
+                        .HasColumnName("email");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("longtext")
+                        .HasColumnName("first_name");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("longtext")
+                        .HasColumnName("last_name");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("PasswordHash")
                         .HasColumnType("longtext");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("phone_number");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("SecurityStamp")
                         .HasColumnType("longtext");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<DateTime?>("UpdatedAT")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("updated_at");
 
                     b.Property<string>("UpdatedBy")
-                        .HasColumnType("longtext");
+                        .HasColumnType("longtext")
+                        .HasColumnName("updated_by");
 
-                    b.Property<string>("Username")
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("UserStatus")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex");
+
+                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("AOGSystem.Domain.Quotation.Quotation", b =>
@@ -360,8 +619,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasDefaultValue(false)
                         .HasColumnName("loan");
 
-                    b.Property<int?>("OfferedById")
-                        .HasColumnType("int")
+                    b.Property<Guid?>("OfferedById")
+                        .HasColumnType("char(36)")
                         .HasColumnName("offered_by_id");
 
                     b.Property<string>("RequestedByEmail")
@@ -468,8 +727,140 @@ namespace AOGSystem.Persistence.Migrations
                     b.ToTable("quotation_partLists", "AOGsystem");
                 });
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
+
+                    b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
+                });
+
             modelBuilder.Entity("AOGSystem.Domain.FollowUp.AOGFollowUp", b =>
                 {
+                    b.HasOne("AOGSystem.Domain.FollowUp.FollowUpTabs", null)
+                        .WithMany("FollowUps")
+                        .HasForeignKey("FollowUpTabsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("AOGSystem.Domain.General.Part", "Part")
                         .WithMany()
                         .HasForeignKey("PartId")
@@ -505,7 +896,8 @@ namespace AOGSystem.Persistence.Migrations
 
                     b.HasOne("AOGSystem.Domain.General.User", "OfferedBy")
                         .WithMany()
-                        .HasForeignKey("OfferedById");
+                        .HasForeignKey("OfferedById")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Company");
 
@@ -529,9 +921,65 @@ namespace AOGSystem.Persistence.Migrations
                     b.Navigation("Part");
                 });
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
+                {
+                    b.HasOne("AOGSystem.Domain.General.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
+                {
+                    b.HasOne("AOGSystem.Domain.General.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AOGSystem.Domain.General.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+                {
+                    b.HasOne("AOGSystem.Domain.General.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("AOGSystem.Domain.FollowUp.AOGFollowUp", b =>
                 {
                     b.Navigation("Remarks");
+                });
+
+            modelBuilder.Entity("AOGSystem.Domain.FollowUp.FollowUpTabs", b =>
+                {
+                    b.Navigation("FollowUps");
                 });
 
             modelBuilder.Entity("AOGSystem.Domain.Quotation.Quotation", b =>

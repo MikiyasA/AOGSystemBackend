@@ -150,6 +150,15 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("edd");
 
+                    b.Property<string>("FlightNo")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("flight_no");
+
+                    b.Property<int>("FollowUpTabsId")
+                        .HasColumnType("int")
+                        .HasColumnName("follow_up_tabs");
+
                     b.Property<bool>("NeedHigherMgntAttn")
                         .HasColumnType("tinyint(1)")
                         .HasColumnName("need_higher_mgnt_attn");
@@ -210,9 +219,112 @@ namespace AOGSystem.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("FollowUpTabsId");
+
                     b.HasIndex("PartId");
 
                     b.ToTable("aog_follow_ups", "AOGsystem");
+                });
+
+            modelBuilder.Entity("AOGSystem.Domain.FollowUp.Assignment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("CreatedAT")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext")
+                        .HasColumnName("created_by");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext")
+                        .HasColumnName("description");
+
+                    b.Property<DateTime?>("DueDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("due_date");
+
+                    b.Property<DateTime?>("ExpectedFinishedDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("expected_finished_date");
+
+                    b.Property<DateTime?>("FinishedDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("finished_date");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("start_date");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("status");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("title");
+
+                    b.Property<DateTime?>("UpdatedAT")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("updated_at");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("longtext")
+                        .HasColumnName("updated_by");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("assignment", "AOGsystem");
+                });
+
+            modelBuilder.Entity("AOGSystem.Domain.FollowUp.FollowUpTabs", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("color");
+
+                    b.Property<DateTime>("CreatedAT")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext")
+                        .HasColumnName("created_by");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("name");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("status");
+
+                    b.Property<DateTime?>("UpdatedAT")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("updated_at");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("longtext")
+                        .HasColumnName("updated_by");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("follow_tabs", "AOGsystem");
                 });
 
             modelBuilder.Entity("AOGSystem.Domain.FollowUp.Remark", b =>
@@ -740,6 +852,12 @@ namespace AOGSystem.Persistence.Migrations
 
             modelBuilder.Entity("AOGSystem.Domain.FollowUp.AOGFollowUp", b =>
                 {
+                    b.HasOne("AOGSystem.Domain.FollowUp.FollowUpTabs", null)
+                        .WithMany("FollowUps")
+                        .HasForeignKey("FollowUpTabsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("AOGSystem.Domain.General.Part", "Part")
                         .WithMany()
                         .HasForeignKey("PartId")
@@ -854,6 +972,11 @@ namespace AOGSystem.Persistence.Migrations
             modelBuilder.Entity("AOGSystem.Domain.FollowUp.AOGFollowUp", b =>
                 {
                     b.Navigation("Remarks");
+                });
+
+            modelBuilder.Entity("AOGSystem.Domain.FollowUp.FollowUpTabs", b =>
+                {
+                    b.Navigation("FollowUps");
                 });
 
             modelBuilder.Entity("AOGSystem.Domain.Quotation.Quotation", b =>

@@ -32,9 +32,18 @@ namespace AOGSystem.Application.General.Commands.Users
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
-                    new Claim(ClaimTypes.Email, user.Email)
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.GivenName, $"{user.FirstName} {user.LastName}"),
+                    new Claim(ClaimTypes.Name, user.UserName),
                 };
+
+                var roles = await _userManager.GetRolesAsync(user);
+                var roleNames = roles.ToList();
+
+                foreach (var roleName in roleNames)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, roleName));
+                }
 
                 var token = _jwtService.GenerateToken(user.Id.ToString(), claims);
 
@@ -53,13 +62,6 @@ namespace AOGSystem.Application.General.Commands.Users
 
         }
 
-        //    // Add a property to your IdentityResult class for Token
-        //    public class IdentityResult
-        //{
-        //    public bool Succeeded { get; set; }
-        //    public List<string> Errors { get; set; }
-        //    public string Token { get; set; } // Add this property
-        //}
         public class LoginResponse
         {
             public IdentityResult IdentityResult { get; set; }

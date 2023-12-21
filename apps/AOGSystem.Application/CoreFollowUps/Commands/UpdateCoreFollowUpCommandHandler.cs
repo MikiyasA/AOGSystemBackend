@@ -36,7 +36,7 @@ namespace AOGSystem.Application.CoreFollowUps.Commands
             model.SetPODDate(request.PODDate);
             model.SetRemarK(request.Remark);
             model.SetStatus(request.Status);
-            model.UpdatedAT = DateTime.UtcNow;
+            model.UpdatedAT = DateTime.Now;
 
             _coreFollowUpRepository.Update(model);
             var result = await _coreFollowUpRepository.SaveChangesAsync();

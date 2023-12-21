@@ -33,4 +33,15 @@ namespace AOGSystem.Application.FollowUp.Query.Model
         public bool NeedHigherMgntAttn { get; set; }
         public IReadOnlyCollection<Remark> Remarks { get; set; }
     }
+
+    public class ActiveFollowUpTabsDto
+    {
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+        public string? Color { get; set; }
+        public string? Status { get; set; }
+        public IReadOnlyCollection<ActiveAOGFollowupDTO> FollowUps { get; set; }
+
+    }
 }

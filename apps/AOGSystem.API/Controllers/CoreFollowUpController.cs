@@ -1,4 +1,5 @@
 ﻿using AOGSystem.Application.CoreFollowUps.Commands;
+using AOGSystem.Application.FollowUp.Query.Model;
 using AOGSystem.Domain.CoreFollowUps;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -73,11 +74,57 @@ namespace AOGSystem.API.Controllers
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> GetAllCompanies()
+        public async Task<IActionResult> GetAllCoreFollowUp([FromQuery] FilterCoreQuery query)
         {
             try
             {
-                return Ok(await _coreFollowUpRepository.GetAllCoreFollowUps());
+                var data = await _coreFollowUpRepository.GetAllCoreFollowUps(query.Page, query.PageSize);
+
+                //if (query.CreatedStartDate != null)
+                //    data = data.Where(d => d.POCreatedDate >= query.CreatedStartDate).ToList();
+                //if (query.CreatedEndDate != null)
+                //    data = data.Where(d => d.POCreatedDate <= query.CreatedEndDate).ToList();
+                //if (query.ReturnStartDate != null)
+                //    data = data.Where(d => d.ReturnProcessedDate >= query.ReturnStartDate).ToList();
+                //if (query.ReturnEndDate != null)
+                //    data = data.Where(d => d.ReturnProcessedDate <= query.ReturnEndDate).ToList();
+                //if (query.PODStartDate != null)
+                //    data = data.Where(d => d.PODDate >= query.PODStartDate).ToList();
+                //if (query.PODEndDate != null)
+                //    data = data.Where(d => d.PODDate <= query.PODEndDate).ToList();
+                if(query.Status != null)
+                    data = data.Where(d => d.Status == query.Status).ToList();
+
+                if (query.AirCraft != null)
+                    data = data.Where(d => d.Aircraft == query.AirCraft).ToList();
+                if (query.TailNo != null)
+                    data = data.Where(d => d.TailNo == query.TailNo).ToList();
+                if (query.PN != null)
+                    data = data.Where(d => d.PartNumber == query.PN).ToList();
+                if (query.Vendor != null)
+                    data = data.Where(d => d.Vendor == query.Vendor).ToList();
+                if (query.AWBNo != null)
+                    data = data.Where(d => d.AWBNo == query.AWBNo).ToList();
+                if (query.ReturnPart != null)
+                    data = data.Where(d => d.ReturnedPart == query.ReturnPart).ToList();
+
+
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpGet]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> GetActiveCoreFollowUps()
+        {
+            try
+            {
+                return Ok(await _coreFollowUpRepository.GetActiveCoreFollowUps());
             }
             catch (Exception ex)
             {

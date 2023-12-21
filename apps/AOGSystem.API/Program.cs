@@ -36,27 +36,21 @@ builder.Services.AddDbContext<AOGSystemContext>(options =>
         );
 });
 
-//builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
-//        .AddEntityFrameworkStores<AOGSystemContext>();
 
 // Configure JWT authentication
 var key = Encoding.ASCII.GetBytes(builder.Configuration["JwtSettings:Secret"]);
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 .AddJwtBearer(options =>
-{
-    options.RequireHttpsMetadata = false;
-    options.SaveToken = true;
+{;
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuerSigningKey = true,
         ValidateIssuer = false,
         ValidateAudience = false,
+        ValidateLifetime = true,
     };
+
 });
 
 // Add Authorization policies if needed
@@ -73,16 +67,21 @@ builder.Services.AddIdentity<User, IdentityRole<Guid>>()
 
 builder.Services.AddScoped<UserManager<User>>();
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddControllers();
 
 
+
 builder.Services.AddScoped<IAOGFollowUpRepository, AOGFollowUpRepository>();
+builder.Services.AddScoped<IFollowUpTabsRepository, FollowUpTabsRepository>();
 builder.Services.AddScoped<IActiveAOGFollowupQuery, ActiveAOGFollowupQuery>();
 builder.Services.AddScoped<IRemarkRepository, RemarkRepository>();
 builder.Services.AddScoped<IPartRepository, PartRepository>();
 builder.Services.AddScoped<IQuotationRepository, QuotationRepository>();
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddScoped<ICoreFollowUpRepository, CoreFollowUpRepository>();
+builder.Services.AddScoped<IAssignmentRepository, AssignmentRepository>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 
 
@@ -102,6 +101,7 @@ app.UseCors();
 app.UseHttpsRedirection();
 
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

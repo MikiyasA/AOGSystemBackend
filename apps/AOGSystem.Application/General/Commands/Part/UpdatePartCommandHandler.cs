@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AOGSystem.Application.General.Commands.Part
 {
-    public class UpdatePartCommandHandler : IRequestHandler<UpdatePartCommand, PartQueryModel>
+    public class UpdatePartCommandHandler : IRequestHandler<UpdatePartCommand, ReturnDto<PartQueryModel>>
     {
         private readonly IPartRepository _partRepository;
         public UpdatePartCommandHandler(IPartRepository partRepository)
@@ -17,22 +17,29 @@ namespace AOGSystem.Application.General.Commands.Part
             _partRepository = partRepository;
         }
 
-        public async Task<PartQueryModel> Handle(UpdatePartCommand request, CancellationToken cancellationToken)
+        public async Task<ReturnDto<PartQueryModel>> Handle(UpdatePartCommand request, CancellationToken cancellationToken)
         {
             var model = await _partRepository.GetPartByIDAsync(request.Id);
             model.SetPartNumber(request.PartNumber);
             model.SetDescription(request.Description);
             model.SetStockNo(request.StockNo);
             model.SetFinancialClass(request.FinancialClass);
-            model.UpdatedAT = DateTime.UtcNow;
+            model.UpdatedAT = DateTime.Now;
+            model.UpdatedBy = request.UpdatedBy;
 
             _partRepository.Update(model);
 
             var result = await _partRepository.SaveChangesAsync();
             if (result == 0)
-                return null;
+                return new ReturnDto<PartQueryModel>
+                {
+                    Data = null,
+                    IsSuccess = false,
+                    Count = 0,
+                    Message = "Something wrong on Part update"
+                };
 
-            return new PartQueryModel
+            var returnData = new PartQueryModel
             {
                 Id = model.Id,
                 PartNumber = model.PartNumber,
@@ -41,15 +48,26 @@ namespace AOGSystem.Application.General.Commands.Part
                 FinancialClass = model.FinancialClass,
             };
 
+            return new ReturnDto<PartQueryModel> { 
+                Data = returnData,
+                IsSuccess = true,
+                Count = 1,
+                Message = "Part Updated Successfully"
+            };
         }
     }
-    public class UpdatePartCommand : IRequest<PartQueryModel>
+    public class UpdatePartCommand : IRequest<ReturnDto<PartQueryModel>>
     {
         public int Id { get; set; }
         public string? PartNumber { get; set; }
         public string? Description { get; set; }
         public string? StockNo { get; set; }
         public string? FinancialClass { get; set; }
+        public string? UpdatedBy { get; private set; }
+        public void SetUpdatedBy(string updatedBy)
+        {
+            UpdatedBy = updatedBy;
+        }
 
         public UpdatePartCommand() { }
 

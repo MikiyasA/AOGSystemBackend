@@ -87,10 +87,19 @@ namespace AOGSystem.Persistence.EntityConfigurations.FollowUp
             builder.Property(x => x.AWBNo)
                 .HasColumnName("awb_no");
 
+            builder.Property(x => x.FlightNo)
+                .HasColumnName("flight_no");
+
             builder.Property(x => x.NeedHigherMgntAttn)
                 .HasColumnName("need_higher_mgnt_attn");
 
-            
+            builder.HasOne<FollowUpTabs>()
+                .WithMany(x => x.FollowUps)
+                .HasForeignKey(x => x.FollowUpTabsId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Property(x => x.FollowUpTabsId)
+                .HasColumnName("follow_up_tabs");
         }
     }
 }

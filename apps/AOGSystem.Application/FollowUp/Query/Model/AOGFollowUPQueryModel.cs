@@ -27,6 +27,7 @@ namespace AOGSystem.Application.FollowUp.Query.Model
         public DateTime? EDD { get; set; }
         public string? Status { get; set; }
         public string? AWBNo { get; set; }
+        public string FlightNo { get; set; }
         public bool NeedHigherMgntAttn { get; set; }
         public Remark Remark { get; set; }
 
@@ -49,6 +50,7 @@ namespace AOGSystem.Application.FollowUp.Query.Model
                 item.EDD,
                 item.Status,
                 item.AWBNo,
+                item.FlightNo,
                 item.NeedHigherMgntAttn);
         }
         internal static List<AOGFollowUp> ToModel(List<AOGFollowUPSummery> lists)
@@ -61,3 +63,4 @@ namespace AOGSystem.Application.FollowUp.Query.Model
         public List<RemarkSummery> Remarks { get; set; } = new List<RemarkSummery>();
     }
 }
+

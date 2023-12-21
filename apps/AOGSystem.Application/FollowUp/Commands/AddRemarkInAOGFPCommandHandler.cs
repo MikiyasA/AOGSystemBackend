@@ -24,7 +24,7 @@ namespace AOGSystem.Application.FollowUp.Commands
 
             var model = await _followUpRepository.GetAOGFollowUpByIDAsync(request.AOGFollowUpId);
             var newRemark = new Remark(request.AOGFollowUpId, request.Message);
-            newRemark.CreatedAT= DateTime.UtcNow;
+            newRemark.CreatedAT= DateTime.Now;
             model.AddRemark(newRemark);
             _followUpRepository.Update(model);
 

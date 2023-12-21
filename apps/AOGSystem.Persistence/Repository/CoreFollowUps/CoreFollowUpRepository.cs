@@ -29,9 +29,25 @@ namespace AOGSystem.Persistence.Repository.CoreFollowUps
             _context.Remove(_context.CoreFollowUps.FindAsync(id).Result);
         }
 
-        public Task<List<CoreFollowUp>> GetAllCoreFollowUps()
+        public async Task<List<CoreFollowUp>> GetActiveCoreFollowUps()
         {
-            return _context.CoreFollowUps.ToListAsync();
+            var core = await _context.CoreFollowUps
+                .Where(x => x.Status != "Closed")
+                .OrderBy(x => x.ReturnDueDate)
+                .ToListAsync();
+            return core;
+        }
+
+        public async Task<List<CoreFollowUp>> GetAllCoreFollowUps(int pageN, int pageS)
+        {
+            var pageNo = pageN != 0 ? pageN : 1;
+            var pageSize = pageS != 0 ? pageS : 10;
+
+            var coreFp = await _context.CoreFollowUps
+                .Skip((pageNo - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            return coreFp;
         }
 
         public async Task<CoreFollowUp> GetCoreFollowUpByIDAsync(int id)

@@ -9,26 +9,38 @@ using System.Threading.Tasks;
 
 namespace AOGSystem.Application.General.Commands.Part
 {
-    public class CreatePartCommandHandler : IRequestHandler<CreatePartCommand, PartQueryModel>
+    public class CreatePartCommandHandler : IRequestHandler<CreatePartCommand, ReturnDto<PartQueryModel>>
     {
         private readonly IPartRepository _partRepository;
         public CreatePartCommandHandler(IPartRepository partRepository)
         {
             _partRepository = partRepository;
         }
-        public async Task<PartQueryModel> Handle(CreatePartCommand request, CancellationToken cancellationToken)
+        public async Task<ReturnDto<PartQueryModel>> Handle(CreatePartCommand request, CancellationToken cancellationToken)
         {
             var part = await _partRepository.GetPartByPNAsync(request.PartNumber);
             if (part != null)
-                return null;
+                return new ReturnDto<PartQueryModel>
+                {
+                    Data = null,
+                    IsSuccess = false,
+                    Count = 0,
+                    Message = "This Part Number already existed"
+                }; ;
 
             var model = new Domain.General.Part(request.PartNumber, request.Description, request.StockNo, request.FinancialClass);
-            model.CreatedAT = DateTime.UtcNow;
+            model.CreatedAT = DateTime.Now;
             _partRepository.Add(model);
             var result = await _partRepository.SaveChangesAsync();
             if (result == 0)
-                return null;
-            return new PartQueryModel
+                return new ReturnDto<PartQueryModel>
+                {
+                    Data = null,
+                    IsSuccess = false,
+                    Count = 0,
+                    Message = "Something wrong on Part update"
+                };
+            var returnData = new PartQueryModel
             {
                 Id = model.Id,
                 PartNumber = model.PartNumber,
@@ -37,9 +49,17 @@ namespace AOGSystem.Application.General.Commands.Part
                 FinancialClass = model.FinancialClass,
             };
 
+            return new ReturnDto<PartQueryModel>
+            {
+                Data = returnData,
+                IsSuccess = true,
+                Count = 1,
+                Message = "Part Updated Successfully"
+            };
+
         }
     }
-    public class CreatePartCommand  : IRequest<PartQueryModel>
+    public class CreatePartCommand  : IRequest<ReturnDto<PartQueryModel>>
     {
         public string? PartNumber { get; set; }
         public string? Description { get; set; }
