@@ -249,7 +249,7 @@ namespace AOGSystem.API.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> ExportAOGFPTOExcel()

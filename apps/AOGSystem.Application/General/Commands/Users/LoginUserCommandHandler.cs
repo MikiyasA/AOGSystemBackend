@@ -2,6 +2,7 @@
 using MassTransit.JobService;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,11 @@ namespace AOGSystem.Application.General.Commands.Users
         public async Task<LoginResponse> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
+            if(!user.IsActive)
+                return new LoginResponse
+                {
+                    Error = "The user must be activated before attempting login"
+                };
 
             if (user != null && await _userManager.CheckPasswordAsync(user, request.Password))
             {
@@ -33,7 +39,8 @@ namespace AOGSystem.Application.General.Commands.Users
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.GivenName, $"{user.FirstName} {user.LastName}"),
+                    new Claim(ClaimTypes.GivenName, user.FirstName),
+                    new Claim(ClaimTypes.Surname, user.LastName),
                     new Claim(ClaimTypes.Name, user.UserName),
                 };
 
@@ -66,6 +73,7 @@ namespace AOGSystem.Application.General.Commands.Users
         {
             public IdentityResult IdentityResult { get; set; }
             public string Token { get; set; }
+            public string? Error { get; set; }
         }
 
 
