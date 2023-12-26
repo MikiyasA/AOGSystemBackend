@@ -23,13 +23,13 @@ namespace AOGSystem.Application.CoreFollowUps.Commands
             model.SetPONo(request.PONo);
             model.SetPOCreatedDate(request.POCreatedDate);
             model.SetAircraft(request.Aircraft);
-            model.SetTailNo(model.TailNo);
-            model.SetPartNumber(model.PartNumber);
-            model.SetDescription(model.Description);
-            model.SetStockNo(model.StockNo);
-            model.SetVendor(model.Vendor);
+            model.SetTailNo(request.TailNo);
+            model.SetPartNumber(request.PartNumber);
+            model.SetDescription(request.Description);
+            model.SetStockNo(request.StockNo);
+            model.SetVendor(request.Vendor);
             model.SetPartReceiveDate(request.PartReceiveDate);
-            model.SetReturnDueDate(model.ReturnDueDate);
+            model.SetReturnDueDate(request.ReturnDueDate);
             model.SetReturnProcessedDate(request.ReturnProcessedDate);
             model.SetAWBNo(request.AWBNo);
             model.SetReturnedPart(request.ReturnedPart);
@@ -78,12 +78,12 @@ namespace AOGSystem.Application.CoreFollowUps.Commands
         public string? Description { get; set; }
         public string? StockNo { get; set; }
         public string? Vendor { get; set; }
-        public DateTime PartReceiveDate { get; set; }
+        public DateTime? PartReceiveDate { get; set; }
         public DateTime ReturnDueDate { get; set; }
-        public DateTime ReturnProcessedDate { get; set; }
+        public DateTime? ReturnProcessedDate { get; set; }
         public string? AWBNo { get; set; }
         public string? ReturnedPart { get; set; }
-        public DateTime PODDate { get; set; }
+        public DateTime? PODDate { get; set; }
         public string? Remark { get; set; }
         public string? Status { get; set; }
 
@@ -92,8 +92,8 @@ namespace AOGSystem.Application.CoreFollowUps.Commands
 
         }
         public UpdateCoreFollowUpCommand(int id, string pONo, DateTime pOCreatedDate, string aircraft, string? tailNo, string? partNumber,
-            string? description, string? stockNo, string? vendor, DateTime partReceiveDate, DateTime returnDueDate,
-            DateTime returnProcessedDate, string? aWBNo, string? returnedPart, DateTime pODDate, string? remark, string? status)
+            string? description, string? stockNo, string? vendor, DateTime? partReceiveDate, DateTime returnDueDate,
+            DateTime? returnProcessedDate, string? aWBNo, string? returnedPart, DateTime? pODDate, string? remark, string? status)
         {
             Id = id; 
             PONo = pONo;

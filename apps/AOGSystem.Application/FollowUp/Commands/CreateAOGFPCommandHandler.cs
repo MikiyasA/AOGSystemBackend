@@ -81,7 +81,7 @@ namespace AOGSystem.Application.FollowUp.Commands
             var coreFPExists = await _coreFollowUpRepository.GetCoreFollowUpByPONoAsync(model.PONumber);
             if (coreFPExists == null)
             {
-                if (model.OrderType == CoreFollowUp.ORDER_TYPE_EXCHANGE)
+                if (model.OrderType.ToLower() == CoreFollowUp.ORDER_TYPE_EXCHANGE.ToLower())
                 {
                     var returnDueDate = DateTime.Now.AddDays(10);
                     var coreFollowup = new CoreFollowUp(model.PONumber, DateTime.Now, model.AirCraft, model.TailNo, part.PartNumber,

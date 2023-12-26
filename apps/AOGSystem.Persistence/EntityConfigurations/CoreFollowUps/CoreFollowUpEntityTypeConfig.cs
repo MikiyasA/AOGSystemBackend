@@ -59,28 +59,35 @@ namespace AOGSystem.Persistence.EntityConfigurations.CoreFollowUps
                 .HasColumnName("vendor");
 
             builder.Property(x => x.PartReceiveDate)
-                .HasColumnName("part_receive_date");
+                .HasColumnName("part_receive_date")
+                .IsRequired(false);
 
             builder.Property(x => x.ReturnDueDate)
                 .HasColumnName("return_due_date");
 
             builder.Property(x => x.ReturnProcessedDate)
-                .HasColumnName("return_processed_date");
+                .HasColumnName("return_processed_date")
+                .IsRequired(false);
 
             builder.Property(x => x.AWBNo)
-                .HasColumnName("awb_no");
+                .HasColumnName("awb_no")
+                .IsRequired(false);
 
             builder.Property(x => x.ReturnedPart)
-                .HasColumnName("returned_part");
+                .HasColumnName("returned_part")
+                .IsRequired(false);
 
             builder.Property(x => x.PODDate)
-                .HasColumnName("pod_date");
+                .HasColumnName("pod_date")
+                .IsRequired(false);
 
             builder.Property(x => x.Remark)
-                .HasColumnName("remark");
+                .HasColumnName("remark")
+                .IsRequired(false);
 
             builder.Property(x => x.Status)
-                .HasColumnName("status");
+                .HasColumnName("status")
+                .IsRequired(false);
         }
     }
 }

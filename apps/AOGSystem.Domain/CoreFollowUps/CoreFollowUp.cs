@@ -39,14 +39,14 @@ namespace AOGSystem.Domain.CoreFollowUps
         public void SetDescription(string description) { this.Description = description; }
         public void SetStockNo(string stockNo) { this.StockNo = stockNo; }
         public void SetVendor(string vendor) { this.Vendor = vendor; }
-        public void SetPartReceiveDate(DateTime partReceiveDate) { this.PartReceiveDate = partReceiveDate;}
+        public void SetPartReceiveDate(DateTime? partReceiveDate) { this.PartReceiveDate = partReceiveDate;}
         public void SetReturnDueDate(DateTime returnDueDate) { this.ReturnDueDate = returnDueDate;}
-        public void SetReturnProcessedDate(DateTime returnProcessedDate) { this.ReturnProcessedDate = returnProcessedDate;}
-        public void SetAWBNo(string aWBNo) { this.AWBNo = aWBNo;}
-        public void SetReturnedPart(string returnedPart) { this.ReturnedPart = returnedPart; }
-        public void SetPODDate(DateTime pODDate) { this.PODDate = pODDate;}
-        public void SetRemarK(string remark) { this.Remark = remark; }
-        public void SetStatus(string status) { this.Status = status; }
+        public void SetReturnProcessedDate(DateTime? returnProcessedDate) { this.ReturnProcessedDate = returnProcessedDate;}
+        public void SetAWBNo(string? aWBNo) { this.AWBNo = aWBNo;}
+        public void SetReturnedPart(string? returnedPart) { this.ReturnedPart = returnedPart; }
+        public void SetPODDate(DateTime? pODDate) { this.PODDate = pODDate;}
+        public void SetRemarK(string? remark) { this.Remark = remark; }
+        public void SetStatus(string? status) { this.Status = status; }
 
 
         public CoreFollowUp()
