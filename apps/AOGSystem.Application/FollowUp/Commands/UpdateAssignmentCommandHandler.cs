@@ -78,10 +78,10 @@ namespace AOGSystem.Application.FollowUp.Commands
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime DueDate { get; set; }
-        public DateTime ExpectedFinishedDate { get; set; }
-        public DateTime FinishedDate { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? DueDate { get; set; }
+        public DateTime? ExpectedFinishedDate { get; set; }
+        public DateTime? FinishedDate { get; set; }
         public string Status { get; set; }
     }
 }
