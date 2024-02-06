@@ -1,4 +1,5 @@
 ﻿using AOGSystem.Domain.General;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -30,9 +31,15 @@ namespace AOGSystem.Persistence.Repository.General
             return _context.Companies.ToListAsync();
         }
 
-        public async Task<Company> GetCompanyByCodeAsync(string code)
+        public List<Company> GetCompanyByCode(string code)
         {
-            var company = await _context.Companies.FirstOrDefaultAsync(x => x.Code == code);
+            return  _context.Companies.Where(x => x.Code.Contains(code)).ToList();
+
+        }
+
+        public async Task<Company> GetCompanyByIDAsync(int? id)
+        {
+            var company = await _context.Companies.FindAsync(id);
             if (company != null)
             {
                 _context.Entry(company);
@@ -40,9 +47,14 @@ namespace AOGSystem.Persistence.Repository.General
             return company;
         }
 
-        public async Task<Company> GetCompanyByIDAsync(int id)
+        public List<Company> GetCompanyByName(string name)
         {
-            var company = await _context.Companies.FindAsync(id);
+            return _context.Companies.Where(x => x.Name.Contains(name)).ToList();
+        }
+
+        public  Company GetSingleCompanyByCode(string code)
+        {
+            var company =  _context.Companies.FirstOrDefault(x => x.Code == code);
             if (company != null)
             {
                 _context.Entry(company);

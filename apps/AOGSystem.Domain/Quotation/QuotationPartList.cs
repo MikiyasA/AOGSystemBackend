@@ -61,9 +61,9 @@ namespace AOGSystem.Domain.Quotation
             parts.Add(newPart);
         }
 
-        public void AddPart(string partNumber, string description, string stockNo, string financialClass)
+        public void AddPart(string partNumber, string description, string stockNo, string financialClass, string manufacurer, string type)
         {
-            var newPart = new Part(partNumber, description, stockNo, financialClass);
+            var newPart = new Part(partNumber, description, stockNo, financialClass, manufacurer, type);
             parts.Add(newPart);
         }
 

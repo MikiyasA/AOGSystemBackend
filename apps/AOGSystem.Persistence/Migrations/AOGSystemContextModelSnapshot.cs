@@ -457,10 +457,18 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("financial_class");
 
+                    b.Property<string>("Manufacturer")
+                        .HasColumnType("longtext")
+                        .HasColumnName("manufacturer");
+
                     b.Property<string>("PartNumber")
                         .IsRequired()
                         .HasColumnType("longtext")
                         .HasColumnName("part_number");
+
+                    b.Property<string>("PartType")
+                        .HasColumnType("longtext")
+                        .HasColumnName("part_type");
 
                     b.Property<int?>("QuotationPartListId")
                         .HasColumnType("int");
@@ -583,6 +591,365 @@ namespace AOGSystem.Persistence.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("AOGSystem.Domain.Invoices.Invoice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("CreatedAT")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext")
+                        .HasColumnName("created_by");
+
+                    b.Property<DateTime?>("DueDate")
+                        .IsRequired()
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("due_date");
+
+                    b.Property<DateTime>("InvoiceDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("invoice_date");
+
+                    b.Property<string>("InvoiceNo")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("invoice_no");
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("is_approved");
+
+                    b.Property<int?>("LoanOrderId")
+                        .HasColumnType("int")
+                        .HasColumnName("loan_order_id");
+
+                    b.Property<DateTime?>("POPDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("pop_date");
+
+                    b.Property<string>("POPReference")
+                        .HasColumnType("longtext")
+                        .HasColumnName("pop_reference");
+
+                    b.Property<string>("Remark")
+                        .HasColumnType("longtext")
+                        .HasColumnName("remark");
+
+                    b.Property<int?>("SalesOrderId")
+                        .HasColumnType("int")
+                        .HasColumnName("sales_order_id");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("longtext")
+                        .HasColumnName("status");
+
+                    b.Property<string>("TransactionType")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("transaction_type");
+
+                    b.Property<DateTime?>("UpdatedAT")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("updated_at");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("longtext")
+                        .HasColumnName("updated_by");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SalesOrderId");
+
+                    b.ToTable("invoice", "AOGsystem");
+                });
+
+            modelBuilder.Entity("AOGSystem.Domain.Invoices.InvoicePartList", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("CreatedAT")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext")
+                        .HasColumnName("created_by");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("currency");
+
+                    b.Property<int?>("InvoiceId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Offers")
+                        .HasColumnType("longtext")
+                        .HasColumnName("offers");
+
+                    b.Property<int>("PartId")
+                        .HasColumnType("int")
+                        .HasColumnName("part_id");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int")
+                        .HasColumnName("quantity");
+
+                    b.Property<string>("RID")
+                        .HasColumnType("longtext")
+                        .HasColumnName("rid");
+
+                    b.Property<string>("SerialNo")
+                        .HasColumnType("longtext")
+                        .HasColumnName("serila_no");
+
+                    b.Property<double?>("TotalPrice")
+                        .IsRequired()
+                        .HasColumnType("double")
+                        .HasColumnName("total_price");
+
+                    b.Property<string>("UOM")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("uom");
+
+                    b.Property<double?>("UnitPrice")
+                        .IsRequired()
+                        .HasColumnType("double")
+                        .HasColumnName("unit_price");
+
+                    b.Property<DateTime?>("UpdatedAT")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("updated_at");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("longtext")
+                        .HasColumnName("updated_by");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.HasIndex("PartId");
+
+                    b.ToTable("invoice_part_list", "AOGsystem");
+                });
+
+            modelBuilder.Entity("AOGSystem.Domain.Loans.Loan", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int")
+                        .HasColumnName("company_id");
+
+                    b.Property<DateTime>("CreatedAT")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext")
+                        .HasColumnName("created_by");
+
+                    b.Property<string>("CustomerOrderNo")
+                        .HasColumnType("longtext")
+                        .HasColumnName("customer_order_no");
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("is_approve");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("longtext")
+                        .HasColumnName("note");
+
+                    b.Property<string>("OrderNo")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasAnnotation("Relational:JsonPropertyName", "order_no");
+
+                    b.Property<string>("OrderedByEmail")
+                        .HasColumnType("longtext")
+                        .HasColumnName("ordered_by_email");
+
+                    b.Property<string>("OrderedByName")
+                        .HasColumnType("longtext")
+                        .HasColumnName("ordered_by_name");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasAnnotation("Relational:JsonPropertyName", "status");
+
+                    b.Property<DateTime?>("UpdatedAT")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("updated_at");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("longtext")
+                        .HasColumnName("updated_by");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.ToTable("loans", "AOGsystem");
+                });
+
+            modelBuilder.Entity("AOGSystem.Domain.Loans.LoanPartList", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("CreatedAT")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext")
+                        .HasColumnName("created_by");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("is_deleted");
+
+                    b.Property<bool>("IsInvoiced")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("is_invoice");
+
+                    b.Property<int?>("LoanId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PartId")
+                        .HasColumnType("int")
+                        .HasColumnName("part_id");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int")
+                        .HasColumnName("quantity");
+
+                    b.Property<string>("RID")
+                        .HasColumnType("longtext")
+                        .HasColumnName("rid");
+
+                    b.Property<DateTime?>("ReceivedDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("received_date");
+
+                    b.Property<string>("ReceivingDefect")
+                        .HasColumnType("longtext")
+                        .HasColumnName("receiving_defect");
+
+                    b.Property<string>("ReceivingReference")
+                        .HasColumnType("longtext")
+                        .HasColumnName("receiving_reference");
+
+                    b.Property<string>("SerialNo")
+                        .HasColumnType("longtext")
+                        .HasColumnName("serila_no");
+
+                    b.Property<DateTime?>("ShipDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("ship_date");
+
+                    b.Property<string>("ShippingReference")
+                        .HasColumnType("longtext")
+                        .HasColumnName("shipping_reference");
+
+                    b.Property<string>("UOM")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("uom");
+
+                    b.Property<DateTime?>("UpdatedAT")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("updated_at");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("longtext")
+                        .HasColumnName("updated_by");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LoanId");
+
+                    b.HasIndex("PartId");
+
+                    b.ToTable("loan_part_lists", "AOGsystem");
+                });
+
+            modelBuilder.Entity("AOGSystem.Domain.Loans.Offer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<double>("BasePrice")
+                        .HasColumnType("double")
+                        .HasColumnName("base_price");
+
+                    b.Property<DateTime>("CreatedAT")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext")
+                        .HasColumnName("created_by");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("currency");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("description");
+
+                    b.Property<int?>("LoanPartListId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int")
+                        .HasColumnName("quantity");
+
+                    b.Property<double>("TotalPrice")
+                        .HasColumnType("double")
+                        .HasColumnName("total_price");
+
+                    b.Property<double>("UnitPrice")
+                        .HasColumnType("double")
+                        .HasColumnName("unit_price");
+
+                    b.Property<DateTime?>("UpdatedAT")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("updated_at");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("longtext")
+                        .HasColumnName("updated_by");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LoanPartListId");
+
+                    b.ToTable("offers", "AOGsystem");
                 });
 
             modelBuilder.Entity("AOGSystem.Domain.Quotation.Quotation", b =>
@@ -722,6 +1089,171 @@ namespace AOGSystem.Persistence.Migrations
                     b.HasIndex("QuotationId");
 
                     b.ToTable("quotation_partLists", "AOGsystem");
+                });
+
+            modelBuilder.Entity("AOGSystem.Domain.Sales.Sales", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<string>("AWBNo")
+                        .HasColumnType("longtext")
+                        .HasColumnName("awb_no");
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int")
+                        .HasColumnName("company_id");
+
+                    b.Property<DateTime>("CreatedAT")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext")
+                        .HasColumnName("created_by");
+
+                    b.Property<string>("CustomerOrderNo")
+                        .HasColumnType("longtext")
+                        .HasColumnName("customer_order_no");
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("is_approve");
+
+                    b.Property<bool>("IsFullyShipped")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("is_fully_shipped");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("longtext")
+                        .HasColumnName("note");
+
+                    b.Property<string>("OrderByEmail")
+                        .HasColumnType("longtext")
+                        .HasColumnName("order_by_email");
+
+                    b.Property<string>("OrderByName")
+                        .HasColumnType("longtext")
+                        .HasColumnName("ordered_by_name");
+
+                    b.Property<string>("OrderNo")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("order_no");
+
+                    b.Property<bool>("ReceivedByCustomer")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("received_bu_customer");
+
+                    b.Property<DateTime?>("ReceivedDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("received_date");
+
+                    b.Property<DateTime?>("ShipDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("ship_date");
+
+                    b.Property<string>("ShipToAddress")
+                        .HasColumnType("longtext")
+                        .HasColumnName("ship_to_address");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasAnnotation("Relational:JsonPropertyName", "status");
+
+                    b.Property<DateTime?>("UpdatedAT")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("updated_at");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("longtext")
+                        .HasColumnName("updated_by");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.ToTable("sales", "AOGsystem");
+                });
+
+            modelBuilder.Entity("AOGSystem.Domain.Sales.SalesPartList", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("CreatedAT")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext")
+                        .HasColumnName("created_by");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("currency");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("is_deleted");
+
+                    b.Property<bool>("IsInvoiced")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("is_invoice");
+
+                    b.Property<int>("PartId")
+                        .HasColumnType("int")
+                        .HasColumnName("part_id");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int")
+                        .HasColumnName("quantity");
+
+                    b.Property<string>("RID")
+                        .HasColumnType("longtext")
+                        .HasColumnName("rid");
+
+                    b.Property<int?>("SalesId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SerialNo")
+                        .HasColumnType("longtext")
+                        .HasColumnName("serila_no");
+
+                    b.Property<int>("TotalPrice")
+                        .HasColumnType("int")
+                        .HasColumnName("total_price");
+
+                    b.Property<string>("UOM")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("uom");
+
+                    b.Property<int>("UnitPrice")
+                        .HasColumnType("int")
+                        .HasColumnName("unit_price");
+
+                    b.Property<DateTime?>("UpdatedAT")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("updated_at");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("longtext")
+                        .HasColumnName("updated_by");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PartId");
+
+                    b.HasIndex("SalesId");
+
+                    b.ToTable("sales_part_list", "AOGsystem");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -883,6 +1415,56 @@ namespace AOGSystem.Persistence.Migrations
                         .HasForeignKey("QuotationPartListId");
                 });
 
+            modelBuilder.Entity("AOGSystem.Domain.Invoices.Invoice", b =>
+                {
+                    b.HasOne("AOGSystem.Domain.Sales.Sales", null)
+                        .WithMany()
+                        .HasForeignKey("SalesOrderId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("AOGSystem.Domain.Invoices.InvoicePartList", b =>
+                {
+                    b.HasOne("AOGSystem.Domain.Invoices.Invoice", null)
+                        .WithMany("InvoicePartLists")
+                        .HasForeignKey("InvoiceId");
+
+                    b.HasOne("AOGSystem.Domain.General.Part", null)
+                        .WithMany()
+                        .HasForeignKey("PartId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AOGSystem.Domain.Loans.Loan", b =>
+                {
+                    b.HasOne("AOGSystem.Domain.General.Company", null)
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AOGSystem.Domain.Loans.LoanPartList", b =>
+                {
+                    b.HasOne("AOGSystem.Domain.Loans.Loan", null)
+                        .WithMany("LoanPartLists")
+                        .HasForeignKey("LoanId");
+
+                    b.HasOne("AOGSystem.Domain.General.Part", null)
+                        .WithMany()
+                        .HasForeignKey("PartId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AOGSystem.Domain.Loans.Offer", b =>
+                {
+                    b.HasOne("AOGSystem.Domain.Loans.LoanPartList", null)
+                        .WithMany("Offers")
+                        .HasForeignKey("LoanPartListId");
+                });
+
             modelBuilder.Entity("AOGSystem.Domain.Quotation.Quotation", b =>
                 {
                     b.HasOne("AOGSystem.Domain.General.Company", "Company")
@@ -916,6 +1498,28 @@ namespace AOGSystem.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Part");
+                });
+
+            modelBuilder.Entity("AOGSystem.Domain.Sales.Sales", b =>
+                {
+                    b.HasOne("AOGSystem.Domain.General.Company", null)
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AOGSystem.Domain.Sales.SalesPartList", b =>
+                {
+                    b.HasOne("AOGSystem.Domain.General.Part", null)
+                        .WithMany()
+                        .HasForeignKey("PartId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("AOGSystem.Domain.Sales.Sales", null)
+                        .WithMany("SalesPartLists")
+                        .HasForeignKey("SalesId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -979,6 +1583,21 @@ namespace AOGSystem.Persistence.Migrations
                     b.Navigation("FollowUps");
                 });
 
+            modelBuilder.Entity("AOGSystem.Domain.Invoices.Invoice", b =>
+                {
+                    b.Navigation("InvoicePartLists");
+                });
+
+            modelBuilder.Entity("AOGSystem.Domain.Loans.Loan", b =>
+                {
+                    b.Navigation("LoanPartLists");
+                });
+
+            modelBuilder.Entity("AOGSystem.Domain.Loans.LoanPartList", b =>
+                {
+                    b.Navigation("Offers");
+                });
+
             modelBuilder.Entity("AOGSystem.Domain.Quotation.Quotation", b =>
                 {
                     b.Navigation("QuotationPartsLists");
@@ -987,6 +1606,11 @@ namespace AOGSystem.Persistence.Migrations
             modelBuilder.Entity("AOGSystem.Domain.Quotation.QuotationPartList", b =>
                 {
                     b.Navigation("Parts");
+                });
+
+            modelBuilder.Entity("AOGSystem.Domain.Sales.Sales", b =>
+                {
+                    b.Navigation("SalesPartLists");
                 });
 #pragma warning restore 612, 618
         }

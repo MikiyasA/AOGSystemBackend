@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace AOGSystem.Domain.General
 {
-    public class Invoice
+    public interface IUserRepository
     {
+        Task<User> GetUserByUsername(string username);
     }
 }

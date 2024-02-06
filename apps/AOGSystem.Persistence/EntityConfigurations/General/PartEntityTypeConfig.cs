@@ -61,7 +61,11 @@ namespace AOGSystem.Persistence.EntityConfigurations.General
                 .OnDelete(DeleteBehavior.Cascade)
                 .IsRequired();
 
+            builder.Property(x => x.Manufacturer)
+                .HasColumnName("manufacturer");
 
+            builder.Property(x => x.PartType)
+                .HasColumnName("part_type");
         }
     }
 }

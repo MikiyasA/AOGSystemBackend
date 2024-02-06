@@ -50,7 +50,7 @@ namespace AOGSystem.Application.FollowUp.Commands
             var part = await _partRepository.GetPartByPNAsync(request.PartNumber);
             if (part == null)
             {
-                part = new Part(request.PartNumber, request.Description, request.StockNo, request.FinancialClass);
+                part = new Part(request.PartNumber, request.Description, request.StockNo, request.FinancialClass, request.Manufacturer, request.PartType);
                 part.CreatedAT = DateTime.Now;
                 _partRepository.Add(part);
                 await _partRepository.SaveChangesAsync();
@@ -188,6 +188,8 @@ namespace AOGSystem.Application.FollowUp.Commands
         public string FlightNo { get; set; }
         public bool NeedHigherMgntAttn { get; set; }
         public string Message { get; set; }
+        public string? Manufacturer { get; set; }
+        public string? PartType { get; set; }
 
         public CreateAOGFPCommand() { }
 

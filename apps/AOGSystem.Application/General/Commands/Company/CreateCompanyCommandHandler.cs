@@ -5,11 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AOGSystem.Application.General.Commands.Company
 {
-    public class CreateCompanyCommandHandler : IRequestHandler<CreateCompanyCommand, CompanyQueryModel>
+    public class CreateCompanyCommandHandler : IRequestHandler<CreateCompanyCommand, ReturnDto<CompanyQueryModel>>
     {
         readonly ICompanyRepository _companyRepository;
         public CreateCompanyCommandHandler(ICompanyRepository companyRepository)
@@ -17,22 +18,35 @@ namespace AOGSystem.Application.General.Commands.Company
             _companyRepository = companyRepository;
         }
 
-        public async Task<CompanyQueryModel> Handle(CreateCompanyCommand request, CancellationToken cancellationToken)
+        public async Task<ReturnDto<CompanyQueryModel>> Handle(CreateCompanyCommand request, CancellationToken cancellationToken)
         {
-            var company = await _companyRepository.GetCompanyByCodeAsync(request.Code);
+            var company =  _companyRepository.GetSingleCompanyByCode(request.Code);
             if (company != null)
-            { // TODO
-                throw new Exception($"Company with code {request.Code} already exists");
-            }
+                return new ReturnDto<CompanyQueryModel>
+                {
+                    Data = null,
+                    Count = 0,
+                    IsSuccess = false,
+                    Message = "Company with this code already existed"
+                };
+            
 
             var model = new Domain.General.Company(request.Name, request.Code, request.Address, request.City, request.Country, request.Phone,
                 request.ShipToAddress, request.BillToAddress, request.PaymentTerm);
             model.CreatedAT = DateTime.Now;
+            model.CreatedBy = request.CreatedBy;
+
             _companyRepository.Add(model);
             var result = await _companyRepository.SaveChangesAsync();
             if (result == 0)
-                return null;
-            return new CompanyQueryModel
+                return new ReturnDto<CompanyQueryModel>
+                {
+                    Data = null,
+                    Count = 0,
+                    IsSuccess = false,
+                    Message = "Something went wrong when Company created"
+                };
+            var returnData = new CompanyQueryModel
             {
                 Id = model.Id,
                 Name = model.Name,
@@ -45,9 +59,17 @@ namespace AOGSystem.Application.General.Commands.Company
                 BillToAddress = model.BillToAddress,
                 PaymentTerm = model.PaymentTerm,
             };
+
+            return new ReturnDto<CompanyQueryModel>
+            {
+                Data = returnData,
+                Count = 1,
+                IsSuccess = true,
+                Message = "Company successfully created"
+            };
         }
     }
-    public class CreateCompanyCommand : IRequest<CompanyQueryModel>
+    public class CreateCompanyCommand : IRequest<ReturnDto<CompanyQueryModel>>
     {
         public string? Name { get; set; }
         public string? Code { get; set; }
@@ -59,19 +81,9 @@ namespace AOGSystem.Application.General.Commands.Company
         public string? BillToAddress { get; set; }
         public string? PaymentTerm { get; set; }
 
-        public CreateCompanyCommand() { }
+        [JsonIgnore]
+        public string? CreatedBy { get; private set; }
+        public void SetCreatedBy(string createdBy) { CreatedBy = createdBy; }
 
-        public CreateCompanyCommand(string? name, string? code, string? address, string? city, string? country, string? phone, string? shipToAddress, string? billToAddress, string? paymentTerm)
-        {
-            Name = name;
-            Code = code;
-            Address = address;
-            City = city;
-            Country = country;
-            Phone = phone;
-            ShipToAddress = shipToAddress;
-            BillToAddress = billToAddress;
-            PaymentTerm = paymentTerm;
-        }
     }
 }

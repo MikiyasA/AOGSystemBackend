@@ -16,8 +16,8 @@ namespace AOGSystem.API.Controllers
     public class PartController : Controller
     {
         private readonly IMediator _mediator;
-        private readonly IPartRepository _partRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IPartRepository _partRepository;
         public PartController(IMediator mediator, IPartRepository partRepository, IHttpContextAccessor httpContextAccessor)
         {
             _mediator = mediator;
@@ -43,7 +43,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPut]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
@@ -52,7 +52,7 @@ namespace AOGSystem.API.Controllers
             try
             {
                 string username = _httpContextAccessor.HttpContext.User.Identity.Name;
-                command.SetUpdatedBy(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                //command.SetUpdatedBy(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
                 var commandResult = await _mediator.Send(command);
 

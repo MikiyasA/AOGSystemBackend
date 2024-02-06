@@ -19,11 +19,13 @@ namespace AOGSystem.API.Controllers
         private readonly IMediator _mediator;
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
         private readonly UserManager<User> _userManager;
-        public UserController(IMediator mediator, RoleManager<IdentityRole<Guid>> roleManager, UserManager<User> userManager)
+        private readonly IUserRepository _userRepository;
+        public UserController(IMediator mediator, RoleManager<IdentityRole<Guid>> roleManager, UserManager<User> userManager, IUserRepository userRepository)
         {
             _mediator = mediator;
             _roleManager = roleManager;
             _userManager = userManager;
+            _userRepository = userRepository;
         }
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -169,6 +171,24 @@ namespace AOGSystem.API.Controllers
                 }
 
                 return users != null ? Ok(returnUser) : BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpGet]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        public async Task<IActionResult> GetUserByUsername(string username)
+        {
+            try
+            {
+                var user = await _userRepository.GetUserByUsername(username);
+
+                return user != null ? Ok(user) : BadRequest();
             }
             catch (Exception ex)
             {

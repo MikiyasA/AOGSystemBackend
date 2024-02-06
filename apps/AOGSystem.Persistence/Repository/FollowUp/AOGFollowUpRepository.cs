@@ -51,6 +51,7 @@ namespace AOGSystem.Persistence.Repository.FollowUp
         {
             var followUp = await _context.AOGFollowUps
                     .Where(x => x.FollowUpTabsId == id)
+                    .OrderByDescending(x => x.RequestDate)
                     .ToListAsync();
 
             foreach (var fu in followUp)

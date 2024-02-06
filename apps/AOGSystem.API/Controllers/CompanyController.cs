@@ -20,15 +20,17 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPost]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> CreateCompany([FromBody] CreateCompanyCommand command)
         {
             try
             {
+                //command.SetUpdatedBy(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                 var commandResult = await _mediator.Send(command);
 
-                return commandResult != null ? Ok(commandResult) : BadRequest();
+                return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();
             }
             catch (Exception ex)
             {
@@ -37,15 +39,17 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPut]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> UpdateCompany([FromBody] UpdateCompanyCommand command)
         {
             try
             {
+                //command.SetUpdatedBy(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                 var commandResult = await _mediator.Send(command);
 
-                return commandResult != null ? Ok(commandResult) : BadRequest();
+                return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();
             }
             catch (Exception ex)
             {
@@ -114,7 +118,28 @@ namespace AOGSystem.API.Controllers
         {
             try
             {
-                var result = await _companyRepository.GetCompanyByCodeAsync(code);
+                var result =  _companyRepository.GetCompanyByCode(code);
+                if (result != null)
+                {
+                    return Ok(result);
+                }
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpGet("{name}")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> GetCompanyByName(string name)
+        {
+            try
+            {
+                var result = _companyRepository.GetCompanyByName(name);
                 if (result != null)
                 {
                     return Ok(result);

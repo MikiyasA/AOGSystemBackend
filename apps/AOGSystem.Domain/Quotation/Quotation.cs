@@ -65,9 +65,9 @@ namespace AOGSystem.Domain.Quotation
 
         public void AddQuotationPartList(string partNumber, string description, string stockNo, string financialClass, decimal currentPrice, 
             decimal salesPrice, decimal fixedLoanPrice, decimal loanPricePerDay, decimal exchangePrice, string? stockLocation, string? condition, 
-            string? serialNumber)
+            string? serialNumber, string manufacurer, string type)
         {
-            var newPart = new Part(partNumber, description, stockNo, financialClass);
+            var newPart = new Part(partNumber, description, stockNo, financialClass, manufacurer, type);
             var newQuotationPartList = new QuotationPartList(newPart.Id, currentPrice, salesPrice, fixedLoanPrice, loanPricePerDay, exchangePrice,
                 stockLocation, condition, serialNumber);
             quotationPartLists.Add(newQuotationPartList);

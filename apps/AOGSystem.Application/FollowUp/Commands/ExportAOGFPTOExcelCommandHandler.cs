@@ -143,7 +143,7 @@ namespace AOGSystem.Application.FollowUp.Commands
 
                         ExportExcelFile(true, "Out Station Follow-up", outStation, 1, worksheet);
                         ExportExcelFile(false, "Home Base Follow-up", homeBase, outStation.Count + 3, worksheet);
-                        ExportExcelFile(false, "Under Receiving", underRecieving, outStation.Count + homeBase.Count + homeBase.Count + 2, worksheet);
+                        ExportExcelFile(false, "Under Receiving", underRecieving, outStation.Count + homeBase.Count + 5, worksheet);
                     } else
                     {
                         ExportExcelFile(true, $"AOG Follow-up - {tab.Name}", tab.FollowUps.ToList(), 1, worksheet);

@@ -5,11 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AOGSystem.Application.General.Commands.Company
 {
-    public class UpdateCompanyCommandHandler : IRequestHandler<UpdateCompanyCommand, CompanyQueryModel>
+    public class UpdateCompanyCommandHandler : IRequestHandler<UpdateCompanyCommand, ReturnDto<CompanyQueryModel>>
     {
         private readonly ICompanyRepository _companyRepository;
         public UpdateCompanyCommandHandler(ICompanyRepository companyRepository)
@@ -17,9 +18,17 @@ namespace AOGSystem.Application.General.Commands.Company
             _companyRepository = companyRepository;
         }
 
-        public async Task<CompanyQueryModel> Handle(UpdateCompanyCommand request, CancellationToken cancellationToken)
+        public async Task<ReturnDto<CompanyQueryModel>> Handle(UpdateCompanyCommand request, CancellationToken cancellationToken)
         {
             var model = await _companyRepository.GetCompanyByIDAsync(request.Id);
+            if(model == null)
+                return new ReturnDto<CompanyQueryModel>
+                {
+                    Data = null,
+                    Count = 0,
+                    IsSuccess = false,
+                    Message = "The Company  could not be found"
+                };
             model.SetName(request.Name);
             model.SetCode(request.Code);
             model.SetAddress(request.Address);
@@ -30,14 +39,21 @@ namespace AOGSystem.Application.General.Commands.Company
             model.SetBillToAddress(request.BillToAddress);
             model.SetPaymentTerm(request.PaymentTerm);
             model.UpdatedAT = DateTime.Now;
+            model.UpdatedBy = request.UpdatedBy;
 
             _companyRepository.Update(model);
 
             var result = await _companyRepository.SaveChangesAsync();
             if (result == 0)
-                return null;
+                return new ReturnDto<CompanyQueryModel>
+                {
+                    Data = null,
+                    Count = 0,
+                    IsSuccess = false,
+                    Message = "Something went wrong when Company updated"
+                }; 
 
-            return new CompanyQueryModel
+            var returnData = new CompanyQueryModel
             {
                 Id = model.Id,
                 Name = model.Name,
@@ -50,9 +66,16 @@ namespace AOGSystem.Application.General.Commands.Company
                 BillToAddress = model.BillToAddress,
                 PaymentTerm = model.PaymentTerm,
             };
+            return new ReturnDto<CompanyQueryModel>
+            {
+                Data = returnData,
+                Count = 1,
+                IsSuccess = true,
+                Message = "Company successfully updated"
+            };
         }
     }
-    public class UpdateCompanyCommand : IRequest<CompanyQueryModel>
+    public class UpdateCompanyCommand : IRequest<ReturnDto<CompanyQueryModel>>
     {
         public int Id { get; set; }
         public string? Name { get; set; }
@@ -65,20 +88,8 @@ namespace AOGSystem.Application.General.Commands.Company
         public string? BillToAddress { get; set; }
         public string? PaymentTerm { get; set; }
 
-        public UpdateCompanyCommand() { }
-
-        public UpdateCompanyCommand(int id, string? name, string? code, string? address, string? city, string? country, string? phone, string? shipToAddress, string? billToAddress, string? paymentTerm)
-        {
-            Id = id;
-            Name = name;
-            Code = code;
-            Address = address;
-            City = city;
-            Country = country;
-            Phone = phone;
-            ShipToAddress = shipToAddress;
-            BillToAddress = billToAddress;
-            PaymentTerm = paymentTerm;
-        }
+        [JsonIgnore]
+        public string? UpdatedBy { get; private set; }
+        public void SetUpdatedBy(string updatedBy) { UpdatedBy = updatedBy; }
     }
 }

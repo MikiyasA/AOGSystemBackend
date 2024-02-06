@@ -1,29 +1,37 @@
 using AOGSystem.Application;
 using AOGSystem.Application.FollowUp.Query;
+using AOGSystem.Application.Invoice.Query;
 using AOGSystem.Domain.CoreFollowUps;
 using AOGSystem.Domain.FollowUp;
 using AOGSystem.Domain.General;
+using AOGSystem.Domain.Invoices;
+using AOGSystem.Domain.Loans;
 using AOGSystem.Domain.Quotation;
+using AOGSystem.Domain.Sales;
 using AOGSystem.Persistence;
 using AOGSystem.Persistence.Repository.CoreFollowUps;
 using AOGSystem.Persistence.Repository.FollowUp;
 using AOGSystem.Persistence.Repository.General;
+using AOGSystem.Persistence.Repository.Invoices;
+using AOGSystem.Persistence.Repository.Loans;
 using AOGSystem.Persistence.Repository.Quotation;
+using AOGSystem.Persistence.Repository.Sales;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Reflection;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(option => { option.AddDefaultPolicy(policy => { 
-    policy.AllowAnyOrigin();
-    policy.AllowAnyHeader();
-    policy.AllowAnyMethod();
-}); }); // "http://localhost:3000" TODO - check cors origin for PUT
+    policy.WithOrigins("http://localhost:5157", "http://10.0.38.202:3000", "http://localhost:3000")
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+}); }); // "http://localhost:3000" 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -72,10 +80,11 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
 
 
+builder.Services.AddScoped<IActiveAOGFollowupQuery, ActiveAOGFollowupQuery>();
+builder.Services.AddScoped<IInvoiceQuery, InvoiceQuery>();
 
 builder.Services.AddScoped<IAOGFollowUpRepository, AOGFollowUpRepository>();
 builder.Services.AddScoped<IFollowUpTabsRepository, FollowUpTabsRepository>();
-builder.Services.AddScoped<IActiveAOGFollowupQuery, ActiveAOGFollowupQuery>();
 builder.Services.AddScoped<IRemarkRepository, RemarkRepository>();
 builder.Services.AddScoped<IPartRepository, PartRepository>();
 builder.Services.AddScoped<IQuotationRepository, QuotationRepository>();
@@ -83,6 +92,13 @@ builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddScoped<ICoreFollowUpRepository, CoreFollowUpRepository>();
 builder.Services.AddScoped<IAssignmentRepository, AssignmentRepository>();
 builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+builder.Services.AddScoped<ISaleRepository, SaleRepository>();
+builder.Services.AddScoped<ISalePartListRepository, SalePartListRepository>();
+builder.Services.AddScoped<ILoanRepository, LoanRepository>();
+builder.Services.AddScoped<ILoanPartListRepository, LoanPartListRepository>();
+builder.Services.AddScoped<IOfferRepository, OfferRepository>();
 
 
 builder.Services.AddMediatR(typeof(ApplicationModule).GetTypeInfo().Assembly);
@@ -93,7 +109,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.DocExpansion(DocExpansion.None);
+    });
 }
 
 app.UseCors();

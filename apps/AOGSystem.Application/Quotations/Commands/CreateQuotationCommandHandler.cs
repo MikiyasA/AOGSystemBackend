@@ -26,7 +26,7 @@ namespace AOGSystem.Application.Quotations.Commands
 
         public async Task<QuotationQueryModel> Handle(CreateQuotationCommand request, CancellationToken cancellationToken)
         {
-            var company = await _companyRepository.GetCompanyByCodeAsync(request.CompanyCode);
+            var company =  _companyRepository.GetCompanyByCode(request.CompanyCode).ElementAt(0);
             if (company == null)
                 return null;            // TODO TOASK
             var model = new Quotation(request.Loan,
@@ -58,10 +58,6 @@ namespace AOGSystem.Application.Quotations.Commands
     }
     public class CreateQuotationCommand : IRequest<QuotationQueryModel>
     {
-        //public string? PartNumber { get; set; }
-        //public string? Description { get; set; }
-        //public string? StockNo { get; set; }
-        //public string? FinancialClass { get; set; }
         public bool Loan { get; set; }
         public bool Sales { get; set; }
         public bool Exchange { get; set; }

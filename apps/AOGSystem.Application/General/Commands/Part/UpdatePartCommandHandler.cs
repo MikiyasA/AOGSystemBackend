@@ -24,6 +24,8 @@ namespace AOGSystem.Application.General.Commands.Part
             model.SetDescription(request.Description);
             model.SetStockNo(request.StockNo);
             model.SetFinancialClass(request.FinancialClass);
+            model.SetManufacturer(request.Manufacturer);
+            model.SetPartType(request.PartType);
             model.UpdatedAT = DateTime.Now;
             model.UpdatedBy = request.UpdatedBy;
 
@@ -46,6 +48,8 @@ namespace AOGSystem.Application.General.Commands.Part
                 Description = model.Description,
                 StockNo = model.StockNo,
                 FinancialClass = model.FinancialClass,
+                Manufacturer = model.Manufacturer,
+                PartType = model.PartType
             };
 
             return new ReturnDto<PartQueryModel> { 
@@ -63,6 +67,8 @@ namespace AOGSystem.Application.General.Commands.Part
         public string? Description { get; set; }
         public string? StockNo { get; set; }
         public string? FinancialClass { get; set; }
+        public string? Manufacturer { get; set; }
+        public string? PartType { get; set; }
         public string? UpdatedBy { get; private set; }
         public void SetUpdatedBy(string updatedBy)
         {

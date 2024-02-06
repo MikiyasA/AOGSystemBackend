@@ -23,6 +23,12 @@ using AOGSystem.Persistence.EntityConfigurations.CoreFollowUps;
 using AOGSystem.Domain.CoreFollowUps;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using AOGSystem.Persistence.EntityConfigurations.Sales;
+using AOGSystem.Domain.Sales;
+using AOGSystem.Domain.Invoices;
+using AOGSystem.Persistence.EntityConfigurations.Invoices;
+using AOGSystem.Domain.Loans;
+using AOGSystem.Persistence.EntityConfigurations.Loans;
 
 namespace AOGSystem.Persistence
 {
@@ -46,7 +52,14 @@ namespace AOGSystem.Persistence
         public DbSet<User> Users { get; set; }
         public DbSet<FollowUpTabs> FollowUpTabs { get; set; }
         public DbSet<Assignment> Assignments { get; set; }
-        
+        public DbSet<Invoice> Invoices { get; set; }
+        public DbSet<Sales> Sales { get; set; }
+        public DbSet<SalesPartList> SalesPartLists { get; set; }
+        public DbSet<InvoicePartList> InvoicePartLists { get; set; }
+        public DbSet<Loan> Loans { get; set; }
+        public DbSet<LoanPartList> LoanPartLists { get; set; }
+        public DbSet<Offer> Offers { get; set; }
+
 
 
         private readonly IMediator _mediator;
@@ -85,6 +98,16 @@ namespace AOGSystem.Persistence
             modelBuilder.Entity<IdentityUserToken<Guid>>().ToTable("UserTokens"); 
             modelBuilder.Entity<IdentityRoleClaim<Guid>>().ToTable("RoleClaims"); 
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.ApplyConfiguration(new InvoiceEntityTypeConfig());
+            modelBuilder.ApplyConfiguration(new SalesEntityTypeConfig());
+            modelBuilder.ApplyConfiguration(new SalesPartListEntityTypeConfig());
+            modelBuilder.ApplyConfiguration(new InvoicePartListEntityConfig());
+
+            modelBuilder.ApplyConfiguration(new LoanEntityTypeConfig());
+            modelBuilder.ApplyConfiguration(new LoanPartListEntityTypeConfig());
+            modelBuilder.ApplyConfiguration(new OfferEntityTypeConfig());
+
 
         }
 

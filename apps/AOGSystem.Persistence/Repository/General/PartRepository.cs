@@ -67,5 +67,17 @@ namespace AOGSystem.Persistence.Repository.General
         {
             _context.Entry(part).State = EntityState.Modified;
         }
+
+        public List<Part> GetPartByManufacturer(string manufacturer)
+        {
+            var parts = _context.Parts.Where(x => x.Manufacturer.Contains(manufacturer)).ToList();
+            return parts;
+        }
+
+        public List<Part> GetPartByType(string type)
+        {
+            var parts = _context.Parts.Where(x => x.PartType.Contains(type)).ToList();
+            return parts;
+        }
     }
 }

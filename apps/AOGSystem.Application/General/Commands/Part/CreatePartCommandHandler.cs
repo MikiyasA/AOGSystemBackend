@@ -28,7 +28,7 @@ namespace AOGSystem.Application.General.Commands.Part
                     Message = "This Part Number already existed"
                 }; ;
 
-            var model = new Domain.General.Part(request.PartNumber, request.Description, request.StockNo, request.FinancialClass);
+            var model = new Domain.General.Part(request.PartNumber, request.Description, request.StockNo, request.FinancialClass, request.Manufacturer, request.PartType);
             model.CreatedAT = DateTime.Now;
             _partRepository.Add(model);
             var result = await _partRepository.SaveChangesAsync();
@@ -47,6 +47,8 @@ namespace AOGSystem.Application.General.Commands.Part
                 Description = model.Description,
                 StockNo = model.StockNo,
                 FinancialClass = model.FinancialClass,
+                Manufacturer = model.Manufacturer,
+                PartType = model.PartType
             };
 
             return new ReturnDto<PartQueryModel>
@@ -65,6 +67,8 @@ namespace AOGSystem.Application.General.Commands.Part
         public string? Description { get; set; }
         public string? StockNo { get; set; }
         public string? FinancialClass { get; set; }
+        public string? Manufacturer { get; set; }
+        public string? PartType { get; set; }
 
         public CreatePartCommand() { }
         public CreatePartCommand(string partNumber, string description, string stockNo, string financialClass)

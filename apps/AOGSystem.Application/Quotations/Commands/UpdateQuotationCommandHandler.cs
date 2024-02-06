@@ -22,7 +22,7 @@ namespace AOGSystem.Application.Quotations.Commands
         }
         public async Task<QuotationQueryModel> Handle(UpdateQuotationCommand request, CancellationToken cancellationToken)
         {
-            var company = await _companyRepository.GetCompanyByCodeAsync(request.CompanyCode);
+            var company = _companyRepository.GetCompanyByCode(request.CompanyCode).ElementAt(0);
             if (company == null)
                 return null; // TODO TOASK
             var model = await _quotationRepository.GetQuotationByIdAsync(request.Id);
