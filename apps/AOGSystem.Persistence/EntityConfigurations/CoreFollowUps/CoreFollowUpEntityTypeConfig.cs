@@ -58,6 +58,10 @@ namespace AOGSystem.Persistence.EntityConfigurations.CoreFollowUps
             builder.Property(x => x.Vendor)
                 .HasColumnName("vendor");
 
+            builder.Property(x => x.PartReleasedDate)
+                .HasColumnName("part_released_date")
+                .IsRequired(false);
+
             builder.Property(x => x.PartReceiveDate)
                 .HasColumnName("part_receive_date")
                 .IsRequired(false);

@@ -54,6 +54,7 @@ namespace AOGSystem.Application.FollowUp.Query
                     EDD = fup.EDD,
                     Status = fup.Status,
                     AWBNo = fup.AWBNo,
+                    FlightNo = fup.FlightNo,
                     NeedHigherMgntAttn = fup.NeedHigherMgntAttn,
                     Remarks = fup.Remarks,
                 };
@@ -95,6 +96,7 @@ namespace AOGSystem.Application.FollowUp.Query
                     EDD = fup.EDD,
                     Status = fup.Status,
                     AWBNo = fup.AWBNo,
+                    FlightNo = fup.FlightNo,
                     NeedHigherMgntAttn = fup.NeedHigherMgntAttn,
                     Remarks = fup.Remarks,
                 };
@@ -128,34 +130,3 @@ namespace AOGSystem.Application.FollowUp.Query
         }
     }
 }
-
-        //var followUp = await _fupRepository.GetAllActiveFollowUpAsync();
-        //    foreach(var fup in followUp)
-        //    {
-        //        var part = await _partRepository.GetPartByIDAsync(fup.PartId);
-        //        var followupDto = new ActiveAOGFollowupDTO
-        //        {
-        //            Id = fup.Id,
-        //            RID = fup.RID,
-        //            RequestDate = fup.RequestDate,
-        //            AirCraft = fup.AirCraft,
-        //            TailNo = fup.TailNo,
-        //            WorkLocation = fup.WorkLocation,
-        //            AOGStation = fup.AOGStation,
-        //            Customer = fup.Customer,
-        //            PartNumber = part.PartNumber,
-        //            Description = part.Description,
-        //            StockNo = part.StockNo,
-        //            FinancialClass = part.FinancialClass,
-        //            PONumber = fup.PONumber,
-        //            OrderType = fup.OrderType,
-        //            Quantity = fup.Quantity,
-        //            UOM = fup.UOM,
-        //            Vendor = fup.Vendor,
-        //            EDD = fup.EDD,
-        //            Status = fup.Status,
-        //            AWBNo = fup.AWBNo,
-        //            NeedHigherMgntAttn = fup.NeedHigherMgntAttn,
-        //            Remarks = fup.Remarks,
-        //        };
-        //        returnFollowup.Append(followupDto);

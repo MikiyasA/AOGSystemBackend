@@ -56,7 +56,7 @@ namespace AOGSystem.Application.General.Commands.Part
                 Data = returnData,
                 IsSuccess = true,
                 Count = 1,
-                Message = "Part Updated Successfully"
+                Message = "Part Added Successfully"
             };
 
         }

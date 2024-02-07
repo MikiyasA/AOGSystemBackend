@@ -36,6 +36,7 @@ namespace AOGSystem.Application.Loans.Command
             model.SetCustomerOrderNo(request.CustomerOrderNo);
             model.SetOrderedByName(request.OrderedByName);
             model.SetOrderedByEmail(request.OrderedByEmail);
+            model.SetShipToAddress(request.ShipToAddress);
             model.SetStatus(request.Status);
             model.SetIsApproved(false);
             model.SetNote(request.Note);
@@ -81,6 +82,7 @@ namespace AOGSystem.Application.Loans.Command
         public string CustomerOrderNo { get; set; }
         public string OrderedByName { get; set; }
         public string? OrderedByEmail { get; set; }
+        public string? ShipToAddress { get; set; }
         public string? Status { get; set; }
         public string? Note { get; set; }
 

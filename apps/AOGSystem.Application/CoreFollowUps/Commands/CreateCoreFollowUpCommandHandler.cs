@@ -27,7 +27,7 @@ namespace AOGSystem.Application.CoreFollowUps.Commands
             }
             
             var model = new CoreFollowUp(request.PONo, request.POCreatedDate, request.Aircraft, request.TailNo, request.PartNumber,
-                request.Description, request.StockNo, request.Vendor, request.PartReceiveDate, request.ReturnDueDate, request.ReturnProcessedDate,
+                request.Description, request.StockNo, request.Vendor, request.PartReleasedDate, request.PartReceiveDate, request.ReturnDueDate, request.ReturnProcessedDate,
                 request.AWBNo, request.ReturnedPart, request.PODDate, request.Remark, request.Status);
             model.CreatedAT = DateTime.Now;
             _coreFollowUpRepository.Add(model);
@@ -69,12 +69,13 @@ namespace AOGSystem.Application.CoreFollowUps.Commands
         public string? Description { get; set; }
         public string? StockNo { get; set; }
         public string? Vendor { get; set; }
-        public DateTime PartReceiveDate { get; set; }
+        public DateTime? PartReleasedDate { get; set; }
+        public DateTime? PartReceiveDate { get; set; }
         public DateTime ReturnDueDate { get; set; }
-        public DateTime ReturnProcessedDate { get; set; }
+        public DateTime? ReturnProcessedDate { get; set; }
         public string? AWBNo { get; set; }
         public string? ReturnedPart { get; set; }
-        public DateTime PODDate { get; set; }
+        public DateTime? PODDate { get; set; }
         public string? Remark { get; set; }
         public string? Status { get; set; }
 

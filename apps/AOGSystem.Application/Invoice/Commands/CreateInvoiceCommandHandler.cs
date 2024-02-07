@@ -39,7 +39,14 @@ namespace AOGSystem.Application.Invoice.Commands
 
             var model = new Domain.Invoices.Invoice(invoiceNo, invoiceDate, dueDate, request.SalesOrderId, request.LoanOrderId, request.TransactionType, false,
                 null, null, status, request.Remark);
-            
+            if (request.PartLists.Count() < 1)
+                return new ReturnDto<InvoiceQueryModel>
+                {
+                    Data = null,
+                    Count = 0,
+                    IsSuccess = false,
+                    Message = "Atleast one part list should be selected to raise invoice.",
+                };
             foreach (var partList in request.PartLists)
             {
                 
@@ -112,7 +119,7 @@ namespace AOGSystem.Application.Invoice.Commands
         public string? TransactionType { get; set; }
         public string? Remark { get; set; }
 
-        public List<InvoicePartList>? PartLists { get; set; }
+        public List<InvoicePartList> PartLists { get; set; }
 
         [JsonIgnore]
         public string? CreatedBy { get; private set; }

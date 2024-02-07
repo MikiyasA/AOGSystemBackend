@@ -13,6 +13,7 @@ namespace AOGSystem.Domain.Loans
         public string CustomerOrderNo { get; private set; }
         public string OrderedByName { get; private set; }
         public string? OrderedByEmail { get; private set; }
+        public string? ShipToAddress { get; private set; }
         public string? Status { get; private set; }
         public bool IsApproved { get; private set; }
         public string? Note { get; private set; }
@@ -22,6 +23,7 @@ namespace AOGSystem.Domain.Loans
         public void SetCustomerOrderNo(string customerOrderNo) { CustomerOrderNo = customerOrderNo; }
         public void SetOrderedByName(string orderByName) { OrderedByName = orderByName; }
         public void SetOrderedByEmail(string orderByEmail) { OrderedByEmail = orderByEmail; }
+        public void SetShipToAddress(string shipToAddress) { ShipToAddress = shipToAddress; }
         public void SetStatus(string status) { Status = status; }
         public void SetIsApproved(bool isApproved) { IsApproved = isApproved; }
         public void SetNote(string note) { Note = note; }
@@ -33,13 +35,14 @@ namespace AOGSystem.Domain.Loans
         {
             loanPartLists = new List<LoanPartList>();
         }
-        public Loan(string orderNo, int companyId, string customerOrderNo, string orderedByName, string? orderedByEmail, string? status, bool isApproved, string? note) : this ()
+        public Loan(string orderNo, int companyId, string customerOrderNo, string orderedByName, string? orderedByEmail, string shipToAddress, string? status, bool isApproved, string? note) : this ()
         {
             SetOrderNo(orderNo);
             SetCompanyId(companyId);
             SetCustomerOrderNo(customerOrderNo);
             SetOrderedByName(orderedByName);
             SetOrderedByEmail(orderedByEmail);
+            SetStatus(shipToAddress);
             SetStatus(status);
             SetIsApproved(isApproved);
             SetNote(note);

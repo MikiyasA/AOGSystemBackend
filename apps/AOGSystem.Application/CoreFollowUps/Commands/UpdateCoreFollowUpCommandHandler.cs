@@ -28,6 +28,7 @@ namespace AOGSystem.Application.CoreFollowUps.Commands
             model.SetDescription(request.Description);
             model.SetStockNo(request.StockNo);
             model.SetVendor(request.Vendor);
+            model.SetPartReleasedDate(request.PartReleasedDate);
             model.SetPartReceiveDate(request.PartReceiveDate);
             model.SetReturnDueDate(request.ReturnDueDate);
             model.SetReturnProcessedDate(request.ReturnProcessedDate);
@@ -78,6 +79,7 @@ namespace AOGSystem.Application.CoreFollowUps.Commands
         public string? Description { get; set; }
         public string? StockNo { get; set; }
         public string? Vendor { get; set; }
+        public DateTime? PartReleasedDate { get; set; }
         public DateTime? PartReceiveDate { get; set; }
         public DateTime ReturnDueDate { get; set; }
         public DateTime? ReturnProcessedDate { get; set; }

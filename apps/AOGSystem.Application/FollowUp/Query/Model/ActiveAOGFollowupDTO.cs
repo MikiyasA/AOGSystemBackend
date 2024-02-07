@@ -30,6 +30,7 @@ namespace AOGSystem.Application.FollowUp.Query.Model
         public DateTime? EDD { get; set; } 
         public string? Status { get; set; }
         public string? AWBNo { get; set; }
+        public string? FlightNo { get; set; }
         public bool NeedHigherMgntAttn { get; set; }
         public IReadOnlyCollection<Remark> Remarks { get; set; }
     }

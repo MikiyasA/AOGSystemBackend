@@ -27,7 +27,7 @@ namespace AOGSystem.Application.Loans.Command
 
             var orderNo = $"L{currentYear}{nextOrderNo:D2}";
 
-            var model = new Loan(orderNo, request.CompanyId, request.CustomerOrderNo, request.OrderedByName, request.OrderedByEmail, "Created", false, request.Note);
+            var model = new Loan(orderNo, request.CompanyId, request.CustomerOrderNo, request.OrderedByName, request.OrderedByEmail, request.ShipToAddress, "Created", false, request.Note);
             model.CreatedAT = DateTime.Now;
             model.CreatedBy = request.CreatedBy;
 
@@ -80,6 +80,7 @@ namespace AOGSystem.Application.Loans.Command
         public string CustomerOrderNo { get; set; }
         public string OrderedByName { get; set; }
         public string? OrderedByEmail { get; set; }
+        public string? ShipToAddress { get; set; }
         public string? Status { get; set; }
         public string? Note { get; set; }
         public string? UOM { get; set; }

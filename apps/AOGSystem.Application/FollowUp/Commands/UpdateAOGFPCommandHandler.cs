@@ -75,6 +75,8 @@ namespace AOGSystem.Application.FollowUp.Commands
             model.SetVendor(request.Vendor);
             model.SetEDD(request.EDD);
             model.SetStatus(request.Status);
+            model.SetAWBNo(request.AWBNo);
+            model.SetFlightNo(request.FlightNo);
             model.SetNeedHigherMgntAttn(request.NeedHigherMgntAttn);
             model.UpdatedAT = DateTime.Now;
             if(part != null)
@@ -143,6 +145,8 @@ namespace AOGSystem.Application.FollowUp.Commands
                 Vendor = model.Vendor,
                 EDD = model.EDD,
                 Status = model.Status,
+                AWBNo = model.AWBNo,
+                FlightNo = model.FlightNo,
                 NeedHigherMgntAttn = model.NeedHigherMgntAttn,
             };
 
@@ -180,6 +184,7 @@ namespace AOGSystem.Application.FollowUp.Commands
         public DateTime? EDD { get; set; } // Estimated Deliver Date
         public string? Status { get; set; }
         public string? AWBNo { get; set; }
+        public string? FlightNo { get; set; }
         public bool NeedHigherMgntAttn { get; set; }
         public string? Manufacturer { get; set; }
         public string? PartType { get; set; }

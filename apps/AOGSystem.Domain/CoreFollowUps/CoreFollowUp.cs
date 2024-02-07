@@ -21,6 +21,7 @@ namespace AOGSystem.Domain.CoreFollowUps
         public string? Description { get; private set; }
         public string? StockNo { get; private set; }
         public string? Vendor { get; private set; }
+        public DateTime? PartReleasedDate { get; private set; }
         public DateTime? PartReceiveDate { get; private set; }
         public DateTime ReturnDueDate { get; private set; }
         public DateTime? ReturnProcessedDate { get; private set; }
@@ -39,6 +40,7 @@ namespace AOGSystem.Domain.CoreFollowUps
         public void SetDescription(string description) { this.Description = description; }
         public void SetStockNo(string stockNo) { this.StockNo = stockNo; }
         public void SetVendor(string vendor) { this.Vendor = vendor; }
+        public void SetPartReleasedDate(DateTime? partReleasedDate) { PartReleasedDate = partReleasedDate;  }
         public void SetPartReceiveDate(DateTime? partReceiveDate) { this.PartReceiveDate = partReceiveDate;}
         public void SetReturnDueDate(DateTime returnDueDate) { this.ReturnDueDate = returnDueDate;}
         public void SetReturnProcessedDate(DateTime? returnProcessedDate) { this.ReturnProcessedDate = returnProcessedDate;}
@@ -54,39 +56,40 @@ namespace AOGSystem.Domain.CoreFollowUps
 
         }
         public CoreFollowUp(string pONo, DateTime pOCreatedDate, string aircraft, string tailNo, string partNumber, string description, string stockNo,
-            string? vendor, DateTime partReceiveDate, DateTime returnDueDate, DateTime returnProcessedDate, string aWBNo, string returnedPart,
-            DateTime pODDate, string remark, string status)
+            string? vendor, DateTime? partReleasedDate, DateTime? partReceiveDate, DateTime returnDueDate, DateTime? returnProcessedDate, string? aWBNo, string? returnedPart,
+            DateTime? pODDate, string? remark, string status)
         {
-            this.SetPONo(pONo);
-            this.SetPOCreatedDate(pOCreatedDate);
-            this.SetAircraft(aircraft);
-            this.SetTailNo(tailNo);
-            this.SetPartNumber(partNumber);
-            this.SetDescription(description);
-            this.SetStockNo(stockNo);
-            this.SetVendor(vendor);
-            this.SetPartReceiveDate(partReceiveDate);
-            this.SetReturnDueDate(returnDueDate);
-            this.SetReturnProcessedDate(returnProcessedDate);
-            this.SetAWBNo(aWBNo);
-            this.SetReturnedPart(returnedPart);
-            this.SetPODDate(pODDate);
-            this.SetRemarK(remark);
-            this.SetStatus(status);
+            SetPONo(pONo);
+            SetPOCreatedDate(pOCreatedDate);
+            SetAircraft(aircraft);
+            SetTailNo(tailNo);
+            SetPartNumber(partNumber);
+            SetDescription(description);
+            SetStockNo(stockNo);
+            SetVendor(vendor);
+            SetPartReleasedDate(partReleasedDate);
+            SetPartReceiveDate(partReceiveDate);
+            SetReturnDueDate(returnDueDate);
+            SetReturnProcessedDate(returnProcessedDate);
+            SetAWBNo(aWBNo);
+            SetReturnedPart(returnedPart);
+            SetPODDate(pODDate);
+            SetRemarK(remark);
+            SetStatus(status);
         }
 
         public CoreFollowUp(string pONo, DateTime pOCreatedDate, string aircraft, string tailNo, string partNumber, string description, string stockNo,
             string? vendor, DateTime returnDueDate)
         {
-            this.SetPONo(pONo);
-            this.SetPOCreatedDate(pOCreatedDate);
-            this.SetAircraft(aircraft);
-            this.SetTailNo(tailNo);
-            this.SetPartNumber(partNumber);
-            this.SetDescription(description);
-            this.SetStockNo(stockNo);
-            this.SetVendor(vendor);
-            this.SetReturnDueDate(returnDueDate);
+            SetPONo(pONo);
+            SetPOCreatedDate(pOCreatedDate);
+            SetAircraft(aircraft);
+            SetTailNo(tailNo);
+            SetPartNumber(partNumber);
+            SetDescription(description);
+            SetStockNo(stockNo);
+            SetVendor(vendor);
+            SetReturnDueDate(returnDueDate);
         }
 
     }

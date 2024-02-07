@@ -59,6 +59,10 @@ namespace AOGSystem.Persistence.EntityConfigurations.Loans
                 .HasColumnName("ordered_by_email")
                 .IsRequired(false);
 
+            builder.Property(x => x.ShipToAddress)
+                .HasColumnName("ship_to_address")
+                .IsRequired(false);
+
             builder.Property(x => x.Status)
                 .HasJsonPropertyName("status")
                 .IsRequired();
