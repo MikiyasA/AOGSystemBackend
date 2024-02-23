@@ -1,12 +1,15 @@
 ﻿using AOGSystem.Application.General.Commands.Part;
 using AOGSystem.Application.Invoice.Commands;
 using AOGSystem.Application.Invoice.Query;
+using AOGSystem.Application.Invoice.Query.Model;
+using AOGSystem.Domain.FollowUp;
 using AOGSystem.Domain.Invoices;
 using AOGSystem.Persistence.Repository.General;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq.Expressions;
 using System.Net;
 using System.Security.Claims;
 
@@ -94,11 +97,37 @@ namespace AOGSystem.API.Controllers
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> GetAllInvoices()
+        public async Task<IActionResult> GetAllInvoices([FromQuery] InvoiceSearchQuery query, int page = 1, int pageSize = 20)
         {
             try
             {
-                return Ok(await _invoiceRepository.GetAllInvoices());
+
+                Expression<Func<Invoice, bool>> predicate = queryModel =>
+                    (string.IsNullOrEmpty(query.InvoiceNo) || queryModel.InvoiceNo.Contains(query.InvoiceNo)) &&
+                    (!query.InvoiceDateFrom.HasValue || queryModel.InvoiceDate >= query.InvoiceDateFrom) &&
+                    (!query.InvoiceDateTo.HasValue || queryModel.InvoiceDate <= query.InvoiceDateTo) &&
+                    (!query.DueDateFrom.HasValue || queryModel.DueDate >= query.DueDateFrom) &&
+                    (!query.DueDateTo.HasValue || queryModel.DueDate <= query.DueDateTo) &&
+                    (string.IsNullOrEmpty(query.TransactionType) || queryModel.TransactionType.Contains(query.TransactionType)) &&
+                    (string.IsNullOrEmpty(query.POPReference) || queryModel.POPReference.Contains(query.POPReference)) &&
+                    (!query.POPDateFrom.HasValue || queryModel.POPDate >= query.POPDateFrom) &&
+                    (!query.POPDateTo.HasValue || queryModel.POPDate <= query.POPDateTo) &&
+                    (string.IsNullOrEmpty(query.Status) || queryModel.Status.Contains(query.Status));
+
+
+                var data = await _invoiceRepository.GetAllInvoices(predicate, page, pageSize);
+                var result = new
+                {
+                    metadata = new
+                    {
+                        data.TotalCount,
+                        data.PageSize,
+                        data.CurrentPage,
+                        data.TotalPages,
+                    },
+                    data
+                };
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -109,7 +138,7 @@ namespace AOGSystem.API.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> GetInvoiceByID(int id)
+        public async Task<IActionResult> GetInvoiceByID(Guid id)
         {
             try
             {
@@ -123,7 +152,7 @@ namespace AOGSystem.API.Controllers
         [HttpGet("{orderId}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> GetInvoiceBySalesOrderId(int orderId)
+        public async Task<IActionResult> GetInvoiceBySalesOrderId(Guid orderId)
         {
             try
             {
@@ -138,7 +167,7 @@ namespace AOGSystem.API.Controllers
         [HttpGet("{orderId}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> GetInvoiceByLoanOrderId(int orderId)
+        public async Task<IActionResult> GetInvoiceByLoanOrderId(Guid orderId)
         {
             try
             {

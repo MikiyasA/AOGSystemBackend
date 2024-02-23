@@ -76,7 +76,7 @@ namespace AOGSystem.Application.Quotations.Commands
     }
     public class AddPartListInQuotationCommand : IRequest<QuotationPartListSummary>
     {
-        public int QuotationId { get; set; }
+        public Guid QuotationId { get; set; }
         public decimal CurrentPrice { get; set; }
         public string? PartNumber { get; set; }
         public string? Description { get; set; }

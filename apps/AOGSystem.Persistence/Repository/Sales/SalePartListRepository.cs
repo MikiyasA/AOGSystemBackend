@@ -20,7 +20,7 @@ namespace AOGSystem.Persistence.Repository.Sales
             return _context.SalesPartLists.Add(salesPartList).Entity;
         }
 
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
             _context.Remove(_context.SalesPartLists.FindAsync(id).Result);
         }
@@ -30,7 +30,7 @@ namespace AOGSystem.Persistence.Repository.Sales
             return await _context.SalesPartLists.ToListAsync();
         }
 
-        public async Task<SalesPartList> GetSalesPartListByIDAsync(int id)
+        public async Task<SalesPartList> GetSalesPartListByIDAsync(Guid id)
         {
             var salesPartList = await _context.SalesPartLists.FindAsync(id);
             if (salesPartList != null)

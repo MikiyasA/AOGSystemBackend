@@ -41,8 +41,8 @@ namespace AOGSystem.Application.FollowUp.Commands
 
     public class UpdateRemarkInAOGFPCommand : IRequest<RemarkSummery>
     {
-        public int Id { get; set; }
-        public int AOGFollowUpId { get; set; }
+        public Guid Id { get; set; }
+        public Guid AOGFollowUpId { get; set; }
         public string Message { get; set; }
         public UpdateRemarkInAOGFPCommand()
         {

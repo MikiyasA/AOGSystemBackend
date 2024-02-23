@@ -33,6 +33,6 @@ namespace AOGSystem.Application.General.Commands.Company
     }
     public class DeleteCompanyCommand : IRequest<int>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
     }
 }

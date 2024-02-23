@@ -64,7 +64,7 @@ namespace AOGSystem.Application.FollowUp.Query
 
         }
 
-        public async Task<List<ActiveAOGFollowupDTO>> GetAllActiveFollowUpByTabIdAsync(int id)
+        public async Task<List<ActiveAOGFollowupDTO>> GetAllActiveFollowUpByTabIdAsync(Guid id)
         {
             var returnFollowup = new List<ActiveAOGFollowupDTO>();
 

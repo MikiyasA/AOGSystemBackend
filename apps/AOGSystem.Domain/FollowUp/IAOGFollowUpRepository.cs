@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
+
 
 namespace AOGSystem.Domain.FollowUp
 {
@@ -11,11 +13,11 @@ namespace AOGSystem.Domain.FollowUp
         Task<int> SaveChangesAsync(string userId = null, CancellationToken cancellationToken = default);
         AOGFollowUp Add(AOGFollowUp AOGFollowUp);
         void Update(AOGFollowUp AOGFollowUp);
-        void Delete(int id);
-        Task<List<AOGFollowUp>> GetAllAOGFollowUpAsync();
+        void Delete(Guid id);
+        Task<PaginatedList<AOGFollowUp>> GetAllAOGFollowUpAsync(Expression<Func<AOGFollowUp, bool>> predicate, int page, int pageSize);
         Task<List<AOGFollowUp>> GetAllActiveFollowUpAsync();
-        Task<List<AOGFollowUp>> GetAllActiveFollowUpByTabIdAsync(int id);
-        Task<AOGFollowUp> GetAOGFollowUpByIDAsync(int id);
+        Task<List<AOGFollowUp>> GetAllActiveFollowUpByTabIdAsync(Guid id);
+        Task<AOGFollowUp> GetAOGFollowUpByIDAsync(Guid id);
 
     }
 }

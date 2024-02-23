@@ -8,7 +8,7 @@ namespace AOGSystem.Domain.Loans
 {
     public class LoanPartList : BaseEntity
     {
-        public int PartId { get; private set; }
+        public Guid PartId { get; private set; }
         public int Quantity { get; private set; }
         public string UOM { get; private set; }
         public string? SerialNo { get; private set; }
@@ -22,7 +22,7 @@ namespace AOGSystem.Domain.Loans
         public bool IsInvoiced { get; private set; }
 
 
-        public void SetPartId(int partId) { this.PartId = partId; }
+        public void SetPartId(Guid partId) { this.PartId = partId; }
         public void SetQuantity(int quantity) { this.Quantity = quantity; }
         public void SetUOM(string uOM) { this.UOM = uOM; }
         public void SetSerialNo(string? serialNo) { SerialNo = serialNo; }
@@ -42,7 +42,7 @@ namespace AOGSystem.Domain.Loans
             offers = new List<Offer>();
         }
 
-        public LoanPartList(int partId, int quantity, string uOM, string? serialNo, string? rID, DateTime? shipDate, string? shippingReference, DateTime? receivedDate, string? receivingReference, string? receivingDefect, bool isDeleted, bool isInvoiced) : this()
+        public LoanPartList(Guid partId, int quantity, string uOM, string? serialNo, string? rID, DateTime? shipDate, string? shippingReference, DateTime? receivedDate, string? receivingReference, string? receivingDefect, bool isDeleted, bool isInvoiced) : this()
         {
             SetPartId(partId);
             SetQuantity(quantity);
@@ -58,7 +58,7 @@ namespace AOGSystem.Domain.Loans
             SetIsInvoiced(isInvoiced);
         }
 
-        public LoanPartList(int partId, int quantity, string uOM) : this ()
+        public LoanPartList(Guid partId, int quantity, string uOM) : this ()
         {
             SetPartId(partId);
             SetQuantity(quantity);
@@ -75,7 +75,7 @@ namespace AOGSystem.Domain.Loans
             var newItem = new Offer(description, basePrice, quantity, unitPrice, totalPrice, currency);
             AddOffer(newItem);
         }
-        public void UpdateOffer(int id, string description, int basePrice, int quantity, int unitPrice, int totalPrice, string currency) 
+        public void UpdateOffer(Guid id, string description, int basePrice, int quantity, int unitPrice, int totalPrice, string currency) 
         {
             var exists = offers.FirstOrDefault(x => x.Id == id);
             if (exists != null)
@@ -94,7 +94,7 @@ namespace AOGSystem.Domain.Loans
             offers.Remove(offer);
         }
 
-        public void RemoveOffer(int id) 
+        public void RemoveOffer(Guid id) 
         {
             var exists = offers.FirstOrDefault(x => x.Id == id);
             if (exists != null)

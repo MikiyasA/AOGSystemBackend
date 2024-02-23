@@ -13,7 +13,7 @@ namespace AOGSystem.Domain.Quotation
         public bool Sales { get; private set; }
         public bool Exchange { get; private set; }
         public Company? Company { get; private set; }
-        public int CompanyId { get; set; }
+        public Guid CompanyId { get; set; }
         public string? RequestedByName { get; private set; }
         public string? RequestedByEmail { get; private set; }
         public string? RequestedByPhone { get; private set; }
@@ -23,7 +23,7 @@ namespace AOGSystem.Domain.Quotation
         public void SetLoan(bool loan) { this.Loan = loan; }
         public void SetSales(bool sales) { this.Sales = sales; }
         public void SetExchange(bool exchange) { this.Exchange = exchange; }
-        public void SetCompanyId(int companyId) { this.CompanyId = companyId; }
+        public void SetCompanyId(Guid companyId) { this.CompanyId = companyId; }
         public void SetRequestedByName(string requestedByName) { this.RequestedByName = requestedByName; }
         public void SetRequestedByEmail(string requestedByEmail) { this.RequestedByEmail = requestedByEmail; }
         public void SetRequestedByPhone(string requestedByPhone) { this.RequestedByPhone = requestedByPhone; }
@@ -39,7 +39,7 @@ namespace AOGSystem.Domain.Quotation
             quotationPartLists = new List<QuotationPartList>();
         }
 
-        public Quotation(bool loan, bool sales, bool exchange, int companyId, string requestedByName, string requestedByEmail, string requestedByPhone) : this()
+        public Quotation(bool loan, bool sales, bool exchange, Guid companyId, string requestedByName, string requestedByEmail, string requestedByPhone) : this()
         {
             this.SetLoan(loan);
             this.SetSales(sales);
@@ -55,7 +55,7 @@ namespace AOGSystem.Domain.Quotation
             quotationPartLists.Add(qPartList);
         }
 
-        public void AddQuotationPartList(int partId, decimal currentPrice, decimal salesPrice, decimal fixedLoanPrice, decimal loanPricePerDay,
+        public void AddQuotationPartList(Guid partId, decimal currentPrice, decimal salesPrice, decimal fixedLoanPrice, decimal loanPricePerDay,
             decimal exchangePrice, string? stockLocation, string? condition, string? serialNumber)
         {
             var newQuotationPartList = new QuotationPartList(partId, currentPrice, salesPrice, fixedLoanPrice, loanPricePerDay, exchangePrice,
@@ -73,7 +73,7 @@ namespace AOGSystem.Domain.Quotation
             quotationPartLists.Add(newQuotationPartList);
         }
 
-        public void UpdateQuotationPartList(int id, int partId, decimal currentPrice, decimal salesPrice, decimal fixedLoanPrice, decimal loanPricePerDay, 
+        public void UpdateQuotationPartList(Guid id, Guid partId, decimal currentPrice, decimal salesPrice, decimal fixedLoanPrice, decimal loanPricePerDay, 
             decimal exchangePrice, string stockLocation, string condition, string serialNo)
         {
             var exists = quotationPartLists.FirstOrDefault(x => x.Id == id);
@@ -97,7 +97,7 @@ namespace AOGSystem.Domain.Quotation
             quotationPartLists.Remove(quotationPartList);
         }
 
-        public void RemoveQuotationPartList(int id)
+        public void RemoveQuotationPartList(Guid id)
         {
             var exists = quotationPartLists.FirstOrDefault(x => x.Id == id);
             if (exists != null)

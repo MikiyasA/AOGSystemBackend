@@ -100,7 +100,7 @@ namespace AOGSystem.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> GetPartByID(int id)
+        public async Task<IActionResult> GetPartByID(Guid id)
         {
             try
             {

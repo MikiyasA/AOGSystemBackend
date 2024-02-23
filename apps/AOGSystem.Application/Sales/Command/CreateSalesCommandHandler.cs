@@ -41,7 +41,7 @@ namespace AOGSystem.Application.Sales.Command
                     IsSuccess = false,
                     Message = "Someting went wrong when sales order created",
                 };
-            var returnDate = new SalesQueryModel
+            var returnData = new SalesQueryModel
             {
                 Id = model.Id,
                 CompanyId = model.CompanyId,
@@ -55,7 +55,7 @@ namespace AOGSystem.Application.Sales.Command
             };
             return new ReturnDto<SalesQueryModel>
             {
-                Data = returnDate,
+                Data = returnData,
                 Count = 1,
                 IsSuccess = true,
                 Message = "Sales order created successfully"
@@ -65,7 +65,7 @@ namespace AOGSystem.Application.Sales.Command
     }
     public class CreateSalesCommand : IRequest<ReturnDto<SalesQueryModel>>
     {
-        public int CompanyId { get; set; }
+        public Guid CompanyId { get; set; }
         public string? OrderByName { get; set; }
         public string? OrderByEmail { get; set; }
         public string? CustomerOrderNo { get; set; }

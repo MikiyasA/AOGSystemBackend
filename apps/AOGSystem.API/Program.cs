@@ -2,13 +2,17 @@ using AOGSystem.Application;
 using AOGSystem.Application.FollowUp.Query;
 using AOGSystem.Application.Invoice.Query;
 using AOGSystem.Domain.CoreFollowUps;
+using AOGSystem.Domain.CostSavings;
 using AOGSystem.Domain.FollowUp;
 using AOGSystem.Domain.General;
 using AOGSystem.Domain.Invoices;
 using AOGSystem.Domain.Loans;
 using AOGSystem.Domain.Quotation;
 using AOGSystem.Domain.Sales;
+using AOGSystem.Domain.SOA;
 using AOGSystem.Persistence;
+using AOGSystem.Persistence.EntityConfigurations.Attachmetns;
+using AOGSystem.Persistence.Repository.Attachements;
 using AOGSystem.Persistence.Repository.CoreFollowUps;
 using AOGSystem.Persistence.Repository.FollowUp;
 using AOGSystem.Persistence.Repository.General;
@@ -16,6 +20,7 @@ using AOGSystem.Persistence.Repository.Invoices;
 using AOGSystem.Persistence.Repository.Loans;
 using AOGSystem.Persistence.Repository.Quotation;
 using AOGSystem.Persistence.Repository.Sales;
+using AOGSystem.Persistence.Repository.SOA;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -77,7 +82,8 @@ builder.Services.AddScoped<UserManager<User>>();
 
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddNewtonsoftJson(o => o.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
 
 builder.Services.AddScoped<IActiveAOGFollowupQuery, ActiveAOGFollowupQuery>();
@@ -99,6 +105,10 @@ builder.Services.AddScoped<ISalePartListRepository, SalePartListRepository>();
 builder.Services.AddScoped<ILoanRepository, LoanRepository>();
 builder.Services.AddScoped<ILoanPartListRepository, LoanPartListRepository>();
 builder.Services.AddScoped<IOfferRepository, OfferRepository>();
+builder.Services.AddScoped<IVendorRepository, VendorRepository>();
+builder.Services.AddScoped<IInvoiceListRepository, InvoiceListRepository>();
+builder.Services.AddScoped<ICostSavingRepository, CostSavingRepository>();
+builder.Services.AddScoped<IAttachementRepository, AttachementRepository>();
 
 
 builder.Services.AddMediatR(typeof(ApplicationModule).GetTypeInfo().Assembly);

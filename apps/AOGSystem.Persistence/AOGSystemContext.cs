@@ -29,6 +29,10 @@ using AOGSystem.Domain.Invoices;
 using AOGSystem.Persistence.EntityConfigurations.Invoices;
 using AOGSystem.Domain.Loans;
 using AOGSystem.Persistence.EntityConfigurations.Loans;
+using AOGSystem.Domain.SOA;
+using AOGSystem.Persistence.EntityConfigurations.SOA;
+using AOGSystem.Domain.Attachments;
+using AOGSystem.Persistence.EntityConfigurations.Attachmetns;
 
 namespace AOGSystem.Persistence
 {
@@ -59,6 +63,15 @@ namespace AOGSystem.Persistence
         public DbSet<Loan> Loans { get; set; }
         public DbSet<LoanPartList> LoanPartLists { get; set; }
         public DbSet<Offer> Offers { get; set; }
+        public DbSet<Vendor> Vendors { get; set; }
+        public DbSet<InvoiceList> InvoiceLists { get; set; }
+        public DbSet<BuyerRemark> BuyerRemarks { get; set; }
+        public DbSet<FinanceRemark> FinanceRemarks { get; set; }
+
+        public DbSet<CostSaving> CostSavings { get; set; }
+
+        public DbSet<Attachment> Attachments { get; set; }
+        public DbSet<AttachmentLink> AttachmentLinks { get; set; }
 
 
 
@@ -107,6 +120,18 @@ namespace AOGSystem.Persistence
             modelBuilder.ApplyConfiguration(new LoanEntityTypeConfig());
             modelBuilder.ApplyConfiguration(new LoanPartListEntityTypeConfig());
             modelBuilder.ApplyConfiguration(new OfferEntityTypeConfig());
+
+            modelBuilder.ApplyConfiguration(new VendorEntityTypeConfig());
+            modelBuilder.ApplyConfiguration(new InvoiceEntityTypeConfig());
+            modelBuilder.ApplyConfiguration(new BuyerRemarkEntityTypeConfig());
+            modelBuilder.ApplyConfiguration(new FinanceRemarkEntityTypeConfig());
+
+            modelBuilder.ApplyConfiguration(new CostSavingEntityTypeConfig());
+            
+            modelBuilder.ApplyConfiguration(new AttachmentEntityTypeConfig());
+            modelBuilder.ApplyConfiguration(new AttachmentLinkEntityTypeConfig());
+
+
 
 
         }

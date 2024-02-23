@@ -72,7 +72,7 @@ namespace AOGSystem.Application.Invoice.Commands
 
     public class InvoiceCloserCommand : IRequest<ReturnDto<InvoiceQueryModel>>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Status { get; set; }
 
         [JsonIgnore]

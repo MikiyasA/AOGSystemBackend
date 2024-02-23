@@ -75,7 +75,7 @@ namespace AOGSystem.Application.Loans.Command
     }
     public class LoanPartLineRemovalCommand : IRequest<ReturnDto<LoanPartListQueryModel>>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public bool IsDeleted { get; set; }
 
         [JsonIgnore]

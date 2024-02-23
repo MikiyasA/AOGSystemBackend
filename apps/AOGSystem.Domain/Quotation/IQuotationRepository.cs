@@ -11,8 +11,8 @@ namespace AOGSystem.Domain.Quotation
 
         Quotation Add(Quotation quotation);
         void Update(Quotation quotation);
-        void Delete(int id);
-        Task<Quotation> GetQuotationByIdAsync(int id);
+        void Delete(Guid id);
+        Task<Quotation> GetQuotationByIdAsync(Guid id);
         Task<List<Quotation>> GetAllQuotations();
         Task<int> SaveChangesAsync(string userId = null, CancellationToken cancellationToken = default);
 

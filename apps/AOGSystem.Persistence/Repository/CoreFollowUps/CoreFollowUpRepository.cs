@@ -1,10 +1,13 @@
-﻿using AOGSystem.Domain.CoreFollowUps;
+﻿using AOGSystem.Domain;
+using AOGSystem.Domain.CoreFollowUps;
+using AOGSystem.Domain.FollowUp;
 using AOGSystem.Domain.General;
 using MassTransit.Internals.GraphValidation;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
@@ -38,16 +41,16 @@ namespace AOGSystem.Persistence.Repository.CoreFollowUps
             return core;
         }
 
-        public async Task<List<CoreFollowUp>> GetAllCoreFollowUps(int pageN, int pageS)
+        public async Task<PaginatedList<CoreFollowUp>> GetAllCoreFollowUps(Expression<Func<CoreFollowUp, bool>> predicate, int page, int pageSize)
         {
-            var pageNo = pageN != 0 ? pageN : 1;
-            var pageSize = pageS != 0 ? pageS : 10;
+            IQueryable<CoreFollowUp> query = _context.CoreFollowUps;
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+            var result = await PaginatedList<CoreFollowUp>.ToPagedList(query.OrderByDescending(x => x.CreatedAT), page, pageSize);
+            return result;
 
-            var coreFp = await _context.CoreFollowUps
-                .Skip((pageNo - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
-            return coreFp;
         }
 
         public async Task<CoreFollowUp> GetCoreFollowUpByIDAsync(int id)

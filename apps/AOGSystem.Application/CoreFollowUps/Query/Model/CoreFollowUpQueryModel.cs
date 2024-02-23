@@ -11,7 +11,7 @@ namespace AOGSystem.Application.CoreFollowUps.Query.Model
 {
     public class CoreFollowUpSummary
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string PONo { get; set; }
         public DateTime POCreatedDate { get; set; }
         public string Aircraft { get; set; }

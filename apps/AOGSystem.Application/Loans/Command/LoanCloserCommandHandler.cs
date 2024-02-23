@@ -71,7 +71,7 @@ namespace AOGSystem.Application.Loans.Command
     
     public class LoanCloserCommand : IRequest<ReturnDto<LoanQueryModel>>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Status { get; set; }
 
         [JsonIgnore]

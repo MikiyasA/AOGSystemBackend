@@ -21,7 +21,7 @@ namespace AOGSystem.Persistence.Repository.General
             return _context.Parts.Add(part).Entity;
         }
 
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
             _context.Remove(_context.Parts.FindAsync(id).Result);
         }
@@ -31,7 +31,7 @@ namespace AOGSystem.Persistence.Repository.General
             return _context.Parts.ToListAsync();
         }
 
-        public async Task<Part> GetPartByIDAsync(int id)
+        public async Task<Part> GetPartByIDAsync(Guid id)
         {
             var part = await _context.Parts.FindAsync(id);
             if(part != null)

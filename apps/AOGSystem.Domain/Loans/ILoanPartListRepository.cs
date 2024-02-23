@@ -11,9 +11,9 @@ namespace AOGSystem.Domain.Loans
     {
         LoanPartList Add(LoanPartList loanPartList);
         void Update(LoanPartList loanPartList);
-        void Delete(int id);
+        void Delete(Guid id);
         Task<List<LoanPartList>> GetAllLoanPartLists();
-        Task<LoanPartList> GetLoanPartListByIDAsync(int id);
+        Task<LoanPartList> GetLoanPartListByIDAsync(Guid id);
         Task<int> SaveChangesAsync(string userId = null, CancellationToken cancellationToken = default);
     }
 }

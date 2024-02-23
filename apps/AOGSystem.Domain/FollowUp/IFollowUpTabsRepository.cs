@@ -11,10 +11,10 @@ namespace AOGSystem.Domain.FollowUp
         Task<int> SaveChangesAsync(string userId = null, CancellationToken cancellationToken = default);
         FollowUpTabs Add(FollowUpTabs AOGFollowUp);
         void Update(FollowUpTabs AOGFollowUp);
-        void Delete(int id);
+        void Delete(Guid id);
         Task<List<FollowUpTabs>> GetAllFollowUpTabsAsync();
         Task<List<FollowUpTabs>> GetAllActiveFollowUpTabsAsync();
-        Task<FollowUpTabs> GetFollowUpTabsByIDAsync(int id);
+        Task<FollowUpTabs> GetFollowUpTabsByIDAsync(Guid id);
         Task<FollowUpTabs> GetFollowUpTabsByNameAsync(string name);
 
     }

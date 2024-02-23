@@ -7,12 +7,12 @@ namespace AOGSystem.Application.Invoice.Query.Model
 {
     public class InvoiceQueryModel
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string InvoiceNo { get; set; }
         public DateTime InvoiceDate { get; set; }
         public DateTime? DueDate { get; set; }
-        public int? SalesOrderId { get; set; }
-        public int? LoanOrderId { get; set; }
+        public Guid? SalesOrderId { get; set; }
+        public Guid? LoanOrderId { get; set; }
         public string TransactionType { get; set; }
         public bool IsApproved { get; set; }
         public string? POPReference { get; set; } // POP - ProofOfPayment
@@ -23,7 +23,7 @@ namespace AOGSystem.Application.Invoice.Query.Model
 
     public class ActiveInvoicesQueryModel
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string InvoiceNo { get; set; }
         public DateTime InvoiceDate { get; set; }
         public DateTime? DueDate { get; set; }

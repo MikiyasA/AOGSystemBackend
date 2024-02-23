@@ -9,7 +9,7 @@ namespace AOGSystem.Application.FollowUp.Query.Model
 {
     public class ActiveAOGFollowupDTO
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string? RID { get; set; }
         public DateTime RequestDate { get; set; }
         public string? AirCraft { get; set; }
@@ -37,7 +37,7 @@ namespace AOGSystem.Application.FollowUp.Query.Model
 
     public class ActiveFollowUpTabsDto
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Name { get; set; }
         public string? Color { get; set; }

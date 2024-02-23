@@ -11,9 +11,9 @@ namespace AOGSystem.Domain.Sales
     {
         SalesPartList Add(SalesPartList salesPartList);
         void Update(SalesPartList salesPartList);
-        void Delete(int id);
+        void Delete(Guid id);
         Task<List<SalesPartList>> GetAllSalesPartLists();
-        Task<SalesPartList> GetSalesPartListByIDAsync(int id);
+        Task<SalesPartList> GetSalesPartListByIDAsync(Guid id);
         Task<int> SaveChangesAsync(string userId = null, CancellationToken cancellationToken = default);
     }
 }

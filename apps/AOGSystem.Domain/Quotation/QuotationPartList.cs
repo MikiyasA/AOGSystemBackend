@@ -10,8 +10,8 @@ namespace AOGSystem.Domain.Quotation
     public class QuotationPartList : BaseEntity
     {
         public Part? Part { get; private set; }
-        public int PartId { get; private set; }
-        public int QuotationId { get; private set; }
+        public Guid PartId { get; private set; }
+        public Guid QuotationId { get; private set; }
         public decimal CurrentPrice { get; private set; }
         public decimal SalesPrice { get; private set; }
         public decimal FixedLoanPrice { get; private set; }
@@ -21,8 +21,8 @@ namespace AOGSystem.Domain.Quotation
         public string? Condition { get; private set;  }
         public string? SerialNumber { get; private set; }
 
-        public void SetPartId(int partId) { PartId = partId; }
-        public void SetQuotationId(int quotationId) { this.QuotationId = quotationId; }
+        public void SetPartId(Guid partId) { PartId = partId; }
+        public void SetQuotationId(Guid quotationId) { this.QuotationId = quotationId; }
         public void SetCurrentPrice(decimal currentPrice) { this.CurrentPrice = currentPrice; }
         public void SetSalesPrice(decimal salesPrice) { this.SalesPrice = salesPrice; }
         public void SetFixedLoanPrice(decimal fixedLoanPrice) { this.FixedLoanPrice = fixedLoanPrice; }
@@ -42,7 +42,7 @@ namespace AOGSystem.Domain.Quotation
             parts = new List<Part>();
         }
 
-        public QuotationPartList(int partId, decimal currentPrice, decimal salesPrice, decimal fixedLoanPrice, decimal loanPricePerDay,
+        public QuotationPartList(Guid partId, decimal currentPrice, decimal salesPrice, decimal fixedLoanPrice, decimal loanPricePerDay,
             decimal exchangePrice, string? stockLocation, string? condition, string? serialNumber)
         {
             this.SetPartId(partId);
@@ -67,7 +67,7 @@ namespace AOGSystem.Domain.Quotation
             parts.Add(newPart);
         }
 
-        public void UpdatePart(int id, string partNumber, string description, string financialClass)
+        public void UpdatePart(Guid id, string partNumber, string description, string financialClass)
         {
             var exists = parts.FirstOrDefault(p => p.Id == id);
             if(exists != null)
@@ -83,7 +83,7 @@ namespace AOGSystem.Domain.Quotation
             parts.Remove(partTBRemoved);
         }
 
-        public void RemovePart(int id)
+        public void RemovePart(Guid id)
         {
             var partTBRemoved = parts.FirstOrDefault(p =>p.Id == id);
             if(partTBRemoved != null)

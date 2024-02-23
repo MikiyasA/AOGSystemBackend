@@ -93,7 +93,7 @@ namespace AOGSystem.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> GetCompanyByID(int id)
+        public async Task<IActionResult> GetCompanyByID(Guid id)
         {
             try
             {

@@ -70,7 +70,7 @@ namespace AOGSystem.Application.Sales.Command
     }
     public class SalesPartLineRemovalCommand : IRequest<ReturnDto<SalesPartListQueryModel>>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public bool IsDeleted { get; set; }
 
         [JsonIgnore]

@@ -44,6 +44,10 @@ namespace AOGSystem.Persistence.EntityConfigurations.FollowUp
                 .HasColumnName("start_date")
                 .IsRequired(false);
 
+            builder.Property(x => x.StartBy)
+                .HasColumnName("start_by")
+                .IsRequired(false);
+
             builder.Property(x => x.DueDate)
                 .HasColumnName("due_date")
                 .IsRequired(false);
@@ -56,9 +60,37 @@ namespace AOGSystem.Persistence.EntityConfigurations.FollowUp
                 .HasColumnName("finished_date")
                 .IsRequired(false);
 
+            builder.Property(x => x.FinishedBy)
+                .HasColumnName("finished_by")
+                .IsRequired(false);
+
+            builder.Property(x => x.AssignedTo)
+                .HasColumnName("assigned_to")
+                .IsRequired(false);
+
+            builder.Property(x => x.ReAssignedTo)
+                .HasColumnName("reassigned_to")
+                .IsRequired(false);
+
+            builder.Property(x => x.ReAssignedBy) 
+                .HasColumnName("reassigned_by")
+                .IsRequired(false);
+
+            builder.Property(x => x.ReAssignedAt) 
+                .HasColumnName("reassigned_at")
+                .IsRequired(false);
+
             builder.Property(x => x.Status)
                 .HasColumnName("status")
                 .IsRequired();
+
+            builder.Property(x => x.ReOpenedBy)
+                .HasColumnName("reopned_by")
+                .IsRequired(false);
+
+            builder.Property(x => x.ReOpenedAt)
+                .HasColumnName("reopned_at")
+                .IsRequired(false);
         }
     }
 }

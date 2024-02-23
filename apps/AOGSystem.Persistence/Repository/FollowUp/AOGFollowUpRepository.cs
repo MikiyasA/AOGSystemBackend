@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
+using AOGSystem.Domain;
 
 namespace AOGSystem.Persistence.Repository.FollowUp
 {
@@ -22,7 +24,7 @@ namespace AOGSystem.Persistence.Repository.FollowUp
             return _context.AOGFollowUps.Add(AOGFollowUp).Entity;
         }
 
-        public async void Delete(int id)
+        public async void Delete(Guid id)
         {
             _context.Remove(_context.AOGFollowUps.FindAsync(id).Result);
         }
@@ -39,15 +41,10 @@ namespace AOGSystem.Persistence.Repository.FollowUp
                     .Collection(x => x.Remarks)
                     .LoadAsync();
             }
-            //var followUp = await _context.AOGFollowUps
-            //    .Where(x => x.Status != "Closed")
-            //    .Include(x => x.Remarks)  // Include Remarks collection
-            //    .Include(x => x.Part)       // Include PN collection
-            //    .ToListAsync();
             return followUp;
         }
 
-        public async Task<List<AOGFollowUp>> GetAllActiveFollowUpByTabIdAsync(int id)
+        public async Task<List<AOGFollowUp>> GetAllActiveFollowUpByTabIdAsync(Guid id)
         {
             var followUp = await _context.AOGFollowUps
                     .Where(x => x.FollowUpTabsId == id)
@@ -67,12 +64,19 @@ namespace AOGSystem.Persistence.Repository.FollowUp
             return followUp;
         }
 
-        public Task<List<AOGFollowUp>> GetAllAOGFollowUpAsync()
+        public async Task<PaginatedList<AOGFollowUp>> GetAllAOGFollowUpAsync(Expression<Func<AOGFollowUp, bool>> predicate, int page, int pageSize)
         {
-            return _context.AOGFollowUps.ToListAsync();
+            IQueryable<AOGFollowUp> query = _context.AOGFollowUps;
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+
+            var result = await PaginatedList<AOGFollowUp>.ToPagedList(query.OrderByDescending(x => x.CreatedAT), page, pageSize);
+            return result;
         }
 
-        public async Task<AOGFollowUp> GetAOGFollowUpByIDAsync(int id)
+        public async Task<AOGFollowUp> GetAOGFollowUpByIDAsync(Guid id)
         {
             var followUp = await _context.AOGFollowUps.FindAsync(id);
             if(followUp != null)

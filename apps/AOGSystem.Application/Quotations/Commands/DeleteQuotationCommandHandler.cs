@@ -33,6 +33,6 @@ namespace AOGSystem.Application.Quotations.Commands
     }
     public class DeleteQuotationCommand : IRequest<int>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
     }
 }

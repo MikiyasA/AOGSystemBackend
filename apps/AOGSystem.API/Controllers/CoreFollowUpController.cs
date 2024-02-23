@@ -1,8 +1,11 @@
 ﻿using AOGSystem.Application.CoreFollowUps.Commands;
+using AOGSystem.Application.CoreFollowUps.Query.Model;
 using AOGSystem.Application.FollowUp.Query.Model;
 using AOGSystem.Domain.CoreFollowUps;
+using AOGSystem.Domain.FollowUp;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq.Expressions;
 using System.Net;
 
 namespace AOGSystem.API.Controllers
@@ -74,42 +77,37 @@ namespace AOGSystem.API.Controllers
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> GetAllCoreFollowUp([FromQuery] FilterCoreQuery query)
+        public async Task<IActionResult> GetAllCoreFollowUp([FromQuery] CoreFollowupSearchQuery query, int page = 1, int pageSize = 20)
         {
             try
             {
-                var data = await _coreFollowUpRepository.GetAllCoreFollowUps(query.Page, query.PageSize);
-
-                //if (query.CreatedStartDate != null)
-                //    data = data.Where(d => d.POCreatedDate >= query.CreatedStartDate).ToList();
-                //if (query.CreatedEndDate != null)
-                //    data = data.Where(d => d.POCreatedDate <= query.CreatedEndDate).ToList();
-                //if (query.ReturnStartDate != null)
-                //    data = data.Where(d => d.ReturnProcessedDate >= query.ReturnStartDate).ToList();
-                //if (query.ReturnEndDate != null)
-                //    data = data.Where(d => d.ReturnProcessedDate <= query.ReturnEndDate).ToList();
-                //if (query.PODStartDate != null)
-                //    data = data.Where(d => d.PODDate >= query.PODStartDate).ToList();
-                //if (query.PODEndDate != null)
-                //    data = data.Where(d => d.PODDate <= query.PODEndDate).ToList();
-                if(query.Status != null)
-                    data = data.Where(d => d.Status == query.Status).ToList();
-
-                if (query.AirCraft != null)
-                    data = data.Where(d => d.Aircraft == query.AirCraft).ToList();
-                if (query.TailNo != null)
-                    data = data.Where(d => d.TailNo == query.TailNo).ToList();
-                if (query.PN != null)
-                    data = data.Where(d => d.PartNumber == query.PN).ToList();
-                if (query.Vendor != null)
-                    data = data.Where(d => d.Vendor == query.Vendor).ToList();
-                if (query.AWBNo != null)
-                    data = data.Where(d => d.AWBNo == query.AWBNo).ToList();
-                if (query.ReturnPart != null)
-                    data = data.Where(d => d.ReturnedPart == query.ReturnPart).ToList();
-
-
-                return Ok(data);
+                Expression<Func<CoreFollowUp, bool>> predicate = queryModel =>
+                    (string.IsNullOrEmpty(query.PONo) || queryModel.PONo.Contains(query.PONo)) &&
+                    (!query.POCreatedDateFrom.HasValue || queryModel.POCreatedDate >= query.POCreatedDateFrom) &&
+                    (!query.POCreatedDateTo.HasValue || queryModel.POCreatedDate <= query.POCreatedDateTo) &&
+                    (string.IsNullOrEmpty(query.Aircraft) || queryModel.Aircraft.Contains(query.Aircraft)) &&
+                    (string.IsNullOrEmpty(query.TailNo) || queryModel.TailNo.Contains(query.TailNo)) &&
+                    (string.IsNullOrEmpty(query.PartNumber) || queryModel.PartNumber.Contains(query.PartNumber)) &&
+                    (string.IsNullOrEmpty(query.StockNo) || queryModel.StockNo.Contains(query.StockNo)) &&
+                    (string.IsNullOrEmpty(query.Vendor) || queryModel.Vendor.Contains(query.Vendor)) &&
+                    (string.IsNullOrEmpty(query.AWBNo) || queryModel.AWBNo.Contains(query.AWBNo)) &&
+                    (string.IsNullOrEmpty(query.ReturnedPart) || queryModel.ReturnedPart.Contains(query.ReturnedPart)) &&
+                    (!query.PODDateFrom.HasValue || queryModel.PODDate >= query.PODDateFrom) &&
+                    (!query.PODDateTo.HasValue || queryModel.PODDate <= query.PODDateTo) &&
+                    (string.IsNullOrEmpty(query.Status) || queryModel.Status.Contains(query.Status));
+                var data = await  _coreFollowUpRepository.GetAllCoreFollowUps(predicate, page, pageSize);
+                var result = new
+                {
+                    metadata = new
+                    {
+                        data.TotalCount,
+                        data.PageSize,
+                        data.CurrentPage,
+                        data.TotalPages,
+                    },
+                    data
+                };
+                return Ok(result);
             }
             catch (Exception ex)
             {

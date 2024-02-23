@@ -10,7 +10,7 @@ namespace AOGSystem.Application.FollowUp.Query.Model
 {
     public class AOGFollowUPSummery
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string? RID { get; set; }
         public DateTime RequestDate { get; set; }
         public string? AirCraft { get; set; }
@@ -18,7 +18,7 @@ namespace AOGSystem.Application.FollowUp.Query.Model
         public string? WorkLocation { get; set; }
         public string? AOGStation { get; set; }
         public string? Customer { get; set; }
-        public int PartId { get; set; }
+        public Guid PartId { get; set; }
         public string? PONumber { get; set; }
         public string? OrderType { get; set; }
         public int Quantity { get; set; }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,9 +13,9 @@ namespace AOGSystem.Domain.FollowUp
         Assignment Add(Assignment assignment);
         void Update(Assignment assignment);
         void Delete(int id);
-        Task<List<Assignment>> GetAllAssignment();
+        Task<PaginatedList<Assignment>> GetAllAssignment(Expression<Func<Assignment, bool>> predicate, int page, int pageSize);
         Task<List<Assignment>> GetActiveAssignment();
         Task<Assignment> GetAssignmentById(int id);
-        Task<List<Assignment>> GetPersonalAssignment(int userId);
+        Task<List<Assignment>> GetActiveAssignmentByUserId(Guid? userId);
     }
 }

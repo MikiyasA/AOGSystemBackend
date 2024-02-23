@@ -22,7 +22,7 @@ namespace AOGSystem.Persistence.Repository.Loans
             return _context.LoanPartLists.Add(loanPartList).Entity;
         }
 
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
             _context.Remove(_context.LoanPartLists.FindAsync(id).Result);
         }
@@ -32,7 +32,7 @@ namespace AOGSystem.Persistence.Repository.Loans
             return await _context.LoanPartLists.ToListAsync();
         }
 
-        public async Task<LoanPartList> GetLoanPartListByIDAsync(int id)
+        public async Task<LoanPartList> GetLoanPartListByIDAsync(Guid id)
         {
             var loanPartList = await _context.LoanPartLists.FindAsync(id);
             if (loanPartList != null)

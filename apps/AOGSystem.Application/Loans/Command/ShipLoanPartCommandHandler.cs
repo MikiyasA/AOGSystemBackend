@@ -75,7 +75,7 @@ namespace AOGSystem.Application.Loans.Command
     }
     public class ShipLoanPartCommand : IRequest<ReturnDto<LoanPartListQueryModel>>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string SerialNo { get; set; }
         public string RID { get; set; }
         public DateTime ShipDate { get; set; }

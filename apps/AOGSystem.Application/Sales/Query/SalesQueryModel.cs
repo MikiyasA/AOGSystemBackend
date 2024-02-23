@@ -8,8 +8,8 @@ namespace AOGSystem.Application.Sales.Query
 {
     public class SalesQueryModel
     {
-        public int Id { get; set; }
-        public int CompanyId { get; set; }
+        public Guid Id { get; set; }
+        public Guid CompanyId { get; set; }
         public string? OrderByName { get; set; }
         public string? OrderByEmail { get; set; }
         public string OrderNo { get; set; }

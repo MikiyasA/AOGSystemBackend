@@ -21,7 +21,7 @@ namespace AOGSystem.Persistence.Repository.General
             return  _context.Companies.Add(company).Entity;
         }
 
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
             _context.Remove(_context.Companies.FindAsync(id).Result);
         }
@@ -37,7 +37,7 @@ namespace AOGSystem.Persistence.Repository.General
 
         }
 
-        public async Task<Company> GetCompanyByIDAsync(int? id)
+        public async Task<Company> GetCompanyByIDAsync(Guid? id)
         {
             var company = await _context.Companies.FindAsync(id);
             if (company != null)

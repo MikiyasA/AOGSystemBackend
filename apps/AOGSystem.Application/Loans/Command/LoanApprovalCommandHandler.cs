@@ -71,7 +71,7 @@ namespace AOGSystem.Application.Loans.Command
     }
     public class LoanApprovalCommand : IRequest<ReturnDto<LoanQueryModel>>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public bool IsApproved { get; set; }
 
         [JsonIgnore]

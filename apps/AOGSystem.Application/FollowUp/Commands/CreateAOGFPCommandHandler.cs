@@ -1,6 +1,7 @@
 ﻿using AOGSystem.Application.FollowUp.Query.Model;
 using AOGSystem.Application.General.Query.Model;
 using AOGSystem.Domain.CoreFollowUps;
+using AOGSystem.Domain.CostSavings;
 using AOGSystem.Domain.FollowUp;
 using AOGSystem.Domain.General;
 using MediatR;
@@ -20,17 +21,20 @@ namespace AOGSystem.Application.FollowUp.Commands
         private readonly IAOGFollowUpRepository _AOGFollowUpRepository;
         private readonly IPartRepository _partRepository;
         private readonly ICoreFollowUpRepository _coreFollowUpRepository;
+        private readonly ICostSavingRepository _costSavingRepository;
         private readonly IMediator _mediator;
         public CreateAOGFPCommandHandler(IFollowUpTabsRepository followUpTabsRepository,
             IAOGFollowUpRepository AOGFollowUpRepository,
             IPartRepository partRepository,
             ICoreFollowUpRepository coreFollowUpRepository,
+            ICostSavingRepository costSavingRepository,
             IMediator mediator)
         {
             _followUpTabsRepository = followUpTabsRepository;
             _AOGFollowUpRepository = AOGFollowUpRepository;
             _partRepository = partRepository;
             _coreFollowUpRepository = coreFollowUpRepository;
+            _costSavingRepository = costSavingRepository;
             _mediator = mediator;
         }
 
@@ -114,6 +118,12 @@ namespace AOGSystem.Application.FollowUp.Commands
                 }
             }
             #endregion
+
+            if (request.HaveCostSaving)
+            {
+                var costSaving = new CostSaving(request.PONumber);
+                _costSavingRepository.Add(costSaving);
+            }
             
             var newRemark = new Remark(model.Id, request.Message);
             newRemark.CreatedAT = DateTime.Now;
@@ -163,7 +173,7 @@ namespace AOGSystem.Application.FollowUp.Commands
 
     public class CreateAOGFPCommand : IRequest<ReturnDto<AOGFollowUPQueryModel>>
     {
-        public int FollowUpTabsId { get; set; }
+        public Guid FollowUpTabsId { get; set; }
 
         public string? RID { get; set; } // Request ID
         public DateTime RequestDate { get; set; }
@@ -190,6 +200,7 @@ namespace AOGSystem.Application.FollowUp.Commands
         public string Message { get; set; }
         public string? Manufacturer { get; set; }
         public string? PartType { get; set; }
+        public bool HaveCostSaving { get; set; }
 
         public CreateAOGFPCommand() { }
 

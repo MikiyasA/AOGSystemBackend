@@ -1,8 +1,10 @@
-﻿using AOGSystem.Domain.FollowUp;
+﻿using AOGSystem.Domain;
+using AOGSystem.Domain.FollowUp;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,9 +35,17 @@ namespace AOGSystem.Persistence.Repository.FollowUp
                 .Where(x => x.Status != "Closed").ToListAsync();
         }
 
-        public Task<List<Assignment>> GetAllAssignment()
+        public async Task<PaginatedList<Assignment>> GetAllAssignment(Expression<Func<Assignment, bool>> predicate, int page, int pageSize)
         {
-            return _context.Assignments.ToListAsync();
+            //return _context.Assignments.ToListAsync();
+            IQueryable<Assignment> query =  _context.Assignments;
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+
+            var result = await PaginatedList<Assignment>.ToPagedList(query.OrderByDescending(x => x.CreatedAT), page, pageSize);
+            return result;
         }
 
         public async Task<Assignment> GetAssignmentById(int id)
@@ -48,9 +58,13 @@ namespace AOGSystem.Persistence.Repository.FollowUp
             return assignement;
         }
 
-        public Task<List<Assignment>> GetPersonalAssignment(int userId)
+        public async Task<List<Assignment>> GetActiveAssignmentByUserId(Guid? userId)
         {
-            throw new NotImplementedException();
+            var assignments = await _context.Assignments
+                .Where(x => x.Status != "Closed" &&
+                            (userId == null || x.AssignedTo == userId || x.ReAssignedTo == userId))
+                .ToListAsync();
+            return assignments;
         }
 
         public async Task<int> SaveChangesAsync(string userId = null, CancellationToken cancellationToken = default)

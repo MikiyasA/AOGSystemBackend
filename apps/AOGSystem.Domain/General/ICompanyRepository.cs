@@ -10,9 +10,9 @@ namespace AOGSystem.Domain.General
     {
         Company Add(Company company);
         void Update(Company company);
-        void Delete(int id);
+        void Delete(Guid id);
         Task<List<Company>> GetAllCompanyAsync();
-        Task<Company> GetCompanyByIDAsync(int? id);
+        Task<Company> GetCompanyByIDAsync(Guid? id);
         List<Company> GetCompanyByCode(string code);
         Company GetSingleCompanyByCode(string code);
         List<Company> GetCompanyByName(string name);

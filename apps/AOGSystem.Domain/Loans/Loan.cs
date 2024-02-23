@@ -9,7 +9,7 @@ namespace AOGSystem.Domain.Loans
     public class Loan : BaseEntity
     {
         public string OrderNo { get; private set; }
-        public int CompanyId { get; private set; }
+        public Guid CompanyId { get; private set; }
         public string CustomerOrderNo { get; private set; }
         public string OrderedByName { get; private set; }
         public string? OrderedByEmail { get; private set; }
@@ -19,7 +19,7 @@ namespace AOGSystem.Domain.Loans
         public string? Note { get; private set; }
 
         public void SetOrderNo(string orderNo) { OrderNo = orderNo; }
-        public void SetCompanyId(int companyId) { CompanyId = companyId; }
+        public void SetCompanyId(Guid companyId) { CompanyId = companyId; }
         public void SetCustomerOrderNo(string customerOrderNo) { CustomerOrderNo = customerOrderNo; }
         public void SetOrderedByName(string orderByName) { OrderedByName = orderByName; }
         public void SetOrderedByEmail(string orderByEmail) { OrderedByEmail = orderByEmail; }
@@ -35,7 +35,7 @@ namespace AOGSystem.Domain.Loans
         {
             loanPartLists = new List<LoanPartList>();
         }
-        public Loan(string orderNo, int companyId, string customerOrderNo, string orderedByName, string? orderedByEmail, string shipToAddress, string? status, bool isApproved, string? note) : this ()
+        public Loan(string orderNo, Guid companyId, string customerOrderNo, string orderedByName, string? orderedByEmail, string shipToAddress, string? status, bool isApproved, string? note) : this ()
         {
             SetOrderNo(orderNo);
             SetCompanyId(companyId);
@@ -53,13 +53,13 @@ namespace AOGSystem.Domain.Loans
             loanPartLists.Add(loanPartList);
         }
 
-        public void AddLoanPartList(int partId, int quantity, string uOM, string? serialNo, string? rID, DateTime? shipDate, string? shippingReference, DateTime? receivedDate, string? receivingReference, string? receivingDefect, bool isDeleted, bool isInvoiced)
+        public void AddLoanPartList(Guid partId, int quantity, string uOM, string? serialNo, string? rID, DateTime? shipDate, string? shippingReference, DateTime? receivedDate, string? receivingReference, string? receivingDefect, bool isDeleted, bool isInvoiced)
         {
             var newItem = new LoanPartList(partId, quantity, uOM, serialNo, rID, shipDate, shippingReference, receivedDate, receivingReference, receivingDefect, isDeleted, isInvoiced);
             AddLoanPartList(newItem);
         }
 
-        public void UpdateLoanPartList(int id, int partId, int quantity, string uOM, string? serialNo, string? rID, DateTime? shipDate, string? shippingReference, DateTime? receivedDate, string? receivingReference, string? receivingDefect, bool isDeleted, bool isInvoiced)
+        public void UpdateLoanPartList(Guid id, Guid partId, int quantity, string uOM, string? serialNo, string? rID, DateTime? shipDate, string? shippingReference, DateTime? receivedDate, string? receivingReference, string? receivingDefect, bool isDeleted, bool isInvoiced)
         {
             var exists = loanPartLists.FirstOrDefault(x => x.Id == id);
             if(exists != null)
@@ -84,7 +84,7 @@ namespace AOGSystem.Domain.Loans
             loanPartLists.Remove(loanPartList);
         }
 
-        public void RemoveLoanPartList(int id)
+        public void RemoveLoanPartList(Guid id)
         {
             var exists = loanPartLists.FirstOrDefault(x => x.Id == id);
             if (exists != null)

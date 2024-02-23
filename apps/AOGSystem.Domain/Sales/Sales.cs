@@ -8,7 +8,7 @@ namespace AOGSystem.Domain.Sales
 {
     public class Sales : BaseEntity
     {
-        public int CompanyId { get; private set; }
+        public Guid CompanyId { get; private set; }
         public string? OrderByName { get; private set; }
         public string? OrderByEmail { get; private set; }
         public string OrderNo { get; private set; }
@@ -23,7 +23,7 @@ namespace AOGSystem.Domain.Sales
         public bool ReceivedByCustomer { get; private set; } = false;
         public DateTime? ReceivedDate { get; private set; }
 
-        public void SetCompanyId(int companyId) { CompanyId = companyId; }
+        public void SetCompanyId(Guid companyId) { CompanyId = companyId; }
         public void SetOrderByName(string? orderName) { OrderByName = orderName; }
         public void SetOrderByEmail(string email) { OrderByEmail = email; }
         public void SetOrderNo(string orderNo) { OrderNo = orderNo; }
@@ -46,7 +46,7 @@ namespace AOGSystem.Domain.Sales
             salesPartLists= new List<SalesPartList>();
         }
 
-        public Sales(int companyId, string? orderByName, string? orderByEmail, string orderNo, string? customerOrderNo, string? shipToAddress, string status, string? note) : this()
+        public Sales(Guid companyId, string? orderByName, string? orderByEmail, string orderNo, string? customerOrderNo, string? shipToAddress, string status, string? note) : this()
         {
             SetCompanyId(companyId);
             SetOrderByName(orderByName);
@@ -63,13 +63,13 @@ namespace AOGSystem.Domain.Sales
             salesPartLists.Add(salesPartList);
         }
 
-        public void AddSalesPartList(int partId, int quantity, string uom, int unitPrice, int totalPrice, string currency, string rid, string serialNo, bool isDeleted)
+        public void AddSalesPartList(Guid partId, int quantity, string uom, int unitPrice, int totalPrice, string currency, string rid, string serialNo, bool isDeleted)
         {
             var newItem = new SalesPartList(partId, quantity, uom, unitPrice, totalPrice, currency, rid, serialNo, isDeleted);
             AddSalesPartList(newItem);
         }
 
-        public void UpdateSalesPartList(int id, int partId, int quantity, string uom, int unitPrice, int totalPrice, string currency, string rid, string serialNo, bool isDeleted)
+        public void UpdateSalesPartList(Guid id, Guid partId, int quantity, string uom, int unitPrice, int totalPrice, string currency, string rid, string serialNo, bool isDeleted)
         {
             var existing = salesPartLists.FirstOrDefault(s => s.Id == id);
             if (existing != null)
@@ -91,7 +91,7 @@ namespace AOGSystem.Domain.Sales
             salesPartLists.Remove(salesPartList);
         }
 
-        public void RemoveSalesPartList(int id)
+        public void RemoveSalesPartList(Guid id)
         {
             var existing = salesPartLists.FirstOrDefault(s => s.Id == id);
             if(existing != null)

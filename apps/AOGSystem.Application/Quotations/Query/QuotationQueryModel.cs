@@ -10,18 +10,18 @@ namespace AOGSystem.Application.Quotations.Query
 {
     public class QuotationSummary
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public bool Loan { get;  set; }
         public bool Sales { get;  set; }
         public bool Exchange { get;  set; }
         public string CompanyCode { get; set; }
-        public int CompanyId { get; set; }
+        public Guid CompanyId { get; set; }
 
         public string? RequestedByName { get;  set; }
         public string? RequestedByEmail { get;  set; }
         public string? RequestedByPhone { get;  set; }
         public User? OfferedBy { get;  set; }
-        public int? OfferedById { get;  set; }
+        public Guid? OfferedById { get;  set; }
 
         public static Quotation ToModel(QuotationSummary item)
         {

@@ -75,7 +75,7 @@ namespace AOGSystem.Application.Loans.Command
     }
     public class AddOfferComman : IRequest<ReturnDto<OfferQueryModel>>
     {
-        public int loanPartListId { get; set; }
+        public Guid loanPartListId { get; set; }
         public string Description { get; set; }
         public double BasePrice { get; set; }
 

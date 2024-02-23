@@ -71,7 +71,7 @@ namespace AOGSystem.Application.Invoice.Commands
 
     public class InvoiceApprovalCommand : IRequest<ReturnDto<InvoiceQueryModel>>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public bool IsApproved { get; set; }
 
         [JsonIgnore]

@@ -74,7 +74,7 @@ namespace AOGSystem.Application.Sales.Command
 
     public class SalesCloserCommand : IRequest<ReturnDto<SalesQueryModel>>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Status { get; set; }
 
         [JsonIgnore]

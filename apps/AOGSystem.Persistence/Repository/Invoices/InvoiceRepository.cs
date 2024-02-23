@@ -1,10 +1,13 @@
-﻿using AOGSystem.Domain.Invoices;
+﻿using AOGSystem.Domain.FollowUp;
+using AOGSystem.Domain;
+using AOGSystem.Domain.Invoices;
 using DocumentFormat.OpenXml.Drawing.Charts;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,7 +25,7 @@ namespace AOGSystem.Persistence.Repository.Invoices
             return _context.Invoices.Add(invoice).Entity;
         }
 
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
             _context.Remove(_context.Invoices.FindAsync(id).Result);
         }
@@ -32,9 +35,16 @@ namespace AOGSystem.Persistence.Repository.Invoices
             return await _context.Invoices.Where(x => x.Status.ToLower() != "close").Include(x => x.InvoicePartLists).ToListAsync();
         }
 
-        public Task<List<Invoice>> GetAllInvoices()
+        public async Task<PaginatedList<Invoice>> GetAllInvoices(Expression<Func<Invoice, bool>> predicate, int page, int pageSize)
         {
-            return _context.Invoices.ToListAsync();
+            IQueryable<Invoice> query = _context.Invoices;
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+            var result = await PaginatedList<Invoice>.ToPagedList(query.OrderByDescending(x => x.CreatedAT), page, pageSize);
+            return result;
+
         }
 
         public async Task<List<Invoice>> GetApprovedlInvoices()
@@ -42,7 +52,7 @@ namespace AOGSystem.Persistence.Repository.Invoices
             return await _context.Invoices.Where(x => x.IsApproved == true).ToListAsync();
         }
 
-        public async Task<Invoice> GetInvoiceByIDAsync(int id)
+        public async Task<Invoice> GetInvoiceByIDAsync(Guid id)
         {
             var invoice = await _context.Invoices.FindAsync(id);
             if (invoice != null)
@@ -70,14 +80,14 @@ namespace AOGSystem.Persistence.Repository.Invoices
                 .ToListAsync();
         }
 
-        public async Task<List<Invoice>> GetInvoiceByLoanOrderIdAsync(int orderId)
+        public async Task<List<Invoice>> GetInvoiceByLoanOrderIdAsync(Guid orderId)
         {
             return await _context.Invoices.Where(x => x.LoanOrderId == orderId)
                 .Include(x => x.InvoicePartLists)
                 .ToListAsync();
         }
 
-        public async Task<List<Invoice>> GetInvoiceBySalesOrderIdAsync(int orderId)
+        public async Task<List<Invoice>> GetInvoiceBySalesOrderIdAsync(Guid orderId)
         {
             return await _context.Invoices.Where(x => x.SalesOrderId == orderId)
                 .Include(x => x.InvoicePartLists)

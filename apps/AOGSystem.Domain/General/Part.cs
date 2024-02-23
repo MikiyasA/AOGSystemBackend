@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AOGSystem.Domain.Attachments;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,8 +15,6 @@ namespace AOGSystem.Domain.General
         public string? FinancialClass { get; private set; }
         public string? Manufacturer { get; private set; }
         public string? PartType { get; private set; }
-
-
 
         public void SetPartNumber(string? partNumber) { this.PartNumber = partNumber; }
         public void SetDescription(string? description) { this.Description = description; }

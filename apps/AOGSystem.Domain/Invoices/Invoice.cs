@@ -13,8 +13,8 @@ namespace AOGSystem.Domain.Invoices
         public string InvoiceNo { get; private set; }
         public DateTime InvoiceDate { get; private set; }
         public DateTime? DueDate { get; private set; }
-        public int? SalesOrderId { get; private set; }
-        public int? LoanOrderId { get; private set; }
+        public Guid? SalesOrderId { get; private set; }
+        public Guid? LoanOrderId { get; private set; }
         public string TransactionType { get; private set; }
         public bool IsApproved { get; private set; }
         public string? POPReference { get; private set; } // POP - ProofOfPayment
@@ -25,8 +25,8 @@ namespace AOGSystem.Domain.Invoices
         public void SetInvoiceNo(string invoiceNo) { InvoiceNo = invoiceNo; }
         public void SetInvoiceDate(DateTime invoiceDate) { InvoiceDate = invoiceDate; }
         public void SetDueDate(DateTime? dueDate) { DueDate = dueDate; }
-        public void SetSalesOrderId(int? salesOrderId) { SalesOrderId = salesOrderId; }
-        public void SetLoanOrderId(int? loanOrderId) { LoanOrderId = loanOrderId; }
+        public void SetSalesOrderId(Guid? salesOrderId) { SalesOrderId = salesOrderId; }
+        public void SetLoanOrderId(Guid? loanOrderId) { LoanOrderId = loanOrderId; }
         public void SetTransactionType(string transactionType) { TransactionType = transactionType; }
         public void SetIsApproved(bool isApproved) { IsApproved = isApproved; }
         public void SetPOPReference(string popReference) { POPReference = popReference; }
@@ -42,7 +42,7 @@ namespace AOGSystem.Domain.Invoices
             invoicePartLists = new List<InvoicePartList>();
         }
 
-        public Invoice(string invoiceNo, DateTime invoiceDate, DateTime? dueDate, int? salesOrderId, int? loanOrderId, string transactionType, bool isApproved, string? pOPReference, DateTime? pOPDate,
+        public Invoice(string invoiceNo, DateTime invoiceDate, DateTime? dueDate, Guid? salesOrderId, Guid? loanOrderId, string transactionType, bool isApproved, string? pOPReference, DateTime? pOPDate,
             string status, string? remark) : this()
         {
             SetInvoiceNo(invoiceNo);
@@ -63,13 +63,13 @@ namespace AOGSystem.Domain.Invoices
             invoicePartLists.Add(salesPartList);
         }
 
-        public void AddInvoicePartList(int partId, int quantity, string uom, int unitPrice, int totalPrice, string currency, string rid, string serialNo, List<Offer>? offers)
+        public void AddInvoicePartList(Guid partId, int quantity, string uom, int unitPrice, int totalPrice, string currency, string rid, string serialNo, List<Offer>? offers)
         {
             var newItem = new InvoicePartList(partId, quantity, uom, unitPrice, totalPrice, currency, rid, serialNo, offers);
             AddInvoicePartList(newItem);
         }
 
-        public void UpdateInvoicePartList(int id, int partId, int quantity, string uom, int unitPrice, int totalPrice, string currency, string rid, string serialNo, bool isDeleted)
+        public void UpdateInvoicePartList(Guid id, Guid partId, int quantity, string uom, int unitPrice, int totalPrice, string currency, string rid, string serialNo, bool isDeleted)
         {
             var existing = invoicePartLists.FirstOrDefault(s => s.Id == id);
             if (existing != null)
@@ -90,7 +90,7 @@ namespace AOGSystem.Domain.Invoices
             invoicePartLists.Remove(salesPartList);
         }
 
-        public void RemoveInvoicePartList(int id)
+        public void RemoveInvoicePartList(Guid id)
         {
             var existing = invoicePartLists.FirstOrDefault(s => s.Id == id);
             if (existing != null)

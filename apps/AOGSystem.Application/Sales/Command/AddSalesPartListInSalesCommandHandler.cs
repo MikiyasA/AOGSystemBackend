@@ -72,12 +72,12 @@ namespace AOGSystem.Application.Sales.Command
     }
     public class AddSalesPartListInSalesCommand : IRequest<ReturnDto<SalesPartListQueryModel>>
     {
-        public int SalesId { get; set; }
-        public int PartId { get; set; }
+        public Guid SalesId { get; set; }
+        public Guid PartId { get; set; }
         public int Quantity { get; set; }
         public string UOM { get; set; }
-        public int UnitPrice { get; set; }
-        public int TotalPrice { get; set; }
+        public double UnitPrice { get; set; }
+        public double TotalPrice { get; set; }
         public string Currency { get; set; }
         public string? RID { get; set; }
         public string? SerialNo { get; set; }

@@ -1,10 +1,13 @@
-﻿using AOGSystem.Domain.Loans;
+﻿using AOGSystem.Domain.FollowUp;
+using AOGSystem.Domain;
+using AOGSystem.Domain.Loans;
 using AOGSystem.Domain.Sales;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -36,9 +39,15 @@ namespace AOGSystem.Persistence.Repository.Loans
                 .ToListAsync();
         }
 
-        public async Task<List<Loan>> GetAllLoans()
+        public async Task<PaginatedList<Loan>> GetAllLoans(Expression<Func<Loan, bool>> predicate, int page, int pageSize)
         {
-            return await _context.Loans.ToListAsync();
+            IQueryable<Loan> query = _context.Loans;
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+            var result = await PaginatedList<Loan>.ToPagedList(query.OrderByDescending(x => x.CreatedAT), page, pageSize);
+            return result;
         }
 
         public async Task<Loan> GetLastLoanOrder()
@@ -46,7 +55,7 @@ namespace AOGSystem.Persistence.Repository.Loans
             return await _context.Loans.OrderByDescending(x => x.OrderNo).FirstOrDefaultAsync();
         }
 
-        public async Task<List<Loan>> GetLoanByCompanyIdAsync(int companyId)
+        public async Task<List<Loan>> GetLoanByCompanyIdAsync(Guid companyId)
         {
             return await _context.Loans.Where(x => x.CompanyId == companyId).ToListAsync();
         }
@@ -61,7 +70,7 @@ namespace AOGSystem.Persistence.Repository.Loans
             return loan;
         }
 
-        public async Task<Loan> GetLoanByIDAsync(int? id)
+        public async Task<Loan> GetLoanByIDAsync(Guid? id)
         {
             var loan = await _context.Loans
                 .Include(x => x.LoanPartLists)

@@ -76,9 +76,9 @@ namespace AOGSystem.Application.Loans.Command
     }
     public class UpdateLoanComman : IRequest<ReturnDto<LoanQueryModel>>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string OrderNo { get; set; }
-        public int CompanyId { get; set; }
+        public Guid CompanyId { get; set; }
         public string CustomerOrderNo { get; set; }
         public string OrderedByName { get; set; }
         public string? OrderedByEmail { get; set; }

@@ -23,7 +23,7 @@ namespace AOGSystem.Persistence.Repository.FollowUp
             return _context.FollowUpTabs.Add(FollowUpTabs).Entity;
         }
 
-        public async void Delete(int id)
+        public async void Delete(Guid id)
         {
             _context.Remove(_context.FollowUpTabs.FindAsync(id).Result);
         }
@@ -53,7 +53,7 @@ namespace AOGSystem.Persistence.Repository.FollowUp
             return _context.FollowUpTabs.ToListAsync();
         }
 
-        public async Task<FollowUpTabs> GetFollowUpTabsByIDAsync(int id)
+        public async Task<FollowUpTabs> GetFollowUpTabsByIDAsync(Guid id)
         {
             var followUp = await _context.FollowUpTabs.FindAsync(id);
             //if(followUp != null)

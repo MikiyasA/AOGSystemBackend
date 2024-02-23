@@ -1,10 +1,13 @@
-﻿using AOGSystem.Domain.General;
+﻿using AOGSystem.Domain.FollowUp;
+using AOGSystem.Domain;
+using AOGSystem.Domain.General;
 using AOGSystem.Domain.Sales;
 using Microsoft.EntityFrameworkCore;
 using Ocelot.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,7 +25,7 @@ namespace AOGSystem.Persistence.Repository.Sales
             return _context.Sales.Add(sales).Entity;
         }
 
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
             _context.Remove(_context.Sales.FindAsync(id).Result);
         }
@@ -35,9 +38,16 @@ namespace AOGSystem.Persistence.Repository.Sales
 
         }
 
-        public async Task<List<Domain.Sales.Sales>> GetAllSales()
+        public async Task<PaginatedList<Domain.Sales.Sales>> GetAllSales(Expression<Func<Domain.Sales.Sales, bool>> predicate, int page, int pageSize)
         {
-            return await _context.Sales.ToListAsync();
+            IQueryable<Domain.Sales.Sales> query = _context.Sales;
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+            var result = await PaginatedList<Domain.Sales.Sales>.ToPagedList(query.OrderByDescending(x => x.CreatedAT), page, pageSize);
+            return result;
+
         }
 
         public async Task<Domain.Sales.Sales> GetLastSalesOrder()
@@ -45,7 +55,7 @@ namespace AOGSystem.Persistence.Repository.Sales
             return await _context.Sales.OrderByDescending(x => x.OrderNo).FirstOrDefaultAsync(); ;
         }
 
-        public async Task<List<Domain.Sales.Sales>> GetSalesByCompanyIdAsync(int companyId)
+        public async Task<List<Domain.Sales.Sales>> GetSalesByCompanyIdAsync(Guid companyId)
         {
             return await _context.Sales.Where(x => x.CompanyId == companyId).ToListAsync();
         }
@@ -60,7 +70,7 @@ namespace AOGSystem.Persistence.Repository.Sales
             return sales;
         }
 
-        public async Task<Domain.Sales.Sales> GetSalesByIDAsync(int? id)
+        public async Task<Domain.Sales.Sales> GetSalesByIDAsync(Guid? id)
         {
             var sales = await _context.Sales.FindAsync(id);
             if (sales != null)

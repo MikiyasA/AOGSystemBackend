@@ -55,7 +55,7 @@ namespace AOGSystem.Application.Invoice.Commands
                     var salesPartList = await _salePartListRepository.GetSalesPartListByIDAsync(partList.Id);
                     salesPartList.SetIsInvoiced(true);
                     _salePartListRepository.Update(salesPartList);
-                    partList.Id = 0;
+                    partList.Id = Guid.Empty;
                     model.AddInvoicePartList(partList);
                 }
                 if (request.TransactionType == "Loan")
@@ -67,7 +67,7 @@ namespace AOGSystem.Application.Invoice.Commands
                     var totalPrice = unitPrice * partList.Quantity;
                     partList.SetUnitPrice(unitPrice);
                     partList.SetTotalPrice(totalPrice);
-                    partList.Id = 0;
+                    partList.Id = Guid.Empty;
                     model.AddInvoicePartList(partList);
                 }
             }
@@ -114,8 +114,8 @@ namespace AOGSystem.Application.Invoice.Commands
 
     public class CreateInvoiceCommand : IRequest<ReturnDto<InvoiceQueryModel>>
     {
-        public int? SalesOrderId { get; set; }
-        public int? LoanOrderId { get; set; }
+        public Guid? SalesOrderId { get; set; }
+        public Guid? LoanOrderId { get; set; }
         public string? TransactionType { get; set; }
         public string? Remark { get; set; }
 

@@ -33,6 +33,6 @@ namespace AOGSystem.Application.General.Commands.Part
     }
     public class DeletePartCommand : IRequest<int>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
     }
 }

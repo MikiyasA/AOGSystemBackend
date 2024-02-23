@@ -162,8 +162,8 @@ namespace AOGSystem.Application.FollowUp.Commands
 
     public class UpdateAOGFPCommand : IRequest<ReturnDto<AOGFollowUPQueryModel>>
     {
-        public int FollowUpTabsId { get; set; }
-        public int Id { get; set; }
+        public Guid FollowUpTabsId { get; set; }
+        public Guid Id { get; set; }
         public string? RID { get; set; } // Request ID
         public DateTime RequestDate { get; set; }
         public string? AirCraft { get; set; }
@@ -191,7 +191,7 @@ namespace AOGSystem.Application.FollowUp.Commands
 
         public UpdateAOGFPCommand() { }
 
-        public UpdateAOGFPCommand(int id, string? rID, DateTime requestDate, string? airCraft, string? tailNo, string? workLocation, string aogStation,
+        public UpdateAOGFPCommand(Guid id, string? rID, DateTime requestDate, string? airCraft, string? tailNo, string? workLocation, string aogStation,
             string? customer, string? partNumber, string? description, string? stockNo, string? pONumber, string? orderType,
             int quantity, string? uOM, string? vendor, DateTime? eDD, string status, string awbNo, bool needHigherMgntAttn) : this()
         {

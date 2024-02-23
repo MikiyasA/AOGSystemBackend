@@ -10,7 +10,7 @@ namespace AOGSystem.Domain.Invoices
 {
     public class InvoicePartList : BaseEntity
     {
-        public int PartId { get; private set; }
+        public Guid PartId { get; private set; }
         //public int InvoiceId { get; private set; }
         public int Quantity { get; private set; }
         public string UOM { get; private set; }
@@ -22,7 +22,7 @@ namespace AOGSystem.Domain.Invoices
         public List<Offer>? Offers { get; private set; }
 
 
-        public void SetPartId(int partId) { this.PartId = partId; }
+        public void SetPartId(Guid partId) { this.PartId = partId; }
         //public void SetInvoiceId(int invoiceId) { this.InvoiceId = invoiceId; }
         public void SetQuantity(int quantity) { this.Quantity = quantity; }
         public void SetUOM(string uOM) { this.UOM = uOM; }
@@ -33,7 +33,7 @@ namespace AOGSystem.Domain.Invoices
         public void SetSerialNo(string serialNo) { this.SerialNo = serialNo; }
         public void SetOffers(List<Offer>? offers) { Offers = offers; }
 
-        public InvoicePartList(int partId, int quantity, string uOM, double? unitPrice, double? totalPrice, string currency, string? rID, string? serialNo, List<Offer>? offers)
+        public InvoicePartList(Guid partId, int quantity, string uOM, double? unitPrice, double? totalPrice, string currency, string? rID, string? serialNo, List<Offer>? offers)
         {
             this.SetPartId(partId);
             this.SetQuantity(quantity);

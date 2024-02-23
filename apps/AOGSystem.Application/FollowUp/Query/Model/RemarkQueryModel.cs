@@ -9,8 +9,8 @@ namespace AOGSystem.Application.FollowUp.Query.Model
 {
     public class RemarkSummery
     {
-        public int Id { get; set; }
-        public int AOGFollowUpId { get; set; }
+        public Guid Id { get; set; }
+        public Guid AOGFollowUpId { get; set; }
         public string? Message { get; set; }
 
         internal static Remark ToModel(RemarkSummery item)

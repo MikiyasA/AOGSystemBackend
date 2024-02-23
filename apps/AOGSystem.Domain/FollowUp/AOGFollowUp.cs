@@ -27,9 +27,9 @@ namespace AOGSystem.Domain.FollowUp
         public string FlightNo { get; private set; }
         public bool NeedHigherMgntAttn { get; private set; }
         public Part? Part { get; set; }
-        public int PartId { get; set; }
+        public Guid PartId { get; set; }
 
-        public int FollowUpTabsId { get; private set; }
+        public Guid FollowUpTabsId { get; private set; }
 
 
         public void SetRID(string rid) { this.RID = rid; }
@@ -39,7 +39,7 @@ namespace AOGSystem.Domain.FollowUp
         public void SetWorkLocation(string workLocation) { this.WorkLocation = workLocation; }
         public void SetAOGStation(string aogStation) { this.AOGStation= aogStation; }
         public void SetCustomer(string customer) { this.Customer = customer; }
-        public void SetPartId(int partId) { this.PartId = partId; }
+        public void SetPartId(Guid partId) { this.PartId = partId; }
         public void SetPONumber(string pONumber) { this.PONumber = pONumber; }
         public void SetOrderType(string orderType) { this.OrderType = orderType; }
         public void SetQuantity(int quantity) { this.Quantity = quantity; }
@@ -51,7 +51,7 @@ namespace AOGSystem.Domain.FollowUp
         public void SetFlightNo(string flightNo) { this.FlightNo = flightNo; }
         public void SetNeedHigherMgntAttn(bool needHigherMgntAttn) { this.NeedHigherMgntAttn = needHigherMgntAttn; }
 
-        public void SetFollowUpTabsId(int followUpTabsId) { FollowUpTabsId = followUpTabsId; }
+        public void SetFollowUpTabsId(Guid followUpTabsId) { FollowUpTabsId = followUpTabsId; }
 
 
         //private readonly List<Part> parts;
@@ -69,7 +69,7 @@ namespace AOGSystem.Domain.FollowUp
         }
 
         public AOGFollowUp(string rID, DateTime requestDate, string airCraft, string tailNo, string workLocation, string aogStation, 
-            string customer, int partId, string pONumber, string? orderType, int quantity, string uOM, string vendor, DateTime? eSD, 
+            string customer, Guid partId, string pONumber, string? orderType, int quantity, string uOM, string vendor, DateTime? eSD, 
             string status, string awbNo, string flightNo, bool needHigherMgntAttn) : this ()
         {
             this.SetRID(rID);
@@ -98,13 +98,13 @@ namespace AOGSystem.Domain.FollowUp
             remarks.Add(remark);
         }
 
-        public void AddRemark(int aogFPId, string message)
+        public void AddRemark(Guid aogFPId, string message)
         {
             var remark = new Remark(aogFPId, message);
             remarks.Add(remark);
         }
 
-        public void UpdateRemark(int id, int aogFPId, string message)
+        public void UpdateRemark(Guid id, Guid aogFPId, string message)
         {
             var exist = remarks.FirstOrDefault(x => x.Id == id);
             if (exist != null)
@@ -119,7 +119,7 @@ namespace AOGSystem.Domain.FollowUp
         {
             remarks.Remove(remark);
         }
-        public void RemoveRemark(int id) 
+        public void RemoveRemark(Guid id) 
         {
             var exist = remarks.FirstOrDefault(x => x.Id == id);
             if (exist != null)

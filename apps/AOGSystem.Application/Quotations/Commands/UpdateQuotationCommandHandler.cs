@@ -59,7 +59,7 @@ namespace AOGSystem.Application.Quotations.Commands
     }
     public class UpdateQuotationCommand : IRequest<QuotationQueryModel>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public bool Loan { get; set; }
         public bool Sales { get; set; }

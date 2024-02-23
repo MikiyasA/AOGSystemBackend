@@ -70,9 +70,9 @@ namespace AOGSystem.Application.Sales.Command
     }
     public class UpdateSalesPartListInSalesCommand : IRequest<ReturnDto<SalesPartListQueryModel>>
     {
-        public int Id { get; set; }
-        public int SalesId { get; set; }
-        public int PartId { get; set; }
+        public Guid Id { get; set; }
+        public Guid SalesId { get; set; }
+        public Guid PartId { get; set; }
         public int Quantity { get; set; }
         public string UOM { get; set; }
         public int UnitPrice { get; set; }

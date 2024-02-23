@@ -1,7 +1,10 @@
 ﻿using AOGSystem.Application.Loans.Command;
+using AOGSystem.Application.Loans.Query;
+using AOGSystem.Domain.FollowUp;
 using AOGSystem.Domain.Loans;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq.Expressions;
 using System.Net;
 
 namespace AOGSystem.API.Controllers
@@ -70,11 +73,32 @@ namespace AOGSystem.API.Controllers
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> GetAllLoans()
+        public async Task<IActionResult> GetAllLoans([FromQuery] LoanSearchQuery query, int page = 1, int pageSize = 20)
         {
             try
             {
-                return Ok(await _loanRepository.GetAllLoans());
+                Expression<Func<Loan, bool>> predicate = queryModel =>
+                    (string.IsNullOrEmpty(query.OrderNo) || queryModel.OrderNo.Contains(query.OrderNo)) &&
+                    (!query.CompanyId.HasValue || queryModel.CompanyId == query.CompanyId) &&
+                    (string.IsNullOrEmpty(query.CustomerOrderNo) || queryModel.CustomerOrderNo.Contains(query.CustomerOrderNo)) &&
+                    (string.IsNullOrEmpty(query.OrderedByName) || queryModel.OrderedByName.Contains(query.OrderedByName)) &&
+                    (string.IsNullOrEmpty(query.OrderedByEmail) || queryModel.OrderedByEmail.Contains(query.OrderedByEmail)) &&
+                    (string.IsNullOrEmpty(query.ShipToAddress) || queryModel.ShipToAddress.Contains(query.ShipToAddress)) &&
+                    (string.IsNullOrEmpty(query.Status) || queryModel.Status.Contains(query.Status));
+
+                var data = await _loanRepository.GetAllLoans(predicate, page, pageSize);
+                var result = new
+                {
+                    metadata = new
+                    {
+                        data.TotalCount,
+                        data.PageSize,
+                        data.CurrentPage,
+                        data.TotalPages,
+                    },
+                    data
+                };
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -85,7 +109,7 @@ namespace AOGSystem.API.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> GetLoanByID(int id)
+        public async Task<IActionResult> GetLoanByID(Guid id)
         {
             try
             {
@@ -100,7 +124,7 @@ namespace AOGSystem.API.Controllers
         [HttpGet("{companyId}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> GetLoanByCompanyId(int companyId)
+        public async Task<IActionResult> GetLoanByCompanyId(Guid companyId)
         {
             try
             {
@@ -280,7 +304,7 @@ namespace AOGSystem.API.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> GetLoanPartListByID(int id)
+        public async Task<IActionResult> GetLoanPartListByID(Guid id)
         {
             try
             {

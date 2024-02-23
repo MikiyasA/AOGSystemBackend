@@ -1,4 +1,5 @@
-﻿using AOGSystem.Domain.FollowUp;
+﻿using AOGSystem.Domain.Attachments;
+using AOGSystem.Domain.FollowUp;
 using AOGSystem.Domain.General;
 using AOGSystem.Domain.Quotation;
 using Microsoft.EntityFrameworkCore;
@@ -66,6 +67,12 @@ namespace AOGSystem.Persistence.EntityConfigurations.General
 
             builder.Property(x => x.PartType)
                 .HasColumnName("part_type");
+
+            //builder.HasMany(p => p.Attachments)
+            //.WithOne()
+            //.HasForeignKey(al => al.EntityId)
+            //.HasConstraintName("FK_Part_AttachmentLink");
+
         }
     }
 }

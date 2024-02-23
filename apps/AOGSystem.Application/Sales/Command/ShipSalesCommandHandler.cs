@@ -79,7 +79,7 @@ namespace AOGSystem.Application.Sales.Command
     }
     public class ShipSalesCommand : IRequest<ReturnDto<SalesQueryModel>>
     {
-        public int SalesId { get; set; }
+        public Guid SalesId { get; set; }
         public bool IsFullyShipped { get;  set; } 
         public string? AWBNo { get;  set; }
         public DateTime? ShipDate { get;  set; }

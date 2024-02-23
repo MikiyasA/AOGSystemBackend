@@ -62,7 +62,7 @@ namespace AOGSystem.Application.General.Commands.Part
     }
     public class UpdatePartCommand : IRequest<ReturnDto<PartQueryModel>>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string? PartNumber { get; set; }
         public string? Description { get; set; }
         public string? StockNo { get; set; }
@@ -77,7 +77,7 @@ namespace AOGSystem.Application.General.Commands.Part
 
         public UpdatePartCommand() { }
 
-        public UpdatePartCommand(int id, string? partNumber, string? description, string? stockNo, string? financialClass)
+        public UpdatePartCommand(Guid id, string? partNumber, string? description, string? stockNo, string? financialClass)
         {
             Id = id;
             PartNumber = partNumber;

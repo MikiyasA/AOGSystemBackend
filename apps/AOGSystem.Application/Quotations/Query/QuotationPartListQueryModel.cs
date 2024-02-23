@@ -10,9 +10,9 @@ namespace AOGSystem.Application.Quotations.Query
 {
     public class QuotationPartListSummary
     {
-        public int Id { get; set; }
-        public int PartId { get;  set; }
-        public int QuotationId { get;  set; }
+        public Guid Id { get; set; }
+        public Guid PartId { get;  set; }
+        public Guid QuotationId { get;  set; }
         public decimal CurrentPrice { get;  set; }
         public decimal SalesPrice { get;  set; }
         public decimal FixedLoanPrice { get; set; }

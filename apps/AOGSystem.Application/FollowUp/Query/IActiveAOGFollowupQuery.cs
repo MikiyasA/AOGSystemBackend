@@ -11,7 +11,7 @@ namespace AOGSystem.Application.FollowUp.Query
     public interface IActiveAOGFollowupQuery
     {
         Task<List<ActiveAOGFollowupDTO>> GetAllActiveFollowUpAsync();
-        Task<List<ActiveAOGFollowupDTO>> GetAllActiveFollowUpByTabIdAsync(int id);
+        Task<List<ActiveAOGFollowupDTO>> GetAllActiveFollowUpByTabIdAsync(Guid id);
         Task<List<ActiveFollowUpTabsDto>> GetAllActiveFollowUpTabsAsync();
     }
 }

@@ -1,9 +1,12 @@
 ﻿using AOGSystem.Application.General.Commands.Part;
 using AOGSystem.Application.Sales.Command;
+using AOGSystem.Application.Sales.Query;
+using AOGSystem.Domain.FollowUp;
 using AOGSystem.Domain.General;
 using AOGSystem.Domain.Sales;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq.Expressions;
 using System.Net;
 
 namespace AOGSystem.API.Controllers
@@ -68,11 +71,34 @@ namespace AOGSystem.API.Controllers
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> GetAllSales()
+        public async Task<IActionResult> GetAllSales([FromQuery]SalesSearchQuery query, int page = 1, int pageSize = 20)
         {
             try
             {
-                return Ok(await _saleRepository.GetAllSales());
+                Expression<Func<Sales, bool>> predicate = queryModel =>
+                    (!query.CompanyId.HasValue || queryModel.CompanyId == query.CompanyId) &&
+                    (string.IsNullOrEmpty(query.OrderNo) || queryModel.OrderNo.Contains(query.OrderNo)) &&
+                    (string.IsNullOrEmpty(query.OrderByName) || queryModel.OrderByName.Contains(query.OrderByName)) &&
+                    (string.IsNullOrEmpty(query.OrderByEmail) || queryModel.OrderByEmail.Contains(query.OrderByEmail)) &&
+                    (string.IsNullOrEmpty(query.CustomerOrderNo) || queryModel.CustomerOrderNo.Contains(query.CustomerOrderNo)) &&
+                    (string.IsNullOrEmpty(query.AWBNo) || queryModel.AWBNo.Contains(query.AWBNo)) &&
+                    (!query.ShipDateFrom.HasValue || queryModel.ShipDate >= query.ShipDateFrom) &&
+                    (!query.ShipDateTo.HasValue || queryModel.ShipDate <= query.ShipDateTo) &&
+                    (string.IsNullOrEmpty(query.Status) || queryModel.Status.Contains(query.Status));
+
+                var data = await _saleRepository.GetAllSales(predicate, page, pageSize);
+                var result = new
+                {
+                    metadata = new
+                    {
+                        data.TotalCount,
+                        data.PageSize,
+                        data.CurrentPage,
+                        data.TotalPages,
+                    },
+                    data
+                };
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -83,7 +109,7 @@ namespace AOGSystem.API.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> GetSalesByID(int id)
+        public async Task<IActionResult> GetSalesByID(Guid id)
         {
             try
             {
@@ -98,7 +124,7 @@ namespace AOGSystem.API.Controllers
         [HttpGet("{companyId}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> GetSalesByCompanyId(int companyId)
+        public async Task<IActionResult> GetSalesByCompanyId(Guid companyId)
         {
             try
             {
@@ -216,7 +242,7 @@ namespace AOGSystem.API.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> GetSalesPartListByID(int id)
+        public async Task<IActionResult> GetSalesPartListByID(Guid id)
         {
             try
             {

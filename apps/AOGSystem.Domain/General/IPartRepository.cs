@@ -10,9 +10,9 @@ namespace AOGSystem.Domain.General
     {
         Part Add(Part part);
         void Update(Part part);
-        void Delete(int id);
+        void Delete(Guid id);
         Task<List<Part>> GetAllParts();
-        Task<Part> GetPartByIDAsync(int id);
+        Task<Part> GetPartByIDAsync(Guid id);
         Task<Part> GetPartByPNAsync(string partNo);
         List<Part> GetPartByPartialPN(string partNo);
         List<Part> GetPartByManufacturer(string manufacturer);

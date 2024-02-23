@@ -1,7 +1,9 @@
-﻿using AOGSystem.Domain.General;
+﻿using AOGSystem.Domain.FollowUp;
+using AOGSystem.Domain.General;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,7 +14,7 @@ namespace AOGSystem.Domain.CoreFollowUps
         CoreFollowUp Add(CoreFollowUp coreFollowUp);
         void Update(CoreFollowUp coreFollowUp);
         void Delete(int id);
-        Task<List<CoreFollowUp>> GetAllCoreFollowUps(int pageNo, int pageSize);
+        Task<PaginatedList<CoreFollowUp>> GetAllCoreFollowUps(Expression<Func<CoreFollowUp, bool>> predicate, int page, int pageSize);
         Task<List<CoreFollowUp>> GetActiveCoreFollowUps();
         Task<CoreFollowUp> GetCoreFollowUpByIDAsync(int id);
         Task<CoreFollowUp> GetCoreFollowUpByPONoAsync(string pONo);

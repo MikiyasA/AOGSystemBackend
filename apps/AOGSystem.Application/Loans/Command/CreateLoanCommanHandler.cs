@@ -76,7 +76,7 @@ namespace AOGSystem.Application.Loans.Command
     }
     public class CreateLoanComman : IRequest<ReturnDto<LoanQueryModel>>
     {
-        public int CompanyId { get; set; }
+        public Guid CompanyId { get; set; }
         public string CustomerOrderNo { get; set; }
         public string OrderedByName { get; set; }
         public string? OrderedByEmail { get; set; }
@@ -85,7 +85,7 @@ namespace AOGSystem.Application.Loans.Command
         public string? Note { get; set; }
         public string? UOM { get; set; }
 
-        public int PartId { get; set; }
+        public Guid PartId { get; set; }
         public int Quantity { get; set; }
         public string Currency { get; set; }
         

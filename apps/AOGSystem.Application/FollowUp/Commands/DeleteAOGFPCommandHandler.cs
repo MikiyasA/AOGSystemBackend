@@ -36,7 +36,7 @@ namespace AOGSystem.Application.FollowUp.Commands
     }
     public class DeleteAOGFPCommand : IRequest<int>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
     }
 
 }

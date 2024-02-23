@@ -21,7 +21,7 @@ namespace AOGSystem.Persistence.Repository.Quotation
             return _context.Quotations.Add(quotation).Entity;
         }
 
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
             _context.Remove(_context.Quotations.FindAsync(id).Result);
         }
@@ -31,7 +31,7 @@ namespace AOGSystem.Persistence.Repository.Quotation
             return await _context.Quotations.ToListAsync();
         }
 
-        public async Task<Domain.Quotation.Quotation> GetQuotationByIdAsync(int id)
+        public async Task<Domain.Quotation.Quotation> GetQuotationByIdAsync(Guid id)
         {
             var quotation = await _context.Quotations.FindAsync(id);
             if (quotation != null)

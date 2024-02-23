@@ -72,7 +72,7 @@ namespace AOGSystem.Application.Sales.Command
     }
     public class SalesApprovalCommand : IRequest<ReturnDto<SalesQueryModel>>
     {
-        public int SalesId { get; set; }
+        public Guid SalesId { get; set; }
         public bool IsApproved { get; set; }
 
         [JsonIgnore]

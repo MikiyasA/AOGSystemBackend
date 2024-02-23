@@ -102,9 +102,9 @@ namespace AOGSystem.Application.Loans.Command
     }
     public class AddLoanPartListComman : IRequest<ReturnDto<LoanPartListQueryModel>>
     {
-        public int LoanId { get; set; }
-        public int Id { get; set; }
-        public int PartId { get; set; }
+        public Guid LoanId { get; set; }
+        public Guid Id { get; set; }
+        public Guid PartId { get; set; }
         public int Quantity { get; set; }
         public string UOM { get; set; }
         public List<string>? Description { get; set; }

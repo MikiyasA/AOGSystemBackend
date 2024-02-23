@@ -9,8 +9,8 @@ namespace AOGSystem.Application.Loans.Query
 {
     public class LoanPartListQueryModel
     {
-        public int Id { get; set; }
-        public int PartId { get; set;}
+        public Guid Id { get; set; }
+        public Guid PartId { get; set;}
         public int Quantity { get; set;}
         public string UOM { get; set;}
         public string? SerialNo { get; set;}
