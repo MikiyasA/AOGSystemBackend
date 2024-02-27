@@ -53,7 +53,7 @@ namespace AOGSystem.Application.Attachments.Commands
                 _attachementRepository.Add(attachment);
                 await _attachementRepository.SaveChangesAsync();
 
-                var attachmentLink = new AttachmentLink(attachment.Id, attachment, request.EntityId, request.EntityType);
+                var attachmentLink = new AttachmentLink(attachment.Id, attachment, (Guid)request.EntityId, request.EntityType);
                 attachmentLink.CreatedAT = DateTime.Now;
                 attachmentLink.CreatedBy = request.CreatedAt;
                 _attachementRepository.Add(attachmentLink);
@@ -103,10 +103,10 @@ namespace AOGSystem.Application.Attachments.Commands
 
     public class UploadttachmentCommand : IRequest<ReturnDto<AttachmentQueryModel>>
     {
-        public IFormFile File { get; set; }
-        public string FileName { get; set; }
-        public Guid EntityId { get; set; }
-        public string EntityType { get; set; }
+        public IFormFile? File { get; set; }
+        public string? FileName { get; set; }
+        public Guid? EntityId { get; set; }
+        public string? EntityType { get; set; }
 
         [JsonIgnore]
         public string? CreatedAt { get; private set; }

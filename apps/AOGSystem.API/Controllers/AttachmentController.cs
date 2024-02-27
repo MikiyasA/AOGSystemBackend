@@ -29,7 +29,7 @@ namespace AOGSystem.API.Controllers
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Uploadttachment([FromForm] UploadttachmentCommand command)
+        public async Task<IActionResult> UploadAttachment([FromForm] UploadttachmentCommand command)
         {
             try
             {
