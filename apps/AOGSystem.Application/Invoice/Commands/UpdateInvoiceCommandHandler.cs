@@ -97,7 +97,7 @@ namespace AOGSystem.Application.Invoice.Commands
         public string? Remark { get; set; }
 
         [JsonIgnore]
-        public string? UpdatedBy { get; private set; }
-        public void SetUpdatedBy(string updatedBy) { UpdatedBy = updatedBy; }
+        public Guid? UpdatedBy { get; private set; }
+        public void SetUpdatedBy(Guid updatedBy) { UpdatedBy = updatedBy; }
     }
 }

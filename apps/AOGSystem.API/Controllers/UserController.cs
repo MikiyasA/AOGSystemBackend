@@ -3,6 +3,8 @@ using AOGSystem.Application.General.Commands.Users;
 using AOGSystem.Application.General.Query.Model;
 using AOGSystem.Domain.General;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -64,6 +66,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
@@ -82,6 +85,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
@@ -100,6 +104,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
@@ -119,6 +124,7 @@ namespace AOGSystem.API.Controllers
 
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
@@ -137,6 +143,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
@@ -179,6 +186,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
@@ -197,6 +205,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
@@ -215,6 +224,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
@@ -233,6 +243,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]

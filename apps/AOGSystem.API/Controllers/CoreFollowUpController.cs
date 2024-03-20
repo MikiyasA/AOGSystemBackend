@@ -4,9 +4,12 @@ using AOGSystem.Application.FollowUp.Query.Model;
 using AOGSystem.Domain.CoreFollowUps;
 using AOGSystem.Domain.FollowUp;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
 using System.Net;
+using System.Security.Claims;
 
 namespace AOGSystem.API.Controllers
 {
@@ -24,12 +27,14 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> CreateCoreFollowUp([FromBody] CreateCoreFollowUpCommand command)
         {
             try
             {
+                command.SetCreatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? Ok(commandResult) : BadRequest();
@@ -41,12 +46,14 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> UpdateCoreFollowUp([FromBody] UpdateCoreFollowUpCommand command)
         {
             try
             {
+                command.SetUpdatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? Ok(commandResult) : BadRequest();
@@ -58,6 +65,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpDelete]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> DeleteCoreFollowUp([FromBody] DeleteCoreFollowUpCommand command)
@@ -75,6 +83,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetAllCoreFollowUp([FromQuery] CoreFollowupSearchQuery query, int page = 1, int pageSize = 20)
@@ -116,6 +125,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetActiveCoreFollowUps()
@@ -131,10 +141,11 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> GetCoreFollowUpByID(int id)
+        public async Task<IActionResult> GetCoreFollowUpByID(Guid id)
         {
             try
             {
@@ -152,6 +163,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet("{pONo}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]

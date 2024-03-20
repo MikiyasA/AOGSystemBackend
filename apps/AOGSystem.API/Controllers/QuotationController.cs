@@ -2,9 +2,11 @@
 using AOGSystem.Application.Quotations.Commands;
 using AOGSystem.Domain.Quotation;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Security.Claims;
 
 namespace AOGSystem.API.Controllers
 {
@@ -24,12 +26,14 @@ namespace AOGSystem.API.Controllers
 
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> CreateQuotation([FromBody] CreateQuotationCommand command)
         {
             try
             {
+                command.SetCreatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? Ok(commandResult) : BadRequest();
@@ -41,12 +45,14 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> UpdateQuotation([FromBody] UpdateQuotationCommand command)
         {
             try
             {
+                command.SetUpdatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? Ok(commandResult) : BadRequest();
@@ -111,12 +117,14 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> AddPartListQuotation([FromBody] AddPartListInQuotationCommand command)
         {
             try
             {
+                command.SetCreatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? Ok(commandResult) : BadRequest();
@@ -128,12 +136,14 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> UpdatePartListInQuotation([FromBody] UpdatePartListInQuotationCommand command)
         {
             try
             {
+                command.SetUpdatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? Ok(commandResult) : BadRequest();

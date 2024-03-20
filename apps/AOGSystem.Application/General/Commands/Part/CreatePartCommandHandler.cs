@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AOGSystem.Application.General.Commands.Part
@@ -30,6 +31,8 @@ namespace AOGSystem.Application.General.Commands.Part
 
             var model = new Domain.General.Part(request.PartNumber, request.Description, request.StockNo, request.FinancialClass, request.Manufacturer, request.PartType);
             model.CreatedAT = DateTime.Now;
+            model.CreatedBy = request.CreatedBy;
+
             _partRepository.Add(model);
             var result = await _partRepository.SaveChangesAsync();
             if (result == 0)
@@ -69,6 +72,10 @@ namespace AOGSystem.Application.General.Commands.Part
         public string? FinancialClass { get; set; }
         public string? Manufacturer { get; set; }
         public string? PartType { get; set; }
+
+        [JsonIgnore]
+        public Guid? CreatedBy { get; private set; }
+        public void SetCreatedBy(Guid createdBy) { CreatedBy = createdBy; }
 
         public CreatePartCommand() { }
         public CreatePartCommand(string partNumber, string description, string stockNo, string financialClass)

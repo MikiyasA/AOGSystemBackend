@@ -27,7 +27,7 @@ namespace AOGSystem.Persistence.Repository.CoreFollowUps
             return _context.CoreFollowUps.Add(coreFollowUp).Entity;
         }
 
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
             _context.Remove(_context.CoreFollowUps.FindAsync(id).Result);
         }
@@ -53,7 +53,7 @@ namespace AOGSystem.Persistence.Repository.CoreFollowUps
 
         }
 
-        public async Task<CoreFollowUp> GetCoreFollowUpByIDAsync(int id)
+        public async Task<CoreFollowUp> GetCoreFollowUpByIDAsync(Guid id)
         {
             var coreFP = await _context.CoreFollowUps.FindAsync(id);
             if (coreFP != null)

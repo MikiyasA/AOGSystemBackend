@@ -40,7 +40,7 @@ namespace AOGSystem.Application.SOA.Commands
                     Data = null,
                     Count = 0,
                     IsSuccess = false,
-                    Message = "Someting went wrong when remark updated",
+                    Message = "Something went wrong when remark updated",
                 };
 
             var returnData = new RemarkQueryModel
@@ -67,7 +67,7 @@ namespace AOGSystem.Application.SOA.Commands
 
 
         [JsonIgnore]
-        public string? UpdatedBy { get; set; }
-        public void SetUpdatedBy(string updatedBy) { UpdatedBy = updatedBy; }
+        public Guid? UpdatedBy { get; set; }
+        public void SetUpdatedBy(Guid updatedBy) { UpdatedBy = updatedBy; }
     }
 }

@@ -30,7 +30,7 @@ namespace AOGSystem.Application.FollowUp.Query
 
             returnFollowup = followUp.Select(async fup =>
             {
-                var part = await _partRepository.GetPartByIDAsync(fup.PartId);
+                var part = await _partRepository.GetPartByIDAsync((Guid)fup.PartId);
 
                 return new ActiveAOGFollowupDTO
                 {
@@ -72,7 +72,7 @@ namespace AOGSystem.Application.FollowUp.Query
 
             returnFollowup = followUp.Select(async fup =>
             {
-                var part = await _partRepository.GetPartByIDAsync(fup.PartId);
+                var part = await _partRepository.GetPartByIDAsync((Guid)fup.PartId);
 
                 return new ActiveAOGFollowupDTO
                 {

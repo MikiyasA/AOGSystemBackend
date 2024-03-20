@@ -84,7 +84,7 @@ namespace AOGSystem.Application.Sales.Command
         public bool IsDeleted { get; set; }
 
         [JsonIgnore]
-        public string? CreatedBy { get; private set; }
-        public void SetCreatedBy(string createdBy) { CreatedBy = createdBy; }
+        public Guid? CreatedBy { get; private set; }
+        public void SetCreatedBy(Guid createdBy) { CreatedBy = createdBy; }
     }
 }

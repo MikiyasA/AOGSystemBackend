@@ -10,9 +10,9 @@ namespace AOGSystem.Domain.Loans
     {
         Offer Add(Offer offer);
         void Update(Offer offer);
-        void Delete(int id);
+        void Delete(Guid id);
         Task<List<Offer>> GetAllOffers();
-        Task<Offer> GetOfferByIDAsync(int id);
+        Task<Offer> GetOfferByIDAsync(Guid id);
         Task<int> SaveChangesAsync(string userId = null, CancellationToken cancellationToken = default);
     }
 }

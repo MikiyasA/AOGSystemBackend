@@ -68,7 +68,7 @@ namespace AOGSystem.Application.SOA.Commands
 
 
         [JsonIgnore]
-        public string? UpdatedBy { get; set; }
-        public void SetUpdatedBy(string updatedBy) { UpdatedBy = updatedBy; }
+        public Guid? UpdatedBy { get; set; }
+        public void SetUpdatedBy(Guid updatedBy) { UpdatedBy = updatedBy; }
     }
 }

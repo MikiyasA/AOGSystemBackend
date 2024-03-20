@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AOGSystem.Application.FollowUp.Commands
@@ -33,6 +34,7 @@ namespace AOGSystem.Application.FollowUp.Commands
             model.SetColor(request.Color);
             model.SetStatus(request.Status);
             model.UpdatedAT= DateTime.Now;
+            model.UpdatedBy = request.UpdatedBy;
 
             var result = await _followUpTabsRepository.SaveChangesAsync();
 
@@ -71,5 +73,9 @@ namespace AOGSystem.Application.FollowUp.Commands
         public string Name { get; set; }
         public string? Color { get; set; }
         public string? Status { get; set; }
+
+        [JsonIgnore]
+        public Guid? UpdatedBy { get; private set; }
+        public void SetUpdatedBy(Guid updatedBy) { UpdatedBy = updatedBy; }
     }
 }

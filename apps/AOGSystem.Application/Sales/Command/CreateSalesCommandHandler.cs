@@ -28,6 +28,14 @@ namespace AOGSystem.Application.Sales.Command
             var orderNo = $"S{currentYear}{nextOrderNo:D2}";
 
             var model = new Domain.Sales.Sales(request.CompanyId, request.OrderByName, request.OrderByEmail, orderNo, request.CustomerOrderNo, request.ShipToAddress, request.Status, request.Note);
+            if(model != null)
+            {
+                var totalPrice = request.UnitPrice * request.Quantity;
+                var partList = new SalesPartList(request.PartId, request.Quantity, request.UOM, request.UnitPrice, totalPrice, request.Currency, null, null, false);
+                partList.CreatedAT = DateTime.Now;
+                partList.CreatedBy = request.CreatedBy;
+                model.AddSalesPartList(partList);
+            }
             model.CreatedAT = DateTime.Now;
             model.CreatedBy = request.CreatedBy;
 
@@ -39,7 +47,7 @@ namespace AOGSystem.Application.Sales.Command
                     Data = null,
                     Count = 0,
                     IsSuccess = false,
-                    Message = "Someting went wrong when sales order created",
+                    Message = "Something went wrong when sales order created",
                 };
             var returnData = new SalesQueryModel
             {
@@ -70,11 +78,17 @@ namespace AOGSystem.Application.Sales.Command
         public string? OrderByEmail { get; set; }
         public string? CustomerOrderNo { get; set; }
         public string? ShipToAddress { get; set; }
+        public Guid PartId { get; set; }
+        public int Quantity { get; set; }
+        public string UOM { get; set; }
+        public double UnitPrice { get; set; }
+        public string Currency { get; set; }
+
         public string Status { get; set; }
         public string? Note { get; set; }
 
         [JsonIgnore]
-        public string? CreatedBy { get; private set; }
-        public void SetCreatedBy(string createdBy) { CreatedBy = createdBy; }
+        public Guid? CreatedBy { get; private set; }
+        public void SetCreatedBy(Guid createdBy) { CreatedBy = createdBy; }
     }
 }

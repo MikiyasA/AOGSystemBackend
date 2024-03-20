@@ -78,7 +78,7 @@ namespace AOGSystem.Application.Assignments.Commands
 
     public class FinishedAssignmentCommand : IRequest<ReturnDto<AssignmentQueryModel>>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public Guid? FinishedBy { get; set; }
     }
 }

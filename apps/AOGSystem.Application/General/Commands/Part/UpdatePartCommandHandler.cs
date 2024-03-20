@@ -69,8 +69,8 @@ namespace AOGSystem.Application.General.Commands.Part
         public string? FinancialClass { get; set; }
         public string? Manufacturer { get; set; }
         public string? PartType { get; set; }
-        public string? UpdatedBy { get; private set; }
-        public void SetUpdatedBy(string updatedBy)
+        public Guid? UpdatedBy { get; private set; }
+        public void SetUpdatedBy(Guid updatedBy)
         {
             UpdatedBy = updatedBy;
         }

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AOGSystem.Application.Quotations.Commands
@@ -37,6 +38,7 @@ namespace AOGSystem.Application.Quotations.Commands
                 request.RequestedByEmail,
                 request.RequestedByPhone);
             model.CreatedAT= DateTime.Now;
+            model.CreatedBy = request.CreatedBy;
              _quotationRepository.Add(model);
             var result = await _quotationRepository.SaveChangesAsync();
 
@@ -65,6 +67,10 @@ namespace AOGSystem.Application.Quotations.Commands
         public string? RequestedByName { get; set; }
         public string? RequestedByEmail { get; set; }
         public string? RequestedByPhone { get; set; }
+
+        [JsonIgnore]
+        public Guid? CreatedBy { get; private set; }
+        public void SetCreatedBy(Guid createdBy) { CreatedBy = createdBy; }
 
         public CreateQuotationCommand()
         {

@@ -77,7 +77,7 @@ namespace AOGSystem.Application.Assignments.Commands
     }
     public class CloseAssignmentCommand : IRequest<ReturnDto<AssignmentQueryModel>>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public Guid? ClosedBy { get; set; }
     }
 }

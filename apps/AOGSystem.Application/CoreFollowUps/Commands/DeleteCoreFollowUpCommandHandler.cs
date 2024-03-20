@@ -30,6 +30,6 @@ public async Task<int> Handle(DeleteCoreFollowUpCommand request, CancellationTok
     }
     public class DeleteCoreFollowUpCommand : IRequest<int>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
     }
 }

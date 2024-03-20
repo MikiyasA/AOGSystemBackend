@@ -27,6 +27,13 @@ namespace AOGSystem.Application.General.Commands.Users
         public async Task<LoginResponse> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
+            if(user == null)
+            {
+                return new LoginResponse
+                {
+                    Error = "User is not exist"
+                };
+            }
             if(!user.IsActive)
                 return new LoginResponse
                 {

@@ -1,15 +1,17 @@
 ﻿using AOGSystem.Application.CoreFollowUps.Query.Model;
+using AOGSystem.Application.General.Query.Model;
 using AOGSystem.Domain.CoreFollowUps;
 using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AOGSystem.Application.CoreFollowUps.Commands
 {
-    public class CreateCoreFollowUpCommandHandler : IRequestHandler<CreateCoreFollowUpCommand, CoreFollowUpQueryModel>
+    public class CreateCoreFollowUpCommandHandler : IRequestHandler<CreateCoreFollowUpCommand, ReturnDto<CoreFollowUpQueryModel>>
     {
         private readonly ICoreFollowUpRepository _coreFollowUpRepository;
         public CreateCoreFollowUpCommandHandler(ICoreFollowUpRepository coreFollowUpRepository)
@@ -17,27 +19,48 @@ namespace AOGSystem.Application.CoreFollowUps.Commands
             _coreFollowUpRepository = coreFollowUpRepository;
         }
 
-        public async Task<CoreFollowUpQueryModel> Handle(CreateCoreFollowUpCommand request, CancellationToken cancellationToken)
+        public async Task<ReturnDto<CoreFollowUpQueryModel>> Handle(CreateCoreFollowUpCommand request, CancellationToken cancellationToken)
         {
             var coreFP = await _coreFollowUpRepository.GetCoreFollowUpByPONoAsync(request.PONo);
             if(coreFP != null)
+                return new ReturnDto<CoreFollowUpQueryModel>
+                {
+                    IsSuccess = false,
+                    Data = null,
+                    Count = 1,
+                    Message = "Core follow-up with this PO is already registered"
+                };
+        
+            DateTime returnDueDate;
+            if (request.ReturnDueDate == null)
             {
-                // TODO
-                return null;
+                if (request.PartReleasedDate != null)
+                    returnDueDate = request.PartReleasedDate.Value.AddDays(10);
+                else
+                    returnDueDate = DateTime.Now.AddDays(10);
             }
-            
-            var model = new CoreFollowUp(request.PONo, request.POCreatedDate, request.Aircraft, request.TailNo, request.PartNumber,
-                request.Description, request.StockNo, request.Vendor, request.PartReleasedDate, request.PartReceiveDate, request.ReturnDueDate, request.ReturnProcessedDate,
+            else
+            {
+                returnDueDate = (DateTime)request.ReturnDueDate;
+            }
+            var model = new CoreFollowUp(request.PONo, request.POCreatedDate ?? DateTime.Now, request.Aircraft, request.TailNo, request.PartNumber,
+                request.Description, request.StockNo, request.Vendor, request.PartReleasedDate, request.PartReceiveDate, returnDueDate, request.ReturnProcessedDate,
                 request.AWBNo, request.ReturnedPart, request.PODDate, request.Remark, request.Status);
             model.CreatedAT = DateTime.Now;
-            _coreFollowUpRepository.Add(model);
-            var result = await _coreFollowUpRepository.SaveChangesAsync();
-            if(result == 0)
-            {
-                return null;
-            }
+            model.CreatedBy = request.CreatedBy;
 
-            return new CoreFollowUpQueryModel
+            _coreFollowUpRepository.Add(model);
+            var result = await _coreFollowUpRepository.SaveChangesAsync(); 
+            if(result == 0)
+                return new ReturnDto<CoreFollowUpQueryModel>
+                {
+                    IsSuccess = false,
+                    Data = null,
+                    Count = 1,
+                    Message = "Something went wrong when saving the core"
+                };
+        
+        var returnData = new CoreFollowUpQueryModel
             {
                 Id = model.Id,
                 PONo = model.PONo,
@@ -57,12 +80,19 @@ namespace AOGSystem.Application.CoreFollowUps.Commands
                 Remark = model.Remark,
                 Status = model.Status
             };
+            return new ReturnDto<CoreFollowUpQueryModel>
+            {
+                IsSuccess = true,
+                Data = returnData,
+                Count = 1,
+                Message = "Core follow-up registered successfully"
+            };
         }
     }
-    public class CreateCoreFollowUpCommand : IRequest<CoreFollowUpQueryModel>
+    public class CreateCoreFollowUpCommand : IRequest<ReturnDto<CoreFollowUpQueryModel>>
     {
         public string PONo { get; set; }
-        public DateTime POCreatedDate { get; set; }
+        public DateTime? POCreatedDate { get; set; }
         public string Aircraft { get; set; }
         public string? TailNo { get; set; }
         public string? PartNumber { get; set; }
@@ -71,13 +101,18 @@ namespace AOGSystem.Application.CoreFollowUps.Commands
         public string? Vendor { get; set; }
         public DateTime? PartReleasedDate { get; set; }
         public DateTime? PartReceiveDate { get; set; }
-        public DateTime ReturnDueDate { get; set; }
+        public DateTime? ReturnDueDate { get; set; }
         public DateTime? ReturnProcessedDate { get; set; }
         public string? AWBNo { get; set; }
         public string? ReturnedPart { get; set; }
         public DateTime? PODDate { get; set; }
         public string? Remark { get; set; }
         public string? Status { get; set; }
+
+        [JsonIgnore]
+        public Guid? CreatedBy { get; private set; }
+        public void SetCreatedBy(Guid createdBy) { CreatedBy = createdBy; }
+
 
         public CreateCoreFollowUpCommand()
         {

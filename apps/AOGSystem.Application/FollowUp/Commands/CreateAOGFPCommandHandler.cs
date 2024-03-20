@@ -4,11 +4,13 @@ using AOGSystem.Domain.CoreFollowUps;
 using AOGSystem.Domain.CostSavings;
 using AOGSystem.Domain.FollowUp;
 using AOGSystem.Domain.General;
+using Kros.Extensions;
 using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AOGSystem.Application.FollowUp.Commands
@@ -52,7 +54,7 @@ namespace AOGSystem.Application.FollowUp.Commands
 
                 };
             var part = await _partRepository.GetPartByPNAsync(request.PartNumber);
-            if (part == null)
+            if (part == null && !request.PartNumber.IsNullOrEmpty())
             {
                 part = new Part(request.PartNumber, request.Description, request.StockNo, request.FinancialClass, request.Manufacturer, request.PartType);
                 part.CreatedAT = DateTime.Now;
@@ -68,7 +70,7 @@ namespace AOGSystem.Application.FollowUp.Commands
                     request.WorkLocation,
                     request.AOGStation,
                     request.Customer,
-                    part.Id,
+                    part?.Id,
                     request.PONumber,
                     request.OrderType,
                     request.Quantity,
@@ -121,12 +123,14 @@ namespace AOGSystem.Application.FollowUp.Commands
 
             if (request.HaveCostSaving)
             {
-                var costSaving = new CostSaving(request.PONumber);
-                _costSavingRepository.Add(costSaving);
+                var CSExist = await _costSavingRepository.GetCostSavingByNewPONoAsync(request.PONumber);
+                if (CSExist == null)
+                    _costSavingRepository.Add(new CostSaving(request.PONumber));
             }
-            
+
             var newRemark = new Remark(model.Id, request.Message);
             newRemark.CreatedAT = DateTime.Now;
+            newRemark.UpdatedBy = request.UpdatedBy;
             model.AddRemark(newRemark);
 
             tab.AddFollowUp(model);
@@ -201,6 +205,11 @@ namespace AOGSystem.Application.FollowUp.Commands
         public string? Manufacturer { get; set; }
         public string? PartType { get; set; }
         public bool HaveCostSaving { get; set; }
+
+        [JsonIgnore]
+        public Guid? UpdatedBy { get; private set; }
+        public void SetUpdatedBy(Guid updatedBy) { UpdatedBy = updatedBy; }
+
 
         public CreateAOGFPCommand() { }
 

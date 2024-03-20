@@ -20,7 +20,7 @@ namespace AOGSystem.Persistence.Repository.Loans
             return _context.Offers.Add(offer).Entity;
         }
 
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
             _context.Remove(_context.Offers.FindAsync(id).Result);
         }
@@ -30,7 +30,7 @@ namespace AOGSystem.Persistence.Repository.Loans
             return await _context.Offers.ToListAsync();
         }
 
-        public async Task<Offer> GetOfferByIDAsync(int id)
+        public async Task<Offer> GetOfferByIDAsync(Guid id)
         {
             var offer = await _context.Offers.FindAsync(id);
             if (offer != null)

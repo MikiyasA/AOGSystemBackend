@@ -66,7 +66,7 @@ namespace AOGSystem.Application.SOA.Commands
 
 
         [JsonIgnore]
-        public string? CreatedBy { get; set; }
-        public void SetCreatedBy(string createdBy) { CreatedBy = createdBy; }
+        public Guid? CreatedBy { get; set; }
+        public void SetCreatedBy(Guid createdBy) { CreatedBy = createdBy; }
     }
 }

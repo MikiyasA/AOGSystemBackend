@@ -20,7 +20,7 @@ namespace AOGSystem.Application.SOA.Commands
         }
         public async Task<ReturnDto<VendorQueryModel>> Handle(UpdateVendorCommand request, CancellationToken cancellationToken)
         {
-            var model = await _vendorRepository.GetVendorSOAByIDAsync(request.Id);
+            var model = await _vendorRepository.GetActiveVendorSOAByIDAsync(request.Id);
             if(model == null)
                 return new ReturnDto<VendorQueryModel>
                 {
@@ -40,6 +40,8 @@ namespace AOGSystem.Application.SOA.Commands
             model.SetCreditLimit(request.CreditLimit);
             model.SetETFinanceContactName(request.ETFinanceContactName);
             model.SetETFinanceContactEmail(request.ETFinanceContactEmail);
+            model.SetSOAHandlerBuyerId(request.SOAHandlerBuyerId);
+            model.SetSOAHandlerBuyerName(request.SOAHandlerBuyerName);
             model.SetCertificateExpiryDate(request.CertificateExpiryDate);
             model.SetAssessmentDate(request.AssessmentDate);
             model.SetStatus(request.Status);
@@ -55,7 +57,7 @@ namespace AOGSystem.Application.SOA.Commands
                     Data = null,
                     Count = 0,
                     IsSuccess = false,
-                    Message = "Someting went wrong when vendor created",
+                    Message = "Something went wrong when vendor created",
                 };
 
             var returnData = new VendorQueryModel
@@ -107,13 +109,15 @@ namespace AOGSystem.Application.SOA.Commands
         public int? PaidAmount { get; set; }
         public string? ETFinanceContactName { get; set; }
         public string? ETFinanceContactEmail { get; set; }
+        public Guid? SOAHandlerBuyerId { get; set; }
+        public string? SOAHandlerBuyerName { get; set; }
         public DateTime CertificateExpiryDate { get; set; }
         public DateTime AssessmentDate { get; set; }
         public string Status { get; set; }
         public string? Remark { get; set; }
 
         [JsonIgnore]
-        public string? UpdateBy { get; private set; }
-        public void SetUpdateBy(string updateBy) { UpdateBy = updateBy; }
+        public Guid? UpdateBy { get; private set; }
+        public void SetUpdateBy(Guid updateBy) { UpdateBy = updateBy; }
     }
 }

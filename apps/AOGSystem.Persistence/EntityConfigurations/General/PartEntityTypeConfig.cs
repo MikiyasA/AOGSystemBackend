@@ -54,7 +54,7 @@ namespace AOGSystem.Persistence.EntityConfigurations.General
                 .WithOne(x => x.Part)
                 .HasForeignKey(x => x.PartId)
                 .OnDelete(DeleteBehavior.Cascade)
-                .IsRequired();
+                .IsRequired(false);
 
             builder.HasMany<QuotationPartList>()
                 .WithOne(x => x.Part)

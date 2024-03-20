@@ -5,9 +5,12 @@ using AOGSystem.Domain.FollowUp;
 using AOGSystem.Domain.General;
 using AOGSystem.Domain.Sales;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
 using System.Net;
+using System.Security.Claims;
 
 namespace AOGSystem.API.Controllers
 {
@@ -28,15 +31,14 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPost]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> CreateSales([FromBody] CreateSalesCommand command)
         {
             try
             {
-                //command.SetCreatedBy(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-
+                command.SetCreatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();
@@ -48,7 +50,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPut]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
@@ -56,8 +58,7 @@ namespace AOGSystem.API.Controllers
         {
             try
             {
-                //command.SetUpdatedBy(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-
+                command.SetUpdatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();
@@ -69,6 +70,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetAllSales([FromQuery]SalesSearchQuery query, int page = 1, int pageSize = 20)
@@ -107,6 +109,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetSalesByID(Guid id)
@@ -122,6 +125,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet("{companyId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetSalesByCompanyId(Guid companyId)
@@ -137,6 +141,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet("{orderNo}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetSalesByOrderNoAsync(string orderNo)
@@ -152,6 +157,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet("{customerOrderNo}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetSalesByCustomerOrderNoAsync(string customerOrderNo)
@@ -167,6 +173,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetAllActiveSales()
@@ -184,15 +191,14 @@ namespace AOGSystem.API.Controllers
         ///////////////////////////// ///
 
         [HttpPost]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> AddSalesPartList([FromBody] AddSalesPartListInSalesCommand command)
         {
             try
             {
-                //command.SetCreatedBy(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-
+                command.SetCreatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();
@@ -204,7 +210,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPut]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
@@ -212,8 +218,7 @@ namespace AOGSystem.API.Controllers
         {
             try
             {
-                //command.SetUpdatedBy(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-
+                command.SetUpdatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();
@@ -225,6 +230,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetAllSalesPartList()
@@ -240,6 +246,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetSalesPartListByID(Guid id)
@@ -256,15 +263,14 @@ namespace AOGSystem.API.Controllers
 
 
         [HttpPost]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> ShipSales([FromBody] ShipSalesCommand command)
         {
             try
             {
-                //command.SetCreatedBy(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-
+                command.SetUpdatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();
@@ -276,15 +282,14 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPost]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> SalesApproval([FromBody] SalesApprovalCommand command)
         {
             try
             {
-                //command.SetCreatedBy(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-
+                command.SetUpdatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();
@@ -296,15 +301,14 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPost]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> SalesCloser([FromBody] SalesCloserCommand command)
         {
             try
             {
-                //command.SetCreatedBy(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-
+                command.SetUpdatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();

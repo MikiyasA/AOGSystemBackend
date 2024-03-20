@@ -22,8 +22,8 @@ namespace AOGSystem.Application.SOA.Commands
         public async Task<ReturnDto<VendorQueryModel>> Handle(CreateVendorCommand request, CancellationToken cancellationToken)
         {
             var model = new Vendor(request.VendorName, request.VendorCode, request.Address, request.VendorAccountManagerName, request.VendorAccountManagerEmail, request.VendorFinanceContactName,
-                request.VendorFinanceContactEmail, request.CreditLimit, request.ETFinanceContactName, request.ETFinanceContactEmail, request.CertificateExpiryDate, request.AssessmentDate,
-                request.Status, request.Remark);
+                request.VendorFinanceContactEmail, request.CreditLimit, request.ETFinanceContactName, request.ETFinanceContactEmail, request.SOAHandlerBuyerId, request.SOAHandlerBuyerName,
+                request.CertificateExpiryDate, request.AssessmentDate, request.Status, request.Remark);
             model.CreatedAT = DateTime.Now;
             model.CreatedBy = request.CreatedBy;
 
@@ -55,6 +55,8 @@ namespace AOGSystem.Application.SOA.Commands
                 PaidAmount = model.PaidAmount,
                 ETFinanceContactName = model.ETFinanceContactName,
                 ETFinanceContactEmail = model.ETFinanceContactEmail,
+                SOAHandlerBuyerId = model.SOAHandlerBuyerId,
+                SOAHandlerBuyerName = model.SOAHandlerBuyerName,
                 CertificateExpiryDate = model.CertificateExpiryDate,
                 AssessmentDate = model.AssessmentDate,
                 Status = model.Status,
@@ -83,13 +85,15 @@ namespace AOGSystem.Application.SOA.Commands
         public double? CreditLimit { get; set; }
         public string? ETFinanceContactName { get; set; }
         public string? ETFinanceContactEmail { get; set; }
+        public Guid? SOAHandlerBuyerId { get;  set; }
+        public string? SOAHandlerBuyerName { get;  set; }
         public DateTime CertificateExpiryDate { get; set; }
         public DateTime AssessmentDate { get; set; }
         public string Status { get; set; }
         public string? Remark { get; set; }
 
         [JsonIgnore]
-        public string? CreatedBy { get; private set; }
-        public void SetCreatedBy(string createdBy) { CreatedBy = createdBy; }
+        public Guid? CreatedBy { get; private set; }
+        public void SetCreatedBy(Guid createdBy) { CreatedBy = createdBy; }
     }
 }

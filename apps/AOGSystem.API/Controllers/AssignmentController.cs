@@ -3,9 +3,12 @@ using AOGSystem.Application.Assignments.Query.Model;
 using AOGSystem.Domain.FollowUp;
 using AOGSystem.Persistence.Repository.FollowUp;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
 using System.Net;
+using System.Security.Claims;
 
 namespace AOGSystem.API.Controllers
 {
@@ -22,14 +25,14 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPost]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> CreateAssignment([FromBody] CreateAssignmentCommand command)
         {
             try
             {
-                //command.SetCreatedBy(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                command.SetCreatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();
@@ -41,7 +44,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetAllAssignments([FromQuery] AssignmentSearchQuery query, int page=1, int pageSize = 20)
@@ -86,7 +89,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetActiveAssignments()
@@ -102,13 +105,14 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> GetActiveAssignmentByUserId(Guid userId) // TODO from session 
+        public async Task<IActionResult> GetActiveAssignmentByUserId() 
         {
             try
             {
+                var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                 return Ok(await _assignmentRepository.GetActiveAssignmentByUserId(userId));
             }
             catch (Exception ex)
@@ -118,11 +122,11 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet("{id}")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> GetAssignmentUpByID(int id)
+        public async Task<IActionResult> GetAssignmentUpByID(Guid id)
         {
             try
             {
@@ -140,14 +144,14 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPut]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> UpdateAssignment([FromBody] UpdateAssignmentCommand command)
         {
             try
             {
-                //command.SetUpdatedBy(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                command.SetUpdatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();
@@ -159,14 +163,14 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPost]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> StartAssignment([FromBody] StartAssignmentCommand command)
         {
             try
             {
-                //command.StartBy = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                command.StartBy = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();
@@ -178,14 +182,14 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPost]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> FinishedAssignment([FromBody] FinishedAssignmentCommand command)
         {
             try
             {
-                //command.FinishedBy = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                command.FinishedBy = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();
@@ -197,14 +201,14 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPost]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> ReassignAssignment([FromBody] ReassignAssignmentCommand command)
         {
             try
             {
-                //command.ReAssignedBy = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                command.ReAssignedBy = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();
@@ -216,14 +220,14 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPost]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> ReopenAssignment([FromBody] ReopenAssignmentCommand command)
         {
             try
             {
-                //command.ReOpenedBy = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                command.ReOpenedBy = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();
@@ -235,14 +239,14 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPost]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> CloseAssignment([FromBody] CloseAssignmentCommand command)
         {
             try
             {
-                //command.ClosedBy = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                command.ClosedBy = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();

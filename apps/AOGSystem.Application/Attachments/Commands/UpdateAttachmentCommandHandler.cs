@@ -54,6 +54,8 @@ namespace AOGSystem.Application.Attachments.Commands
                 attachment.SetFilePath(filePath);
                 attachment.SetType(fileType);
                 attachment.SetSize(request.File.Length);
+                attachment.UpdatedBy = request.UpdateBy;
+                attachment.UpdatedAT = DateTime.Now;
                 _attachementRepository.Update(attachment);
 
                 var attachmentLink = await _attachementRepository.GetAttachmentLinkByAttachmentIdAsync(attachment.Id); // new AttachmentLink(attachment.Id, attachment, request.EntityId, request.EntityType);
@@ -61,6 +63,9 @@ namespace AOGSystem.Application.Attachments.Commands
                 attachmentLink.SetAttachment(attachment);
                 attachmentLink.SetEntityId(request.EntityId);
                 attachmentLink.SetEntityType(request.EntityType);
+                attachmentLink.UpdatedBy = request.UpdateBy;
+                attachmentLink.UpdatedAT = DateTime.Now;
+
                 _attachementRepository.Update(attachmentLink);
 
                 var result = await _attachementRepository.SaveChangesAsync();
@@ -114,7 +119,7 @@ namespace AOGSystem.Application.Attachments.Commands
         public string EntityType { get; set; }
 
         [JsonIgnore]
-        public string? UpdateBy { get; private set; }
-        public void SetUpdateBy(string updateBy) { UpdateBy = updateBy; }
+        public Guid? UpdateBy { get; private set; }
+        public void SetUpdateBy(Guid updateBy) { UpdateBy = updateBy; }
     }
 }

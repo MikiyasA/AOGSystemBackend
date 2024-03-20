@@ -20,16 +20,16 @@ namespace AOGSystem.Application.SOA.Commands
         }
         public async Task<ReturnDto<InvoiceListQueryModel>> Handle(AddInvoiceListCommand request, CancellationToken cancellationToken)
         {
-            var model = await _vendorRepository.GetVendorSOAByIDAsync(request.VendorId);
+            var model = await _vendorRepository.GetActiveVendorSOAByIDAsync(request.VendorId);
             if (model == null)
                 return new ReturnDto<InvoiceListQueryModel>
                 {
                     Data = null,
                     Count = 0,
                     IsSuccess = false,
-                    Message = "Vendor could no be found to add invoice list",
+                    Message = "Active Vendor could no be found to add invoice list",
                 };
-            var newList = new InvoiceList(request.InvoiceNo, request.PONo, request.InvoiceDate, request.DueDate, request.Amount, request.Currency, request.UnderForllowup, request.PaymentProcessedDate,
+            var newList = new InvoiceList(request.InvoiceNo, request.PONo, request.InvoiceDate, request.DueDate, request.Amount, request.Currency, request.UnderFollowup, request.PaymentProcessedDate,
                 request.POPDate, request.POPReference, request.ChargeType, request.BuyerName, request.TLName, request.ManagerName, request.Status);
             newList.CreatedAT = DateTime.Now;
             newList.CreatedBy = request.CreatedBy;
@@ -56,7 +56,7 @@ namespace AOGSystem.Application.SOA.Commands
                 DueDate = newList.DueDate,
                 Amount = newList.Amount,
                 Currency = newList.Currency,
-                UnderForllowup = newList.UnderForllowup,
+                UnderFollowup = newList.UnderFollowup,
                 PaymentProcessedDate = newList.PaymentProcessedDate,
                 POPDate = newList.POPDate,
                 POPReference = newList.POPReference,
@@ -85,7 +85,7 @@ namespace AOGSystem.Application.SOA.Commands
         public DateTime DueDate { get; set; }
         public double Amount { get; set; }
         public string Currency { get; set; }
-        public string? UnderForllowup { get; set; }
+        public string? UnderFollowup { get; set; }
         public DateTime? PaymentProcessedDate { get; set; }
         public DateTime? POPDate { get; set; }
         public string? POPReference { get; set; }
@@ -97,7 +97,7 @@ namespace AOGSystem.Application.SOA.Commands
 
 
         [JsonIgnore]
-        public string? CreatedBy { get; set; }
-        public void SetCreatedBy(string createdBy) { CreatedBy = createdBy; }
+        public Guid? CreatedBy { get; set; }
+        public void SetCreatedBy(Guid createdBy) { CreatedBy = createdBy; }
     }
 }

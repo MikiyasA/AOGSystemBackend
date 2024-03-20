@@ -2,8 +2,11 @@
 using AOGSystem.Application.General.Commands.Part;
 using AOGSystem.Domain.General;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Security.Claims;
 
 namespace AOGSystem.API.Controllers
 {
@@ -20,14 +23,14 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPost]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> CreateCompany([FromBody] CreateCompanyCommand command)
         {
             try
             {
-                //command.SetUpdatedBy(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                command.SetCreatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();
@@ -39,14 +42,14 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPut]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> UpdateCompany([FromBody] UpdateCompanyCommand command)
         {
             try
             {
-                //command.SetUpdatedBy(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                command.SetUpdatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();
@@ -58,12 +61,14 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpDelete]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> DeleteCompany([FromBody] DeleteCompanyCommand command)
         {
             try
             {
+                command.SetUpdatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult > 0 ? Ok($"{commandResult} - requested object deleted successfully") : BadRequest();
@@ -75,6 +80,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetAllCompanies()
@@ -90,6 +96,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
@@ -111,6 +118,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet("{code}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
@@ -132,6 +140,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet("{name}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]

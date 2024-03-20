@@ -23,7 +23,7 @@ namespace AOGSystem.Persistence.Repository.FollowUp
             return _context.Assignments.Add(assignment).Entity;
         }
 
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
             _context.Remove(_context.Assignments.FindAsync(id).Result);
         }
@@ -48,7 +48,7 @@ namespace AOGSystem.Persistence.Repository.FollowUp
             return result;
         }
 
-        public async Task<Assignment> GetAssignmentById(int id)
+        public async Task<Assignment> GetAssignmentById(Guid id)
         {
             var assignement = await _context.Assignments.FindAsync(id);
             if (assignement != null)

@@ -31,7 +31,7 @@ namespace AOGSystem.Application.CoreFollowUps.Commands.CostSaving
                     IsSuccess = false,
                     Message = "Cost Saving could no be found to update",
                 };
-            var priceVariace = request.NewPrice - request.OldPrice;
+            var priceVariace = request.OldPrice - request.NewPrice;
             var savingInUsd = priceVariace * request.Quantity;
 
             model.SetOldPO(request.OldPO);
@@ -96,7 +96,7 @@ namespace AOGSystem.Application.CoreFollowUps.Commands.CostSaving
 
     public class UpdateCostSavingCommand : IRequest<ReturnDto<CostSavingQueryModel>>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string? OldPO { get; set; }
         public string NewPO { get; set; }
         public DateTime? IssueDate { get; set; }
@@ -114,8 +114,8 @@ namespace AOGSystem.Application.CoreFollowUps.Commands.CostSaving
         public string? Status { get; set; }
 
         [JsonIgnore]
-        public string? UpdateBy { get; private set; }
-        public void SetUpdateBy(string updateBy) { UpdateBy = updateBy; }
+        public Guid? UpdateBy { get; private set; }
+        public void SetUpdateBy(Guid updateBy) { UpdateBy = updateBy; }
 
     }
 }

@@ -23,7 +23,7 @@ namespace AOGSystem.Application.CoreFollowUps.Commands.CostSaving
 
         public async Task<ReturnDto<CostSavingQueryModel>> Handle(CreateCostSavingCommand request, CancellationToken cancellationToken)
         {
-            var priceVariace = request.NewPrice - request.OldPrice;
+            var priceVariace = request.OldPrice - request.NewPrice;
             var savingInUsd = priceVariace * request.Quantity;
             var model = new Domain.CoreFollowUps.CostSaving(request.OldPO, request.NewPO, request.IssueDate, request.CNDate, request.OldPrice, request.NewPrice, priceVariace, request.Quantity,
                 savingInUsd, request.SavingInETB, request.Remark, request.IsPurchaseOrder, request.IsRepairOrder, request.SavedBy, request.Status);
@@ -91,7 +91,7 @@ namespace AOGSystem.Application.CoreFollowUps.Commands.CostSaving
         public string? Status { get; set; }
 
         [JsonIgnore]
-        public string? CreatedBy { get; private set; }
-        public void SetCreatedBy(string createdBy) { CreatedBy = createdBy; }
+        public Guid? CreatedBy { get; private set; }
+        public void SetCreatedBy(Guid createdBy) { CreatedBy = createdBy; }
     }
 }

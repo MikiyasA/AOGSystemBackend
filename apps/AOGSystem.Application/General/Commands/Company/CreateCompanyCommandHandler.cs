@@ -82,8 +82,8 @@ namespace AOGSystem.Application.General.Commands.Company
         public string? PaymentTerm { get; set; }
 
         [JsonIgnore]
-        public string? CreatedBy { get; private set; }
-        public void SetCreatedBy(string createdBy) { CreatedBy = createdBy; }
+        public Guid? CreatedBy { get; private set; }
+        public void SetCreatedBy(Guid createdBy) { CreatedBy = createdBy; }
 
     }
 }

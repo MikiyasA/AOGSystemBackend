@@ -15,7 +15,7 @@ namespace AOGSystem.Application.SOA.Query
         public DateTime DueDate { get; set; }
         public double Amount { get; set; }
         public string Currency { get; set; }
-        public string? UnderForllowup { get; set; }
+        public string? UnderFollowup { get; set; }
         public DateTime? PaymentProcessedDate { get; set; }
         public DateTime? POPDate { get; set; }
         public string? POPReference { get; set; }

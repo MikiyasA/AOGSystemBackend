@@ -23,7 +23,7 @@ namespace AOGSystem.Persistence.Repository.CoreFollowUps
             return _context.CostSavings.Add(costSaving).Entity;
         }
 
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
             _context.Remove(_context.CostSavings.FindAsync(id).Result);
         }
@@ -48,7 +48,7 @@ namespace AOGSystem.Persistence.Repository.CoreFollowUps
             return result;
         }
 
-        public async Task<CostSaving> GetCostSavingByIDAsync(int id)
+        public async Task<CostSaving> GetCostSavingByIDAsync(Guid id)
         {
             var c = await _context.CostSavings.FindAsync(id);
             if (c != null)

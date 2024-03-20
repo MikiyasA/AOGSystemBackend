@@ -91,7 +91,7 @@ namespace AOGSystem.Application.Assignments.Commands
 
     public class UpdateAssignmentCommand : IRequest<ReturnDto<AssignmentQueryModel>>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime? StartDate { get; set; }
@@ -107,7 +107,7 @@ namespace AOGSystem.Application.Assignments.Commands
         public string Status { get; set; }
 
         [JsonIgnore]
-        public string? UpdatedBy { get; private set; }
-        public void SetUpdatedBy(string updatedBy) { UpdatedBy = updatedBy; }
+        public Guid? UpdatedBy { get; private set; }
+        public void SetUpdatedBy(Guid updatedBy) { UpdatedBy = updatedBy; }
     }
 }

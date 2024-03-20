@@ -12,10 +12,10 @@ namespace AOGSystem.Domain.FollowUp
         Task<int> SaveChangesAsync(string userId = null, CancellationToken cancellationToken = default);
         Assignment Add(Assignment assignment);
         void Update(Assignment assignment);
-        void Delete(int id);
+        void Delete(Guid id);
         Task<PaginatedList<Assignment>> GetAllAssignment(Expression<Func<Assignment, bool>> predicate, int page, int pageSize);
         Task<List<Assignment>> GetActiveAssignment();
-        Task<Assignment> GetAssignmentById(int id);
+        Task<Assignment> GetAssignmentById(Guid id);
         Task<List<Assignment>> GetActiveAssignmentByUserId(Guid? userId);
     }
 }

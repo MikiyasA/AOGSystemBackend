@@ -39,7 +39,7 @@ namespace AOGSystem.Application.SOA.Commands
                     Data = null,
                     Count = 0,
                     IsSuccess = false,
-                    Message = "Someting went wrong when remark added",
+                    Message = "Something went wrong when remark added",
                 };
 
             var returnData = new RemarkQueryModel
@@ -66,8 +66,8 @@ namespace AOGSystem.Application.SOA.Commands
 
 
         [JsonIgnore]
-        public string? CreatedBy { get; set; }
-        public void SetCreatedBy(string createdBy) { CreatedBy = createdBy; }
+        public Guid? CreatedBy { get; set; }
+        public void SetCreatedBy(Guid createdBy) { CreatedBy = createdBy; }
     }
      
 }

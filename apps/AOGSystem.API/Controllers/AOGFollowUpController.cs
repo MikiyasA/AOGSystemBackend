@@ -3,14 +3,15 @@ using AOGSystem.Application.FollowUp.Query;
 using AOGSystem.Application.FollowUp.Query.Model;
 using AOGSystem.Domain.FollowUp;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
 using System.Net;
+using System.Security.Claims;
 
 namespace AOGSystem.API.Controllers
 {
-    [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]/[Action]")]
     public class AOGFollowUpController : Controller
@@ -31,12 +32,14 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> CreateFollowUpTab([FromBody] CreateFPTabCommand command)
         {
             try
             {
+                command.SetCreatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();
@@ -48,6 +51,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetAllFollowUpTabs()
@@ -63,6 +67,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetAllActiveFollowUpTabs()
@@ -78,6 +83,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
@@ -99,12 +105,14 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> UpdateFollowUpTab([FromBody] UpdateFPTabCommand command)
         {
             try
             {
+                command.SetUpdatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();
@@ -116,12 +124,14 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> CreateAOGFollowUp([FromBody] CreateAOGFPCommand command)
         {
             try
             {
+                command.SetUpdatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? Ok(commandResult) : BadRequest();
@@ -133,12 +143,15 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> UpdateAOGFollowUp([FromBody] UpdateAOGFPCommand command)
         {
             try
             {
+                command.SetUpdatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();
@@ -150,12 +163,14 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpDelete]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> DeleteAOGFollowUp([FromBody] DeleteAOGFPCommand command)
         {
             try
             {
+                command.SetUpdatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult > 0 ? Ok($"{commandResult} - requested object deleted successfully") : BadRequest();
@@ -167,6 +182,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetAllAOGFollowUps([FromQuery] FollowupSearchQuery query, int page = 1, int pageSize = 20)
@@ -213,6 +229,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetAllActiveFollowUps()
@@ -228,6 +245,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
@@ -249,12 +267,14 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> AddRemarkInAOGFollowUp([FromBody] AddRemarkInAOGFPCommand command)
         {
             try
             {
+                command.SetCreatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? Ok(commandResult) : BadRequest();
@@ -266,12 +286,14 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> UpdateRemarkInAOGFollowUp([FromBody] UpdateRemarkInAOGFPCommand command)
         {
             try
             {
+                command.SetUpdatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? Ok(commandResult) : BadRequest();
@@ -283,6 +305,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> ExportAOGFPTOExcel()
@@ -300,7 +323,8 @@ namespace AOGSystem.API.Controllers
 
                     string shift = hour < 3 ? "Evening" : hour < 9 ? "Night" : hour < 18 ? "Day" : "";
 
-                    return File(excelData, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"AOG Part Status For {date} {shift} Shift.xlsx");
+                    var file = File(excelData, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"AOG Part Status For {date} {shift} Shift.xlsx");
+                    return file;
                 }
                 else
                 {

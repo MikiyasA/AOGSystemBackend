@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AOGSystem.Application.FollowUp.Commands
@@ -32,6 +33,7 @@ namespace AOGSystem.Application.FollowUp.Commands
 
             var model = new FollowUpTabs(request.Name, request.Color, request.Status);
             model.CreatedAT = DateTime.Now;
+            model.CreatedBy = request.CreatedBy;
 
             _followUpTabsRepository.Add(model);
             var followUpTabsSummery = new FollowUpTabsSummery { 
@@ -65,5 +67,8 @@ namespace AOGSystem.Application.FollowUp.Commands
         public string Name { get; set; }
         public string? Color { get; set; }
         public string? Status { get; set; }
+        [JsonIgnore]
+        public Guid? CreatedBy { get; private set; }
+        public void SetCreatedBy(Guid createdBy) { CreatedBy = createdBy; }
     }
 }

@@ -6,10 +6,13 @@ using AOGSystem.Domain.Invoices;
 using AOGSystem.Domain.SOA;
 using AOGSystem.Persistence.Repository.Invoices;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
 using System.Net;
+using System.Security.Claims;
 using System.Text.RegularExpressions;
 
 namespace AOGSystem.API.Controllers
@@ -29,15 +32,14 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPost]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> CreateSOAVendor([FromBody] CreateVendorCommand command)
         {
             try
             {
-                //command.SetCreatedBy(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-
+                command.SetCreatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();
@@ -49,7 +51,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPut]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
@@ -57,8 +59,7 @@ namespace AOGSystem.API.Controllers
         {
             try
             {
-                //command.SetUpdatedBy(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-
+                command.SetUpdateBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();
@@ -70,6 +71,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetAllSOAVendor([FromQuery] VendorSearchQuery query, int page = 1, int pageSize = 20)
@@ -83,6 +85,7 @@ namespace AOGSystem.API.Controllers
                     (string.IsNullOrEmpty(query.VendorAccountManagerName) || queryModel.VendorAccountManagerName.Contains(query.VendorAccountManagerName)) &&
                     (string.IsNullOrEmpty(query.VendorFinanceContactName) || queryModel.VendorFinanceContactName.Contains(query.VendorFinanceContactName)) &&
                     (string.IsNullOrEmpty(query.ETFinanceContactName) || queryModel.ETFinanceContactName.Contains(query.ETFinanceContactName)) &&
+                    (string.IsNullOrEmpty(query.SOAHandlerBuyerName) || queryModel.SOAHandlerBuyerName.Contains(query.SOAHandlerBuyerName)) &&
                     (!query.CertificateExpiryDateFrom.HasValue || queryModel.CertificateExpiryDate >= query.CertificateExpiryDateFrom) &&
                     (!query.CertificateExpiryDateTo.HasValue || queryModel.CertificateExpiryDate <= query.CertificateExpiryDateTo) &&
                     (string.IsNullOrEmpty(query.Status) || queryModel.Status.Contains(query.Status));
@@ -109,13 +112,58 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> GetSOAVendorByID(Guid id)
+        public async Task<IActionResult> GetSOAVendorByIDActive(Guid id)
         {
             try
             {
-                return Ok(await _vendorRepository.GetVendorSOAByIDAsync(id));
+                return Ok(await _vendorRepository.GetActiveVendorSOAByIDAsync(id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpGet("{vendorId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> GetSOAVendorByIDAll(Guid vendorId, [FromQuery] InvoiceListSearchQuery query,  int page = 1, int pageSize = 20)
+        {
+            try
+            {
+                Expression<Func<InvoiceList, bool>> predicate = queryModel =>
+                    (string.IsNullOrEmpty(query.InvoiceNo) || queryModel.InvoiceNo.Contains(query.InvoiceNo)) &&
+                    (string.IsNullOrEmpty(query.PONo) || queryModel.PONo.Contains(query.PONo)) &&
+                    (!query.InvoiceDateFrom.HasValue || queryModel.InvoiceDate >= query.InvoiceDateFrom) &&
+                    (!query.InvoiceDateTo.HasValue || queryModel.InvoiceDate <= query.InvoiceDateTo) &&
+                    (!query.DueDateFrom.HasValue || queryModel.DueDate >= query.DueDateFrom) &&
+                    (!query.DueDateTo.HasValue || queryModel.DueDate <= query.DueDateTo) &&
+                    (string.IsNullOrEmpty(query.POPReference) || queryModel.POPReference.Contains(query.POPReference)) &&
+                    (string.IsNullOrEmpty(query.UnderFollowup) || queryModel.UnderFollowup.Contains(query.UnderFollowup)) &&
+                    (string.IsNullOrEmpty(query.ChargeType) || queryModel.ChargeType.Contains(query.ChargeType)) &&
+                    (string.IsNullOrEmpty(query.BuyerName) || queryModel.BuyerName.Contains(query.BuyerName)) &&
+                    (string.IsNullOrEmpty(query.TLName) || queryModel.TLName.Contains(query.TLName)) &&
+                    (string.IsNullOrEmpty(query.ManagerName) || queryModel.ManagerName.Contains(query.ManagerName)) &&
+                    (!query.POPDateFrom.HasValue || queryModel.POPDate >= query.POPDateFrom) &&
+                    (!query.POPDateTo.HasValue || queryModel.POPDate <= query.POPDateTo) &&
+                    (string.IsNullOrEmpty(query.Status) || queryModel.Status.Contains(query.Status));
+                var data =  await _vendorRepository.GetAllVendorSOAByIDAsync(vendorId, predicate, page, pageSize);
+                var result = new
+                {
+                    metadata = new
+                    {
+                        data.TotalCount,
+                        data.PageSize,
+                        data.CurrentPage,
+                        data.TotalPages,
+                    },
+                    data
+                };
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -124,6 +172,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet("{code}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetSOAVendorSOAByCodeId(string code)
@@ -140,6 +189,7 @@ namespace AOGSystem.API.Controllers
 
 
         [HttpGet("{name}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetSOAVendorSOAByNameId(string name)
@@ -156,6 +206,7 @@ namespace AOGSystem.API.Controllers
 
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetAllActiveSOAVendors()
@@ -170,18 +221,35 @@ namespace AOGSystem.API.Controllers
             }
         }
 
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> GetActiveVendorSOAByUserId()
+        {
+            try
+            {
+                var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                return Ok(await _vendorRepository.GetActiveVendorSOAByUserIdAsync(userId));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
 
         /// //////////////////////////////////////// Invoice List //////////////////////////////////////////////////////////
 
         [HttpPost]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> AddInvoiceList([FromBody] AddInvoiceListCommand command)
         {
             try
             {
-                //command.SetCreatedBy(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                command.SetCreatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
 
                 var commandResult = await _mediator.Send(command);
 
@@ -194,7 +262,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPut]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
@@ -202,8 +270,7 @@ namespace AOGSystem.API.Controllers
         {
             try
             {
-                //command.SetUpdatedBy(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-
+                command.SetUpdatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();
@@ -215,6 +282,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetAllInvoiceLists([FromQuery] InvoiceListSearchQuery query, int page = 1, int pageSize = 20)
@@ -226,7 +294,8 @@ namespace AOGSystem.API.Controllers
                     (string.IsNullOrEmpty(query.InvoiceNo) || queryModel.InvoiceNo.Contains(query.InvoiceNo)) &&
                     (!query.InvoiceDateFrom.HasValue || queryModel.InvoiceDate >= query.InvoiceDateFrom) &&
                     (!query.InvoiceDateTo.HasValue || queryModel.InvoiceDate <= query.InvoiceDateTo) &&
-                    (!query.DueDate.HasValue || queryModel.DueDate == query.DueDate) &&
+                    (!query.DueDateFrom.HasValue || queryModel.DueDate == query.DueDateFrom) &&
+                    (!query.DueDateTo.HasValue || queryModel.DueDate == query.DueDateTo) &&
                     (!query.POPDateFrom.HasValue || queryModel.POPDate >= query.POPDateFrom) &&
                     (!query.POPDateTo.HasValue || queryModel.POPDate <= query.POPDateTo) &&
                     (string.IsNullOrEmpty(query.POPReference) || queryModel.POPReference.Contains(query.POPReference)) &&
@@ -258,6 +327,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetInvoiceListByID(Guid id)
@@ -273,6 +343,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet("{orderNo}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetInvoiceListByOrderNo(string orderNo)
@@ -288,6 +359,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet("{invoiceNo}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetInvoiceListByInvoiceNo(string invoiceNo)
@@ -303,9 +375,10 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> etAllActiveSOAInvoiceList()
+        public async Task<IActionResult> GetAllActiveSOAInvoiceList()
         {
             try
             {
@@ -318,7 +391,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPost]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> ImportInvoiceList([FromForm] ImportInvoiceListCommand command)
@@ -360,6 +433,8 @@ namespace AOGSystem.API.Controllers
                     System.IO.File.Delete(filePath);
                 }
 
+                command.SetCreatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
+
                 return commandResult != null ? Ok(commandResult) : BadRequest("Failed to import invoice list.");
             }
             catch (Exception ex)
@@ -369,15 +444,14 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPost]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> AddBuyerRemark([FromBody] AddBuyerRemarkCommand command)
         {
             try
             {
-                //command.SetCreatedBy(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-
+                command.SetCreatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();
@@ -389,7 +463,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPut]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
@@ -397,8 +471,7 @@ namespace AOGSystem.API.Controllers
         {
             try
             {
-                //command.SetUpdatedBy(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-
+                command.SetUpdatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();
@@ -410,15 +483,14 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPost]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> AddFinanceRemark([FromBody] AddFinanceRemarkCommand command)
         {
             try
             {
-                //command.SetCreatedBy(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-
+                command.SetCreatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();
@@ -430,7 +502,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPut]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
@@ -438,8 +510,7 @@ namespace AOGSystem.API.Controllers
         {
             try
             {
-                //command.SetUpdatedBy(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-
+                command.SetUpdatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();

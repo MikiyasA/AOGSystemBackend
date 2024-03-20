@@ -30,8 +30,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("created_by");
 
                     b.Property<string>("FileName")
@@ -57,8 +57,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -89,16 +89,16 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("created_by");
 
                     b.Property<DateTime?>("UpdatedAT")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id", "AttachmentId", "EntityId", "EntityType");
@@ -128,8 +128,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("created_by");
 
                     b.Property<string>("Description")
@@ -193,8 +193,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("updated_by");
 
                     b.Property<string>("Vendor")
@@ -221,8 +221,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("created_by");
 
                     b.Property<bool?>("IsPurchaseOrder")
@@ -286,8 +286,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -319,8 +319,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("created_by");
 
                     b.Property<string>("Customer")
@@ -353,7 +353,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("po_number");
 
-                    b.Property<Guid>("PartId")
+                    b.Property<Guid?>("PartId")
+                        .IsRequired()
                         .HasColumnType("char(36)")
                         .HasColumnName("part_id");
 
@@ -387,8 +388,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("updated_by");
 
                     b.Property<string>("Vendor")
@@ -429,8 +430,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("created_by");
 
                     b.Property<string>("Description")
@@ -495,8 +496,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -520,8 +521,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("created_by");
 
                     b.Property<string>("Name")
@@ -538,8 +539,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -561,8 +562,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("created_by");
 
                     b.Property<string>("Message")
@@ -574,8 +575,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -619,8 +620,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("created_by");
 
                     b.Property<string>("Name")
@@ -644,8 +645,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -664,8 +665,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("created_by");
 
                     b.Property<string>("Description")
@@ -701,8 +702,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -824,8 +825,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("created_by");
 
                     b.Property<DateTime?>("DueDate")
@@ -879,8 +880,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -901,8 +902,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("created_by");
 
                     b.Property<string>("Currency")
@@ -951,8 +952,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -979,8 +980,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("created_by");
 
                     b.Property<string>("CustomerOrderNo")
@@ -1021,8 +1022,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -1043,8 +1044,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("created_by");
 
                     b.Property<bool>("IsDeleted")
@@ -1103,8 +1104,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -1131,8 +1132,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("created_by");
 
                     b.Property<string>("Currency")
@@ -1164,8 +1165,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -1190,8 +1191,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("created_by");
 
                     b.Property<bool>("Exchange")
@@ -1232,8 +1233,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -1260,8 +1261,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("created_by");
 
                     b.Property<decimal>("CurrentPrice")
@@ -1301,8 +1302,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -1325,8 +1326,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("created_by");
 
                     b.Property<Guid?>("InvoiceListId")
@@ -1341,8 +1342,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -1363,8 +1364,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("created_by");
 
                     b.Property<Guid?>("InvoiceListId")
@@ -1379,8 +1380,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -1408,8 +1409,8 @@ namespace AOGSystem.Persistence.Migrations
                     b.Property<DateTime>("CreatedAT")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext");
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Currency")
                         .IsRequired()
@@ -1448,16 +1449,16 @@ namespace AOGSystem.Persistence.Migrations
                     b.Property<string>("TLName")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("UnderForllowup")
+                    b.Property<string>("UnderFollowup")
                         .HasColumnType("longtext");
 
                     b.Property<DateTime?>("UpdatedAT")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("longtext");
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("char(36)");
 
-                    b.Property<Guid?>("VendorId")
+                    b.Property<Guid>("VendorId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
@@ -1491,8 +1492,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("created_by");
 
                     b.Property<double?>("CreditLimit")
@@ -1515,6 +1516,14 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("remark");
 
+                    b.Property<Guid?>("SOAHandlerBuyerId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("soa_handler_buyer_id");
+
+                    b.Property<string>("SOAHandlerBuyerName")
+                        .HasColumnType("longtext")
+                        .HasColumnName("soa_handler_buyer_name");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("longtext")
@@ -1536,8 +1545,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("updated_by");
 
                     b.Property<string>("VendorAccountManagerEmail")
@@ -1590,8 +1599,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("created_by");
 
                     b.Property<string>("CustomerOrderNo")
@@ -1648,8 +1657,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -1670,8 +1679,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("created_by");
 
                     b.Property<string>("Currency")
@@ -1723,8 +1732,8 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("longtext")
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("char(36)")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -1884,8 +1893,7 @@ namespace AOGSystem.Persistence.Migrations
                     b.HasOne("AOGSystem.Domain.General.Part", "Part")
                         .WithMany()
                         .HasForeignKey("PartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Part");
                 });
@@ -2009,7 +2017,9 @@ namespace AOGSystem.Persistence.Migrations
                 {
                     b.HasOne("AOGSystem.Domain.SOA.Vendor", null)
                         .WithMany("InvoiceLists")
-                        .HasForeignKey("VendorId");
+                        .HasForeignKey("VendorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("AOGSystem.Domain.Sales.Sales", b =>

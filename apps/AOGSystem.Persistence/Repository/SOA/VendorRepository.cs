@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,9 +32,15 @@ namespace AOGSystem.Persistence.Repository.SOA
 
         public async Task<List<Vendor>> GetAllActiveVendorSOAAsync()
         {
-            return await _context.Vendors.Where(x => x.Status.ToLower() != "closed")
+            var vendors =  await _context.Vendors.Where(x => x.Status.ToLower() != "closed")
                 .Include(x => x.InvoiceLists)
+                .OrderByDescending(x => x.TotalOutstanding)
                 .ToListAsync();
+            foreach (var vendor in vendors)
+            {
+                vendor.UpdateFinancialData();
+            }
+            return vendors;
         }
 
         public async Task<PaginatedList<Vendor>> GetAllVendorSOA(Expression<Func<Vendor, bool>> predicate, int page, int pageSize)
@@ -49,33 +56,63 @@ namespace AOGSystem.Persistence.Repository.SOA
 
         public async Task<Vendor> GetVendorSOAByCodeAsync(string code)
         {
-            var vendors = await _context.Vendors.FirstOrDefaultAsync(x => x.VendorCode == code);
-            if (vendors != null)
+            var vendor = await _context.Vendors.FirstOrDefaultAsync(x => x.VendorCode == code);
+            if (vendor != null)
             {
-                await _context.Entry(vendors)
-                    .Collection(x => x.InvoiceLists).LoadAsync(); ;
-            }
-            return vendors;
-        }
-
-        public async Task<Vendor> GetVendorSOAByIDAsync(Guid? id)
-        {
-            var vendors = await _context.Vendors.FindAsync(id);
-            if (vendors != null)
-            {
-                await _context.Entry(vendors)
+                await _context.Entry(vendor)
                     .Collection(x => x.InvoiceLists).LoadAsync();
+                vendor.UpdateFinancialData();
             }
-            return vendors; 
+            return vendor;
         }
 
-        public async Task<Vendor> GetVendorSOAByNameAsync(string vendorName)
+        public async Task<Vendor> GetActiveVendorSOAByIDAsync(Guid? id)
         {
-            var vendors = await _context.Vendors.FirstOrDefaultAsync(x => x.VendorName == vendorName);
-            if (vendors != null)
+            var vendor = await _context.Vendors.FindAsync(id);
+            if (vendor != null)
             {
-                await _context.Entry(vendors)
-                    .Collection(x => x.InvoiceLists).LoadAsync(); ;
+                await _context.Entry(vendor)
+                    .Collection(x => x.InvoiceLists)
+                    .Query()
+                    .Where(x => x.Status != "closed")
+                    .Include(x => x.BuyerRemarks.OrderByDescending(x => x.CreatedAT))
+                    .Include(x => x.FinanceRemarks.OrderByDescending(x => x.CreatedAT))
+                    .OrderBy(x => x.DueDate)
+                    .LoadAsync();
+               
+                vendor.UpdateFinancialData();
+            }
+            return vendor; 
+        }
+
+        public async Task<PaginatedList<InvoiceList>> GetAllVendorSOAByIDAsync(Guid? vendorId, Expression<Func<InvoiceList, bool>> predicate, int page, int pageSize)
+        {
+            var vendor = await _context.Vendors.FindAsync(vendorId);
+            if (vendor == null)
+            {
+                return null;
+            }
+
+            var invoiceListsQuery = _context.InvoiceLists
+                .Where(x => x.VendorId == vendorId)
+                .Where(predicate)
+                .Include(x => x.BuyerRemarks)
+                .Include(x => x.FinanceRemarks)
+                .OrderByDescending(x => x.CreatedAT);
+
+            var pagedInvoiceLists = await PaginatedList<InvoiceList>.ToPagedList(invoiceListsQuery, page, pageSize);
+
+            return pagedInvoiceLists;
+        }
+
+        public async Task<List<Vendor>> GetVendorSOAByNameAsync(string vendorName)
+        {
+            var vendors = await _context.Vendors.Where(x => x.VendorName.Contains(vendorName))
+                .Include(x => x.InvoiceLists)
+                .ToListAsync();
+            foreach (var vendor in vendors)
+            {
+                vendor.UpdateFinancialData();
             }
             return vendors;
         }
@@ -88,6 +125,13 @@ namespace AOGSystem.Persistence.Repository.SOA
         public void Update(Vendor vendor)
         {
             _context.Entry(vendor).State = EntityState.Modified;
+        }
+
+        public async Task<List<Vendor>> GetActiveVendorSOAByUserIdAsync(Guid? userId)
+        {
+            var vendor = await _context.Vendors.Where(x => x.Status != "Closed" &&
+                            (userId == null || x.SOAHandlerBuyerId == userId )).ToListAsync();
+            return vendor;
         }
     }
 }

@@ -13,6 +13,7 @@ namespace AOGSystem.Application.SOA.Query
         public string? VendorAccountManagerName { get; set; }
         public string? VendorFinanceContactName { get; set; }
         public string? ETFinanceContactName { get; set; }
+        public string? SOAHandlerBuyerName { get; set; }
         public DateTime? CertificateExpiryDateFrom { get; set; }
         public DateTime? CertificateExpiryDateTo { get; set; }
         public string? Status { get; set; }

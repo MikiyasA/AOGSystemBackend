@@ -33,7 +33,7 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(option => { option.AddDefaultPolicy(policy => { 
-    policy.WithOrigins("http://localhost:5157", "http://10.0.38.202:3000", "http://localhost:3000")
+    policy.AllowAnyOrigin()
                .AllowAnyHeader()
                .AllowAnyMethod();
 }); }); // "http://localhost:3000" 

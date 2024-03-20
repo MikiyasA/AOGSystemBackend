@@ -6,15 +6,18 @@ using AOGSystem.Domain.Attachments;
 using AOGSystem.Domain.SOA;
 using AOGSystem.Persistence.EntityConfigurations.Attachmetns;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
 using System.Net;
+using System.Security.Claims;
 
 namespace AOGSystem.API.Controllers
 {
-    [Route("api/[controller]/[Action]")]
     [ApiController]
+    [Route("api/[controller]/[Action]")]
     public class AttachmentController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -26,14 +29,14 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPost]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> UploadAttachment([FromForm] UploadttachmentCommand command)
         {
             try
             {
-                //command.SetCreatedBy(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                command.SetCreatedAt(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
 
                 var commandResult = await _mediator.Send(command);
 
@@ -46,7 +49,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpPut]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
@@ -54,8 +57,7 @@ namespace AOGSystem.API.Controllers
         {
             try
             {
-                //command.SetUpdatedBy(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-
+                command.SetUpdateBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? commandResult.IsSuccess ? Ok(commandResult) : BadRequest(commandResult) : BadRequest();
@@ -106,6 +108,7 @@ namespace AOGSystem.API.Controllers
         //}
 
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetAttachmentById(Guid id)
@@ -121,6 +124,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet("{fileName}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetAttachmentByFileName(string fileName)
@@ -136,6 +140,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetAttachmentLinkById(Guid id)
@@ -151,6 +156,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet("{attachmentId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetAttachmentLinkByAttachmentId(Guid attachmentId)
@@ -166,6 +172,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet("{entityId}/{entityType}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetAttachmentLinkByEntityId(Guid entityId, string entityType)
@@ -181,6 +188,7 @@ namespace AOGSystem.API.Controllers
         }
 
         [HttpGet("{attachmentId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> DownloadAttachment(Guid attachmentId)

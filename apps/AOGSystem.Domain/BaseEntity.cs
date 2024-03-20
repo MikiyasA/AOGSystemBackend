@@ -4,6 +4,6 @@ public class BaseEntity
     public Guid Id { get;  set; }
     public DateTime CreatedAT { get;  set; }
     public DateTime? UpdatedAT { get;  set;  }
-    public string? CreatedBy { get;  set; }
-    public string? UpdatedBy { get;set; }
+    public Guid? CreatedBy { get;  set; }
+    public Guid? UpdatedBy { get;set; }
 }

@@ -42,7 +42,7 @@ namespace AOGSystem.Application.Invoice.Commands
                     Data = null,
                     Count = 0,
                     IsSuccess = false,
-                    Message = "Someting went wrong when invoice updated",
+                    Message = "Something went wrong when invoice updated",
                 };
             var returnDate = new InvoiceQueryModel
             {
@@ -76,7 +76,7 @@ namespace AOGSystem.Application.Invoice.Commands
         public string Status { get; set; }
 
         [JsonIgnore]
-        public string? UpdatedBy { get; private set; }
-        public void SetUpdatedBy(string updatedBy) { UpdatedBy = updatedBy; }
+        public Guid? UpdatedBy { get; private set; }
+        public void SetUpdatedBy(Guid updatedBy) { UpdatedBy = updatedBy; }
     }
 }

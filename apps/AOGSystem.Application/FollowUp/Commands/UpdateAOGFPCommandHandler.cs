@@ -1,6 +1,7 @@
 ﻿using AOGSystem.Application.FollowUp.Query.Model;
 using AOGSystem.Application.General.Query.Model;
 using AOGSystem.Domain.CoreFollowUps;
+using AOGSystem.Domain.CostSavings;
 using AOGSystem.Domain.FollowUp;
 using AOGSystem.Domain.General;
 using MediatR;
@@ -8,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AOGSystem.Application.FollowUp.Commands
@@ -18,17 +20,20 @@ namespace AOGSystem.Application.FollowUp.Commands
         private readonly IAOGFollowUpRepository _AOGFollowUpRepository;
         private readonly IPartRepository _partRepository;
         ICoreFollowUpRepository _coreFollowUpRepository;
+        private readonly ICostSavingRepository _costSavingRepository;
         private readonly IMediator _mediator;
         public UpdateAOGFPCommandHandler(IFollowUpTabsRepository followUpTabsRepository,
             IAOGFollowUpRepository AOGFollowUpRepository,
             IPartRepository partRepository,
             ICoreFollowUpRepository coreFollowUpRepository,
+            ICostSavingRepository costSavingRepository,
             IMediator mediator)
         {
             _followUpTabsRepository = followUpTabsRepository;
             _AOGFollowUpRepository = AOGFollowUpRepository;
             _partRepository = partRepository;
             _coreFollowUpRepository = coreFollowUpRepository;
+            _costSavingRepository = costSavingRepository;
             _mediator = mediator;
         }
 
@@ -44,7 +49,7 @@ namespace AOGSystem.Application.FollowUp.Commands
                     Message = "The Tab cannot be found. Please check if you are updating existed tab"
 
                 };
-
+            
             var part = await _partRepository.GetPartByPNAsync(request.PartNumber);
             if (part == null && request.PartNumber != null)
             {
@@ -121,6 +126,13 @@ namespace AOGSystem.Application.FollowUp.Commands
             }
             #endregion
 
+            if (request.HaveCostSaving)
+            {
+                var CSExist = await _costSavingRepository.GetCostSavingByNewPONoAsync(request.PONumber);
+                if(CSExist == null)
+                    _costSavingRepository.Add(new CostSaving(request.PONumber));
+            }
+
             tab.UpdateFollowUp(model);
             _followUpTabsRepository.Update(tab);
 
@@ -188,6 +200,12 @@ namespace AOGSystem.Application.FollowUp.Commands
         public bool NeedHigherMgntAttn { get; set; }
         public string? Manufacturer { get; set; }
         public string? PartType { get; set; }
+        public bool HaveCostSaving { get; set; }
+
+
+        [JsonIgnore]
+        public Guid? UpdatedBy { get; private set; }
+        public void SetUpdatedBy(Guid updatedBy) { UpdatedBy = updatedBy; }
 
         public UpdateAOGFPCommand() { }
 

@@ -8,13 +8,14 @@ namespace AOGSystem.Domain.SOA
 {
     public class InvoiceList : BaseEntity
     {
+        public Guid VendorId { get; private set; }
         public string InvoiceNo { get; private set; }
         public string PONo { get; private set; }
         public DateTime InvoiceDate { get; private set; }
         public DateTime DueDate { get; private set; }
         public double Amount { get; set; }
         public string Currency { get; private set; }
-        public string? UnderForllowup { get; private set; }
+        public string? UnderFollowup { get; private set; }
         public DateTime? PaymentProcessedDate { get; private set; }
         public DateTime? POPDate { get; private set; }
         public string? POPReference { get; private set; }
@@ -25,13 +26,14 @@ namespace AOGSystem.Domain.SOA
         public string Status { get; private set; }
 
 
+        public void SetVendorId(Guid vendorId) { VendorId = vendorId; }
         public void SetInvoiceNo(string invoiceNo) { InvoiceNo = invoiceNo; }
         public void SetPONo(string poNo) {  PONo = poNo; }
         public void SetInvoiceDate(DateTime invoiceDate) {  InvoiceDate = invoiceDate; }
         public void SetDueDate(DateTime dueDate) {  DueDate = dueDate; }
         public void SetAmount(double amount) { Amount = amount; }
         public void SetCurrency(string currency) { Currency = currency; }
-        public void SetUnderForllowup(string? underForllowup) { UnderForllowup = underForllowup; }
+        public void SetUnderForllowup(string? underFollowup) { UnderFollowup = underFollowup; }
         public void SetPaymentProcessedDate(DateTime? paymentProcessedDate) { PaymentProcessedDate = paymentProcessedDate; }
         public void SetPOPDate(DateTime? popDate) { POPDate = popDate; }
         public void SetPOPReference(string popReference) { POPReference = popReference; }
@@ -53,8 +55,8 @@ namespace AOGSystem.Domain.SOA
             buyerRemarks = new List<BuyerRemark>();
         }
 
-        public InvoiceList(string invoiceNo, string pONo, DateTime invoiceDate, DateTime dueDate, double amount, string currency, string? underForllowup, string buyerName, 
-            string tLName, string managerName, string status) : this()
+        public InvoiceList(string invoiceNo, string pONo, DateTime invoiceDate, DateTime dueDate, double amount, string currency, string? underForllowup, DateTime paymentProcessDate,
+            DateTime popDate, string popReference, string chargeType, string buyerName, string tLName, string managerName, string status) : this()
         {
             InvoiceNo = invoiceNo;
             PONo = pONo;
@@ -62,7 +64,11 @@ namespace AOGSystem.Domain.SOA
             DueDate = dueDate;
             Amount = amount;
             Currency = currency;
-            UnderForllowup = underForllowup;
+            UnderFollowup = underForllowup;
+            PaymentProcessedDate = paymentProcessDate;
+            POPDate = popDate;
+            POPReference = popReference;
+            ChargeType = chargeType;
             BuyerName = buyerName;
             TLName = tLName;
             ManagerName = managerName;
@@ -77,7 +83,7 @@ namespace AOGSystem.Domain.SOA
             DueDate = dueDate;
             Amount = amount;
             Currency = currency;
-            UnderForllowup = underForllowup;
+            UnderFollowup = underForllowup;
             PaymentProcessedDate = paymentProcessedDate;
             POPDate = pOPDate;
             POPReference = pOPReference;
@@ -92,7 +98,7 @@ namespace AOGSystem.Domain.SOA
         {
             financeRemarks.Add(financeRemark);
         }
-        public void AddFinanceRemark(string message, DateTime createdAt, string? createdBy)
+        public void AddFinanceRemark(string message, DateTime createdAt, Guid? createdBy)
         {
             var newItem = new FinanceRemark(message);
             newItem.CreatedAT = createdAt;
@@ -100,7 +106,7 @@ namespace AOGSystem.Domain.SOA
             AddFinanceRemark(newItem);
         }
 
-        public void UpdateFinanceRemark(Guid id, string message, DateTime updatedAt, string? updatedBy)
+        public void UpdateFinanceRemark(Guid id, string message, DateTime updatedAt, Guid? updatedBy)
         {
             var exsts = financeRemarks.FirstOrDefault(x => x.Id == id);
             if(exsts != null)
@@ -115,7 +121,7 @@ namespace AOGSystem.Domain.SOA
         {
             buyerRemarks.Add(buyerRemark);
         }
-        public void AddBuyerRemark(string message, DateTime createdAt, string? createdBy)
+        public void AddBuyerRemark(string message, DateTime createdAt, Guid? createdBy)
         {
             var newItem = new BuyerRemark(message);
             newItem.CreatedAT = createdAt;
@@ -123,7 +129,7 @@ namespace AOGSystem.Domain.SOA
             AddBuyerRemark(newItem);
         }
 
-        public void UpdateBuyerRemark(Guid id, string message, DateTime updatedAt, string? updatedBy)
+        public void UpdateBuyerRemark(Guid id, string message, DateTime updatedAt, Guid? updatedBy)
         {
             var exsts = buyerRemarks.FirstOrDefault(x => x.Id == id);
             if (exsts != null)

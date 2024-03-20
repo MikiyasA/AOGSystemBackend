@@ -75,6 +75,12 @@ namespace AOGSystem.Persistence.EntityConfigurations.SOA
             builder.Property(x => x.ETFinanceContactEmail)
                 .HasColumnName("et_finance_contact_email")
                 .IsRequired(false);
+            builder.Property(x => x.SOAHandlerBuyerId)
+                .HasColumnName("soa_handler_buyer_id")
+                .IsRequired(false);
+            builder.Property(x => x.SOAHandlerBuyerName)
+                .HasColumnName("soa_handler_buyer_name")
+                .IsRequired(false);
             builder.Property(x => x.CertificateExpiryDate) 
                 .HasColumnName("certificate_expiry_date")
                 .IsRequired(false);

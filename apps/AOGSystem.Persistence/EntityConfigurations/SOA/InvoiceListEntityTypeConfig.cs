@@ -1,4 +1,5 @@
-﻿using AOGSystem.Domain.SOA;
+﻿using AOGSystem.Domain.FollowUp;
+using AOGSystem.Domain.SOA;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -33,6 +34,11 @@ namespace AOGSystem.Persistence.EntityConfigurations.SOA
             builder.Property(x => x.UpdatedBy)
                 .HasColumnName("updated_by");
 
+            builder.HasOne<Vendor>()
+                .WithMany(x => x.InvoiceLists)
+                .HasForeignKey(x => x.VendorId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             builder.Property(x => x.InvoiceNo)
                 .HasColumnName("invoice_no")
                 .IsRequired();
@@ -51,8 +57,8 @@ namespace AOGSystem.Persistence.EntityConfigurations.SOA
             builder.Property(x => x.Currency)
                 .HasColumnName("currency")
                 .IsRequired();
-            builder.Property(x => x.UnderForllowup)
-                .HasColumnName("under_forllowup")
+            builder.Property(x => x.UnderFollowup)
+                .HasColumnName("under_followup")
                 .IsRequired(false);
             builder.Property(x => x.PaymentProcessedDate)
                 .HasColumnName("payment_processed_date")

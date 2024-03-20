@@ -23,6 +23,8 @@ namespace AOGSystem.Application.SOA.Query
         public double? PaidAmount { get; set; }
         public string? ETFinanceContactName { get; set; }
         public string? ETFinanceContactEmail { get; set; }
+        public Guid? SOAHandlerBuyerId { get; set; }
+        public string? SOAHandlerBuyerName { get; set; }
         public DateTime? CertificateExpiryDate { get; set; }
         public DateTime? AssessmentDate { get; set; }
         public string Status { get; set; }

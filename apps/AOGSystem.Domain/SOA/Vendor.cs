@@ -22,6 +22,8 @@ namespace AOGSystem.Domain.SOA
         public double? PaidAmount { get; private set; }
         public string? ETFinanceContactName { get; private set; }
         public string? ETFinanceContactEmail { get; private set; }
+        public Guid? SOAHandlerBuyerId { get; private set; }
+        public string? SOAHandlerBuyerName { get; private set; }
         public DateTime? CertificateExpiryDate { get; private set; }
         public DateTime? AssessmentDate { get; private set; }
         public string Status { get; private set; }
@@ -42,6 +44,8 @@ namespace AOGSystem.Domain.SOA
         //public void SetPaidAmount(int? paidAmount) {  PaidAmount = paidAmount; }
         public void SetETFinanceContactName(string?  etFinanceContactName) { ETFinanceContactName =  etFinanceContactName; }
         public void SetETFinanceContactEmail(string? etFinanceContactEmail) { ETFinanceContactEmail = etFinanceContactEmail; }
+        public void SetSOAHandlerBuyerId(Guid? soaHandlerBuyerId) { SOAHandlerBuyerId = soaHandlerBuyerId; }
+        public void SetSOAHandlerBuyerName(string? soaHandlerBuyerName) { SOAHandlerBuyerName = soaHandlerBuyerName; }
         public void SetCertificateExpiryDate(DateTime? expiryDate) {  CertificateExpiryDate = expiryDate; }
         public void SetAssessmentDate(DateTime? assessmentDate) {  AssessmentDate = assessmentDate; }
         public void SetStatus(string? status) { Status = status; }
@@ -49,7 +53,7 @@ namespace AOGSystem.Domain.SOA
 
         public void UpdateFinancialData()
         {
-            TotalOutstanding = invoiceLists.Where(x => x.Status.ToLower() != "closed").Sum(x => x.Amount);
+            TotalOutstanding = invoiceLists.Where(x => x.Status.ToLower() != "Closed").Sum(x => x.Amount);
             UnderProcess = invoiceLists.Where(x => x.Status == "Under Process").Sum(x => x.Amount);
             UnderDispute = invoiceLists.Where(x => x.Status == "Under Dispute").Sum(x => x.Amount);
             PaidAmount = invoiceLists.Where(x => x.Status == "Paid").Sum(x => x.Amount);
@@ -68,7 +72,7 @@ namespace AOGSystem.Domain.SOA
 
 
         public Vendor(string vendorName, string vendorCode, string address, string? vendorAccountManagerName, string? vendorAccountManagerEmail, string? vendorFinanceContactName,
-            string? vendorFinanceContactEmail, double? creditLimit, string eTFinanceContactName, string eTFinanceContactEmail, DateTime certificateExpiryDate, DateTime assessmentDate, string status, string? remark) : this()
+            string? vendorFinanceContactEmail, double? creditLimit, string eTFinanceContactName, string eTFinanceContactEmail, Guid? soaHandlerBuyerId, string? soaHandlerBuyerName, DateTime certificateExpiryDate, DateTime assessmentDate, string status, string? remark) : this()
         {
             VendorName = vendorName;
             VendorCode = vendorCode;
@@ -80,6 +84,8 @@ namespace AOGSystem.Domain.SOA
             CreditLimit = creditLimit;
             ETFinanceContactName = eTFinanceContactName;
             ETFinanceContactEmail = eTFinanceContactEmail;
+            SOAHandlerBuyerId = soaHandlerBuyerId;
+            SOAHandlerBuyerName = soaHandlerBuyerName;
             CertificateExpiryDate = certificateExpiryDate;
             AssessmentDate = assessmentDate;
             Status = status;

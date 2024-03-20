@@ -32,7 +32,7 @@ namespace AOGSystem.Persistence.Repository.Invoices
 
         public async Task<List<Invoice>> GetActiveInvoices()
         {
-            return await _context.Invoices.Where(x => x.Status.ToLower() != "close").Include(x => x.InvoicePartLists).ToListAsync();
+            return await _context.Invoices.Where(x => x.Status.ToLower() != "closed").Include(x => x.InvoicePartLists).ToListAsync();
         }
 
         public async Task<PaginatedList<Invoice>> GetAllInvoices(Expression<Func<Invoice, bool>> predicate, int page, int pageSize)

@@ -79,7 +79,7 @@ namespace AOGSystem.Application.Assignments.Commands
     
     public class ReassignAssignmentCommand : IRequest<ReturnDto<AssignmentQueryModel>>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public Guid? ReAssignedTo { get; set; }
         public Guid? ReAssignedBy { get; set; }
     }

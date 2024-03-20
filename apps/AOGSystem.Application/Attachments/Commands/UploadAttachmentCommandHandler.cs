@@ -109,7 +109,7 @@ namespace AOGSystem.Application.Attachments.Commands
         public string? EntityType { get; set; }
 
         [JsonIgnore]
-        public string? CreatedAt { get; private set; }
-        public void SetCreatedAt(string createdAt) { CreatedAt = createdAt; }
+        public Guid? CreatedAt { get; private set; }
+        public void SetCreatedAt(Guid createdAt) { CreatedAt = createdAt; }
     }
 }

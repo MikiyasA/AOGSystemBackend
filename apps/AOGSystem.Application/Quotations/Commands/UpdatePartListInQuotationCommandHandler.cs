@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AOGSystem.Application.Quotations.Commands
@@ -44,12 +45,12 @@ namespace AOGSystem.Application.Quotations.Commands
             {
                 part = new Part(request.PartNumber, request.Description, request.StockNo, request.FinancialClass, request.Manufacturer, request.PartType);
                 part.UpdatedAT = DateTime.Now;
+                part.UpdatedBy = request.UpdatedBy;
                 _partRepository.Add(part);
                 await _partRepository.SaveChangesAsync();
             }
             model.UpdateQuotationPartList(request.Id, part.Id, request.CurrentPrice, salesPrice, fixedLoanPrice, loanPricePerDay,
                 exchangePrice, request.StockLocation, request.Condition, request.SerialNumber);
-
             
             _quotationRepository.Update(model);
 
@@ -87,6 +88,12 @@ namespace AOGSystem.Application.Quotations.Commands
         public string? SerialNumber { get; set; }
         public string? Manufacturer { get; set; }
         public string? PartType { get; set; }
+
+
+        [JsonIgnore]
+        public Guid? UpdatedBy { get; private set; }
+        public void SetUpdatedBy(Guid updatedBy) { UpdatedBy = updatedBy; }
+
 
         public UpdatePartListInQuotationCommand()
         {

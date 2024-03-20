@@ -14,10 +14,13 @@ using AOGSystem.Domain.General;
 using DocumentFormat.OpenXml.ExtendedProperties;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System.Text.Json.Serialization;
+using DocumentFormat.OpenXml.Drawing.Charts;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Diagnostics;
 
 namespace AOGSystem.Application.SOA.Commands
 {
-    public class ImportInvoiceListCommandHandler : IRequestHandler<ImportInvoiceListCommand, List<JObject>>
+    public class ImportInvoiceListCommandHandler : IRequestHandler<ImportInvoiceListCommand, JObject>
     {
         private readonly IInvoiceListRepository _invoiceListRepository;
         private readonly IVendorRepository _vendorRepository;
@@ -27,21 +30,27 @@ namespace AOGSystem.Application.SOA.Commands
             _vendorRepository = vendorRepository;
         }
 
-        public async Task<List<JObject>> Handle(ImportInvoiceListCommand request, CancellationToken cancellationToken)
+        public async Task<JObject> Handle(ImportInvoiceListCommand request, CancellationToken cancellationToken)
         {
-            var response = new List<JObject>();
+            
+            var response = new JObject();
+            response["error"] = new JArray();
+            response["success"] = new JArray();
+            response["summery"] = new JArray();
+            var responseData = new JObject();
+
             int rowCount = 0;
             int importedInvoices = 0;
             int updatedInvoices = 0;
 
             var invoiceLists = new List<InvoiceList>();
 
-            var vendor = await _vendorRepository.GetVendorSOAByIDAsync(request.VendorId);
+            var vendor = await _vendorRepository.GetActiveVendorSOAByIDAsync(request.VendorId);
             if (vendor == null)
             {
-                var errorObject = new JObject { { "error", "Vendor Doesnot exist." } };
-                response.Add(errorObject);
-                return response;
+                ((JArray)response["error"]).Add("Active Vendor Does not exist.");
+                responseData["data"] = response;
+                return responseData;
             }
             try
             {
@@ -53,9 +62,9 @@ namespace AOGSystem.Application.SOA.Commands
                     {
                             if (!IsWriteImportFileFormat(reader))
                             {
-                                var errorObject = new JObject { { "file_format_error", "Used excel format is not correct." } };
-                                response.Add(errorObject);
-                                return response;
+                            ((JArray)response["error"]).Add("Used excel format is not correct.");
+                            responseData["data"] = response;
+                            return responseData;
                             }
                         while (reader.Read())
                         {
@@ -68,10 +77,14 @@ namespace AOGSystem.Application.SOA.Commands
                                 var amount = GetDoubleFromCell(reader, 4);
                                 var currency = GetStringFromCell(reader, 5);
                                 var underFollowup = GetStringFromCell(reader, 6);
-                                var buyerName = GetStringFromCell(reader, 7);
-                                var tLName = GetStringFromCell(reader, 8);
-                                var managerName = GetStringFromCell(reader, 9);
-                                var status = GetStringFromCell(reader, 10);
+                                var paymentProcessDate = GetDateFromCell(reader, 7);
+                                var popDate = GetDateFromCell(reader, 8);
+                                var popReference = GetStringFromCell(reader, 9);
+                                var chargeType = GetStringFromCell(reader, 10);
+                                var buyerName = GetStringFromCell(reader, 11);
+                                var tLName = GetStringFromCell(reader, 12);
+                                var managerName = GetStringFromCell(reader, 13);
+                                var status = GetStringFromCell(reader, 14);
 
                                 if(invoiceNo != null && invoiceNo != "") 
                                 { 
@@ -85,6 +98,10 @@ namespace AOGSystem.Application.SOA.Commands
                                         exists.SetAmount(amount);
                                         exists.SetCurrency(currency);
                                         exists.SetUnderForllowup(underFollowup);
+                                        exists.SetPaymentProcessedDate(paymentProcessDate);
+                                        exists.SetPOPDate(popDate);
+                                        exists.SetPOPReference(popReference);
+                                        exists.SetChargeTyoe(chargeType);
                                         exists.SetBuyerName(buyerName);
                                         exists.SetTLName(tLName);
                                         exists.SetManagerName(managerName);
@@ -95,12 +112,12 @@ namespace AOGSystem.Application.SOA.Commands
                                         updatedInvoices++;
                                         invoiceLists.Add(exists);
 
-                                        var errorObject = new JObject { { "Update", $"Data for Invoice number '{invoiceNo}' updated" } };
-                                        response.Add(errorObject);
+                                        ((JArray)response["success"]).Add($"Data for Invoice number '{invoiceNo}' updated");
                                     }
                                     else
                                     {
-                                        var invoice = new InvoiceList(invoiceNo, poNo, invoiceDate, dueDate, amount, currency, underFollowup, buyerName, tLName, managerName, status);
+                                        var invoice = new InvoiceList(invoiceNo, poNo, invoiceDate, dueDate, amount, currency, underFollowup, paymentProcessDate, popDate, popReference, chargeType, buyerName,
+                                            tLName, managerName, status);
                                         invoice.CreatedAT = DateTime.Now;
                                         invoice.CreatedBy = request.CreatedBy;
                                         importedInvoices++;
@@ -113,21 +130,20 @@ namespace AOGSystem.Application.SOA.Commands
                             rowCount++;
                         }
                     }
-                    response.Add(new JObject { { "success_message", $"{importedInvoices} Invoices imported and {updatedInvoices} Invoices updated sucessfuly" }, { "result", JArray.FromObject(invoiceLists) } });
+                    ((JArray)response["summery"]).Add($"{importedInvoices} Invoices imported and {updatedInvoices} Invoices updated successfully");
+                    //((JArray)response["success"]).Add(new JObject(invoiceLists));
                     var result = await _vendorRepository.SaveChangesAsync();
                     if (result == 0)
-                        response.Add(new JObject { { "save_error", "something went wrong when saving invoice lists" } });
-
+                        ((JArray)response["error"]).Add($"something went wrong when saving invoice lists");
                 }
             }
             catch (Exception ex)
             {
-                var errorMessage = $"An error occurred: {ex.Message}";
-                var errorObject = new JObject { { "error", errorMessage } };
-                response.Add(errorObject);
+                ((JArray)response["error"]).Add($"An error occurred: {ex.Message}");
             }
 
-            return response;
+            responseData["data"] = response;
+            return responseData;
 
         }
 
@@ -140,7 +156,25 @@ namespace AOGSystem.Application.SOA.Commands
 
         private DateTime GetDateFromCell(IExcelDataReader reader, int columnIndex)
         {
-            return reader.IsDBNull(columnIndex) ? DateTime.Now : reader.GetDateTime(columnIndex);
+            if (reader.IsDBNull(columnIndex))
+            {
+                return DateTime.Now; // Or any default value you prefer
+            }
+            else
+            {
+                if (reader.GetFieldType(columnIndex) == typeof(DateTime))
+                {
+                    return reader.GetDateTime(columnIndex);
+                }
+                else
+                {
+                    string cellValue = reader.GetString(columnIndex);
+                    if (DateTime.TryParse(cellValue, out DateTime date))
+                        return date;
+                    else
+                        throw new ArgumentException($"Unable to parse '{cellValue}' as a valid DateTime.");
+                }
+            }
         }
         private double GetDoubleFromCell(IExcelDataReader reader, int columnIndex)
         {
@@ -158,31 +192,36 @@ namespace AOGSystem.Application.SOA.Commands
 
         private bool IsWriteImportFileFormat(IExcelDataReader reader)
         {
-            string[] expectedHeaders = { "Invoice No", "PO No", "Invoice Date", "Due Date", "Amount", "Currency", "Under Followup", "Buyer Name", "TL Name", "Manager Name", "Status" };
+            string[] expectedHeaders = { "Invoice No", "PO No", "Invoice Date", "Due Date", "Amount", "Currency", "Under Followup", "Payment Processed Date", "POP Date", "POP Reference", "Charge Type",
+                    "Buyer Name", "TL Name", "Manager Name", "Status"
+                 };
 
             var actualHeaders = new List<string>();
             reader.Read();
             for (int i = 0; i < reader.FieldCount; i++)
             {
-                if(reader.GetString(i) != null)
-                    actualHeaders.Add(reader.GetString(i));
+                if (reader.GetString(i) != null)
+                    actualHeaders.Add(reader.GetString(i).ToLower());
             }
-            bool headersMatch = actualHeaders.SequenceEqual(expectedHeaders);
+
+            var expectedHeadersLower = expectedHeaders.Select(header => header.ToLower()).ToArray();
+
+            bool headersMatch = actualHeaders.SequenceEqual(expectedHeadersLower);
             return headersMatch;
         }
 
     }
 
-    public class ImportInvoiceListCommand : IRequest<List<JObject>>
+    public class ImportInvoiceListCommand : IRequest<JObject>
     {
         public Guid VendorId { get; set; }
-        public IFormFile File { get; set; }
+        public IFormFile? File { get; set; }
         public Guid? CodesetId { get; set; }
         public string? FileDirectory { get; set; }
         public string? Extension { get; set; }
 
         [JsonIgnore]
-        public string? CreatedBy { get; private set; }
-        public void SetCreatedBy(string createdBy) { CreatedBy = createdBy; }
+        public Guid? CreatedBy { get; private set; }
+        public void SetCreatedBy(Guid createdBy) { CreatedBy = createdBy; }
     }
 }

@@ -12,10 +12,10 @@ namespace AOGSystem.Domain.CostSavings
     {
         CostSaving Add(CostSaving costSaving);
         void Update(CostSaving costSaving);
-        void Delete(int id);
+        void Delete(Guid id);
         Task<PaginatedList<CostSaving>> GetAllCostSavings(Expression<Func<CostSaving, bool>> predicate, int page, int pageSize);
         Task<List<CostSaving>> GetActiveCostSavings();
-        Task<CostSaving> GetCostSavingByIDAsync(int id);
+        Task<CostSaving> GetCostSavingByIDAsync(Guid id);
         Task<CostSaving> GetCostSavingByNewPONoAsync(string newPo);
         Task<int> SaveChangesAsync(string userId = null, CancellationToken cancellationToken = default);
     }

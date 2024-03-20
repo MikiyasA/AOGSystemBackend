@@ -36,11 +36,13 @@ namespace AOGSystem.Application.SOA.Commands
             model.SetDueDate(model.DueDate);
             model.SetAmount(request.Amount);
             model.SetCurrency(request.Currency);
+            model.SetUnderForllowup(request.UnderFollowup);
             model.SetPaymentProcessedDate(request.PaymentProcessedDate);
             model.SetPOPDate(request.POPDate);
             model.SetPOPReference(request.POPReference);
             model.SetChargeTyoe(request.ChargeType);
             model.SetBuyerName(request.BuyerName);
+            model.SetTLName(model.TLName);
             model.SetManagerName(request.ManagerName);
             model.SetStatus(request.Status);
             model.UpdatedAT = DateTime.Now;
@@ -55,7 +57,7 @@ namespace AOGSystem.Application.SOA.Commands
                     Data = null,
                     Count = 0,
                     IsSuccess = false,
-                    Message = "Someting went wrong when invoice updated",
+                    Message = "Something went wrong when invoice updated",
                 };
 
             var returnData = new InvoiceListQueryModel
@@ -67,6 +69,7 @@ namespace AOGSystem.Application.SOA.Commands
                 DueDate = model.DueDate,
                 Amount = model.Amount,
                 Currency = model.Currency,
+                UnderFollowup = model.UnderFollowup,
                 PaymentProcessedDate = model.PaymentProcessedDate,
                 POPDate = model.POPDate,
                 POPReference = model.POPReference,
@@ -95,6 +98,7 @@ namespace AOGSystem.Application.SOA.Commands
         public DateTime DueDate { get;  set; }
         public int Amount { get; set; }
         public string Currency { get;  set; }
+        public string? UnderFollowup { get; set; }
         public DateTime? PaymentProcessedDate { get;  set; }
         public DateTime? POPDate { get;  set; }
         public string? POPReference { get;  set; }
@@ -105,8 +109,8 @@ namespace AOGSystem.Application.SOA.Commands
 
 
         [JsonIgnore]
-        public string? UpdatedBy { get; private set; }
-        public void SetUpdatedBy(string updatedBy) { UpdatedBy = updatedBy; }
+        public Guid? UpdatedBy { get; private set; }
+        public void SetUpdatedBy(Guid updatedBy) { UpdatedBy = updatedBy; }
     
     }
 }
