@@ -42,7 +42,7 @@ namespace AOGSystem.Persistence.EntityConfigurations.General
 
             builder.Property(x => x.Address)
                 .HasColumnName("address")
-                .IsRequired();
+                .IsRequired(false);
 
             builder.Property(x => x.City)
                 .HasColumnName("city");
