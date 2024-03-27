@@ -32,19 +32,20 @@ namespace AOGSystem.Application.Assignments.Commands
                     Count = 0,
                     Message = "Assignment can not be found"
                 };
-            model.SetTitle(request.Title);
-            model.SetDescription(request.Description);
-            model.SetStartDate(request.StartDate);
-            model.SetStartBy(request.StartBy);
-            model.SetDueDate(request.DueDate);
-            model.SetExpectedFinishedDate(request.ExpectedFinishedDate);
-            model.SetFinshedDate(request.FinishedDate);
-            model.SetFinshedBy(request.FinishedBy);
-            model.SetAssignedTo(request.AssignedTo);
-            model.SetReAssignedTo(request.ReAssignedTo);
-            model.SetReAssignedBy(request.ReAssignedBy);
-            model.SetReAssignedAt(request.ReAssignedAt);
-            model.SetStatus(request.Status);
+            model.SetTitle(request.Title != null ? request.Title : model.Title);
+            model.SetDescription(request.Description != null ? request.Description : model.Description);
+            model.SetStartDate(request.StartDate != null ? request.StartDate : model.StartDate);
+            model.SetStartBy(request.StartBy != null ? request.StartBy : model.StartBy);
+            model.SetDueDate(request.DueDate != null ? request.DueDate : model.DueDate);
+            model.SetExpectedFinishedDate(request.ExpectedFinishedDate != null ? request.ExpectedFinishedDate : model.ExpectedFinishedDate);
+            model.SetFinshedDate(request.FinishedDate != null ? request.FinishedDate : model.FinishedDate);
+            model.SetFinshedBy(request.FinishedBy != null ? request.FinishedBy : model.FinishedBy);
+            model.SetAssignedTo(request.AssignedTo != null ? request.AssignedTo : model.AssignedTo);
+            model.SetReAssignedTo(request.ReAssignedTo != null ? request.ReAssignedTo : model.ReAssignedTo);
+            model.SetReAssignedBy(request.ReAssignedBy != null ? request.ReAssignedBy : model.ReAssignedBy);
+            model.SetReAssignedAt(request.ReAssignedAt != null ? request.ReAssignedAt : model.ReAssignedAt);
+            model.SetStatus(request.Status != null ? request.Status : model.Status);
+
             model.UpdatedAT = DateTime.Now;
             model.UpdatedBy = request.UpdatedBy;
 
