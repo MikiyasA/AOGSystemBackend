@@ -18,7 +18,7 @@ namespace AOGSystem.Domain.SOA
         Task<Vendor> GetVendorSOAByCodeAsync(string code);
         Task<List<Vendor>> GetVendorSOAByNameAsync(string vendorName);
         Task<List<Vendor>> GetAllActiveVendorSOAAsync();
-        Task<List<Vendor>> GetActiveVendorSOAByUserIdAsync(Guid? userID);
+        Task<List<Vendor>> GetActiveVendorSOAByUserIdAsync(Guid? userID, string userFullName);
 
         Task<int> SaveChangesAsync(string userId = null, CancellationToken cancellationToken = default);
     }

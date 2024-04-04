@@ -127,10 +127,10 @@ namespace AOGSystem.Persistence.Repository.SOA
             _context.Entry(vendor).State = EntityState.Modified;
         }
 
-        public async Task<List<Vendor>> GetActiveVendorSOAByUserIdAsync(Guid? userId)
+        public async Task<List<Vendor>> GetActiveVendorSOAByUserIdAsync(Guid? userId, string userFullName)
         {
             var vendor = await _context.Vendors.Where(x => x.Status != "Closed" &&
-                            (userId == null || x.SOAHandlerBuyerId == userId )).ToListAsync();
+                            (userId == null || x.SOAHandlerBuyerId == userId || x.ETFinanceContactName.Contains(userFullName))).ToListAsync();
             return vendor;
         }
     }

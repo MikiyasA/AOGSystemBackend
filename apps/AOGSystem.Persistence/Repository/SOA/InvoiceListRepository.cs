@@ -68,20 +68,12 @@ namespace AOGSystem.Persistence.Repository.SOA
             return invoiceList;
         }
 
-        public async Task<InvoiceList> GetSOAInvoiceListByInvoiceNoAsync(string invoiceNo)
+        public async Task<InvoiceList> GetSOAInvoiceListByInvoiceNoAsync(string invoiceNo, Guid vendorId)
         {
-            var invoiceList = await _context.InvoiceLists.FirstOrDefaultAsync(x => x.InvoiceNo == invoiceNo);
-
-            if (invoiceList != null)
-            {
-                await _context.Entry(invoiceList)
-                    .Collection(x => x.BuyerRemarks)
-                    .LoadAsync();
-
-                await _context.Entry(invoiceList)
-                    .Collection(x => x.FinanceRemarks)
-                    .LoadAsync();
-            }
+            var invoiceList = await _context.InvoiceLists
+                  .Include(x => x.BuyerRemarks)
+                  .Include(x => x.FinanceRemarks)
+                  .FirstOrDefaultAsync(x => x.InvoiceNo == invoiceNo && x.VendorId == vendorId);
 
             return invoiceList;
         }

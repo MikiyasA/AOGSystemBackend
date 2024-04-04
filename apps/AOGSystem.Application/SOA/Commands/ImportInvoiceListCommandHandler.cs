@@ -88,7 +88,7 @@ namespace AOGSystem.Application.SOA.Commands
 
                                 if(invoiceNo != null && invoiceNo != "") 
                                 { 
-                                    var exists = await _invoiceListRepository.GetSOAInvoiceListByInvoiceNoAsync(invoiceNo);
+                                    var exists = await _invoiceListRepository.GetSOAInvoiceListByInvoiceNoAsync(invoiceNo, request.VendorId);
                                     if (exists != null)
                                     {
                                         exists.SetInvoiceNo(invoiceNo);

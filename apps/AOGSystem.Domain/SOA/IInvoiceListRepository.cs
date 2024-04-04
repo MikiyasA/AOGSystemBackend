@@ -16,7 +16,7 @@ namespace AOGSystem.Domain.SOA
         Task<PaginatedList<InvoiceList>> GetAllSOAInvoiceList(Expression<Func<InvoiceList, bool>> predicate, int page, int pageSize);
         Task<InvoiceList> GetSOAInvoiceListByIDAsync(Guid? id);
         Task<List<InvoiceList>> GetSOAInvoiceListByOrderNoAsync(string poNo);
-        Task<InvoiceList> GetSOAInvoiceListByInvoiceNoAsync(string invoiceNo);
+        Task<InvoiceList> GetSOAInvoiceListByInvoiceNoAsync(string invoiceNo, Guid vendorId);
         Task<List<InvoiceList>> GetAllActiveSOAInvoiceListAsync();
 
         Task<int> SaveChangesAsync(string userId = null, CancellationToken cancellationToken = default);

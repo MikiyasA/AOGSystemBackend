@@ -230,7 +230,10 @@ namespace AOGSystem.API.Controllers
             try
             {
                 var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-                return Ok(await _vendorRepository.GetActiveVendorSOAByUserIdAsync(userId));
+                var userFirstName = User.FindFirst(ClaimTypes.GivenName)?.Value?.Trim();
+                var userLastName = User.FindFirst(ClaimTypes.Surname)?.Value?.Trim();
+                var userFullName = $"{userFirstName} {userLastName}";
+                return Ok(await _vendorRepository.GetActiveVendorSOAByUserIdAsync(userId, userFullName));
             }
             catch (Exception ex)
             {
@@ -358,15 +361,15 @@ namespace AOGSystem.API.Controllers
             }
         }
 
-        [HttpGet("{invoiceNo}")]
+        [HttpGet("{invoiceNo}/{vendorId}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> GetInvoiceListByInvoiceNo(string invoiceNo)
+        public async Task<IActionResult> GetInvoiceListByInvoiceNo(string invoiceNo, Guid vendorId)
         {
             try
             {
-                return Ok(await _invoiceListRepository.GetSOAInvoiceListByInvoiceNoAsync(invoiceNo));
+                return Ok(await _invoiceListRepository.GetSOAInvoiceListByInvoiceNoAsync(invoiceNo, vendorId));
             }
             catch (Exception ex)
             {
