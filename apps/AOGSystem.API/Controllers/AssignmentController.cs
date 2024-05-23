@@ -24,6 +24,7 @@ namespace AOGSystem.API.Controllers
             _assignmentRepository = assignmentRepository;
         }
 
+        [Authorize(Policy = "RequireAdminOrTLRole")]
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -43,6 +44,7 @@ namespace AOGSystem.API.Controllers
             }
         }
 
+        [Authorize(Policy = "RequireAdminOrTLRole")]
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -143,6 +145,7 @@ namespace AOGSystem.API.Controllers
             }
         }
 
+        [Authorize(Policy = "RequireAdminOrCoordinatorOrTLRole")]
         [HttpPut]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -162,6 +165,7 @@ namespace AOGSystem.API.Controllers
             }
         }
 
+        [Authorize(Policy = "RequireAdminOrCoordinatorOrTLRole")]
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -181,6 +185,7 @@ namespace AOGSystem.API.Controllers
             }
         }
 
+        [Authorize(Policy = "RequireAdminOrCoordinatorOrTLRole")]
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -200,6 +205,7 @@ namespace AOGSystem.API.Controllers
             }
         }
 
+        [Authorize(Policy = "RequireAdminOrCoordinatorOrTLRole")]
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -219,6 +225,7 @@ namespace AOGSystem.API.Controllers
             }
         }
 
+        [Authorize(Policy = "RequireAdminOrTLRole")]
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -238,6 +245,7 @@ namespace AOGSystem.API.Controllers
             }
         }
 
+        [Authorize(Policy = "RequireAdminOrTLRole")]
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]

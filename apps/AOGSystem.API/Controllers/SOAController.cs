@@ -31,6 +31,7 @@ namespace AOGSystem.API.Controllers
             _vendorRepository = vendorRepository;
         }
 
+        [Authorize(Policy = "RequireAdminOrCoordinatorOrTLOrFinanceRole")]
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -50,6 +51,7 @@ namespace AOGSystem.API.Controllers
             }
         }
 
+        [Authorize(Policy = "RequireAdminOrCoordinatorOrTLOrFinanceRole")]
         [HttpPut]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -244,6 +246,7 @@ namespace AOGSystem.API.Controllers
 
         /// //////////////////////////////////////// Invoice List //////////////////////////////////////////////////////////
 
+        [Authorize(Policy = "RequireAdminOrCoordinatorOrTLOrFinanceRole")]
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -264,6 +267,7 @@ namespace AOGSystem.API.Controllers
             }
         }
 
+        [Authorize(Policy = "RequireAdminOrCoordinatorOrTLOrFinanceRole")]
         [HttpPut]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -393,6 +397,7 @@ namespace AOGSystem.API.Controllers
             }
         }
 
+        [Authorize(Policy = "RequireAdminOrFinanceRole")]
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -446,6 +451,7 @@ namespace AOGSystem.API.Controllers
             }
         }
 
+        [Authorize(Policy = "RequireAdminOrBuyerRole")]
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -465,6 +471,7 @@ namespace AOGSystem.API.Controllers
             }
         }
 
+        [Authorize(Policy = "RequireAdminOrBuyerRole")]
         [HttpPut]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -485,6 +492,7 @@ namespace AOGSystem.API.Controllers
             }
         }
 
+        [Authorize(Policy = "RequireAdminOrFinanceRole")]
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -504,6 +512,7 @@ namespace AOGSystem.API.Controllers
             }
         }
 
+        [Authorize(Policy = "RequireAdminOrFinanceRole")]
         [HttpPut]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]

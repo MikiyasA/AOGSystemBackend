@@ -1,3 +1,4 @@
+using AOGSystem.API.Authorization;
 using AOGSystem.Application;
 using AOGSystem.Application.FollowUp.Query;
 using AOGSystem.Application.Invoice.Query;
@@ -23,6 +24,7 @@ using AOGSystem.Persistence.Repository.Sales;
 using AOGSystem.Persistence.Repository.SOA;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -43,12 +45,17 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AOGSystemContext>(options =>
-{    
-    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
-        new MySqlServerVersion(new Version(8, 0, 34))
-        );
+{
+    var connectionString = builder.Configuration.GetConnectionString("SqlServerConnection");
+    options.UseSqlServer(connectionString,
+        sqlServerOptionsAction: sqlOptions =>
+        {
+            sqlOptions.EnableRetryOnFailure();
+        });
+    //options.UseMySql(builder.Configuration.GetConnectionString("MysqlServerConnection"),
+    //    new MySqlServerVersion(new Version(8, 0, 34))
+    //    );
 });
-
 
 // Configure JWT authentication
 var key = Encoding.ASCII.GetBytes(builder.Configuration["JwtSettings:Secret"]);
@@ -66,12 +73,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 });
 
-// Add Authorization policies if needed
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
-    // Add more policies as needed
+    options.AddPolicy("RequireAdminOrCoordinatorOrTLOrFinanceRole", policy => policy.Requirements.Add(new RoleRequirement("Admin", "Coordinator", "TL", "Finance")));
+    options.AddPolicy("RequireAdminOrCoordinatorOrTLRole", policy => policy.Requirements.Add(new RoleRequirement("Admin", "Coordinator", "TL")));
+    options.AddPolicy("RequireAdminOrCoordinatorRole", policy => policy.Requirements.Add(new RoleRequirement("Admin", "Coordinator")));
+    options.AddPolicy("RequireAdminOrTLRole", policy => policy.Requirements.Add(new RoleRequirement("Admin", "TL")));
+    options.AddPolicy("RequireAdminOrManagementRole", policy => policy.Requirements.Add(new RoleRequirement("Admin", "Management")));
+    options.AddPolicy("RequireAdminOrBuyerRole", policy => policy.Requirements.Add(new RoleRequirement("Admin", "Buyer")));
+    options.AddPolicy("RequireAdminOrFinanceRole", policy => policy.Requirements.Add(new RoleRequirement("Admin", "Finance")));
+    options.AddPolicy("RequireAdminRole", policy => policy.Requirements.Add(new RoleRequirement("Admin")));
+
 });
+builder.Services.AddSingleton<IAuthorizationHandler, RoleAuthorizationHandler>();
 
 
 builder.Services.AddIdentity<User, IdentityRole<Guid>>()

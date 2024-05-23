@@ -57,7 +57,7 @@ namespace AOGSystem.Application.FollowUp.Commands
                 Data = followUpTabsSummery,
                 Count = result != null ? 1 : 0,
                 IsSuccess = true,
-                Message = "Follow Up Tab created successfully"
+                Message = "👍 Follow Up Tab created successfully 👍"
             };
         }
     }

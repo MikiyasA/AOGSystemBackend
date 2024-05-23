@@ -25,4 +25,8 @@
     <ProjectReference Include="..\AOGSystem.Persistence\AOGSystem.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="uploads\" />
+  </ItemGroup>
+
 </Project>

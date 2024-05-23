@@ -147,6 +147,25 @@ namespace AOGSystem.Persistence
 
     public class AOGSystemContextFactory : IDesignTimeDbContextFactory<AOGSystemContext>
     {
+        //public AOGSystemContext CreateDbContext(string[] args)
+        //{
+        //    // Build configuration from appsettings.json or any other configuration source you prefer.
+        //    IConfigurationRoot configuration = new ConfigurationBuilder()
+        //        .SetBasePath(Directory.GetCurrentDirectory())
+        //        .AddJsonFile("appsettings.json")
+        //        .Build();
+
+        //    // Get the connection string from your configuration.
+        //    string connectionString = configuration.GetConnectionString("SqlServerConnection");
+
+        //    // Create DbContextOptions with the connection string.
+        //    DbContextOptionsBuilder<AOGSystemContext> builder = new DbContextOptionsBuilder<AOGSystemContext>();
+        //    builder.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 34)),
+        //        mySqlOptions => mySqlOptions.SchemaBehavior(MySqlSchemaBehavior.Ignore)); // Adjust the version as needed.
+
+        //    return new AOGSystemContext(builder.Options);
+        //}
+
         public AOGSystemContext CreateDbContext(string[] args)
         {
             // Build configuration from appsettings.json or any other configuration source you prefer.
@@ -156,12 +175,11 @@ namespace AOGSystem.Persistence
                 .Build();
 
             // Get the connection string from your configuration.
-            string connectionString = configuration.GetConnectionString("DefaultConnection");
+            string connectionString = configuration.GetConnectionString("SqlServerConnection");
 
             // Create DbContextOptions with the connection string.
             DbContextOptionsBuilder<AOGSystemContext> builder = new DbContextOptionsBuilder<AOGSystemContext>();
-            builder.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 34)),
-                mySqlOptions => mySqlOptions.SchemaBehavior(MySqlSchemaBehavior.Ignore)); // Adjust the version as needed.
+            builder.UseSqlServer(connectionString); // UseSqlServer instead of UseMySql
 
             return new AOGSystemContext(builder.Options);
         }

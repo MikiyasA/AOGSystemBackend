@@ -167,7 +167,7 @@ namespace AOGSystem.Application.FollowUp.Commands
                 Data = returnData,
                 Count = returnData != null ? 1 : 0,
                 IsSuccess = true,
-                Message = "Follow-up updated successfully"
+                Message = "👍 Follow-up updated successfully 👍"
             };
         }
     }

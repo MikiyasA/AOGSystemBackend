@@ -29,6 +29,7 @@ namespace AOGSystem.API.Controllers
             _userManager = userManager;
             _userRepository = userRepository;
         }
+        
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
@@ -65,6 +66,7 @@ namespace AOGSystem.API.Controllers
             }
         }
 
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -84,6 +86,7 @@ namespace AOGSystem.API.Controllers
             }
         }
 
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -103,6 +106,7 @@ namespace AOGSystem.API.Controllers
             }
         }
 
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -204,6 +208,7 @@ namespace AOGSystem.API.Controllers
             }
         }
 
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -223,6 +228,7 @@ namespace AOGSystem.API.Controllers
             }
         }
 
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]

@@ -62,7 +62,7 @@ namespace AOGSystem.Application.FollowUp.Commands
                 Data = followUpTab,
                 Count = 1,
                 IsSuccess = true,
-                Message = "Follow Up Tab updated successfully"
+                Message = "👍 Follow Up Tab updated successfully 👍"
             };
         }
     }

@@ -3,6 +3,7 @@ using System;
 using AOGSystem.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -17,31 +18,33 @@ namespace AOGSystem.Persistence.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.12")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("AOGSystem.Domain.Attachments.Attachment", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("created_at");
 
                     b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("created_by");
 
                     b.Property<string>("FileName")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("file_name");
 
                     b.Property<string>("FilePath")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("file_path");
 
                     b.Property<long>("Size")
@@ -50,15 +53,15 @@ namespace AOGSystem.Persistence.Migrations
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("sype");
 
                     b.Property<DateTime?>("UpdatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("updated_at");
 
                     b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -70,35 +73,35 @@ namespace AOGSystem.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
                     b.Property<Guid>("AttachmentId")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("attachment_id");
 
                     b.Property<Guid>("EntityId")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("entity_id");
 
                     b.Property<string>("EntityType")
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("nvarchar(450)")
                         .HasColumnName("entity_type");
 
                     b.Property<DateTime>("CreatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("created_at");
 
                     b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("created_by");
 
                     b.Property<DateTime?>("UpdatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("updated_at");
 
                     b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id", "AttachmentId", "EntityId", "EntityType");
@@ -112,93 +115,93 @@ namespace AOGSystem.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
                     b.Property<string>("AWBNo")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("awb_no");
 
                     b.Property<string>("Aircraft")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("aircraft");
 
                     b.Property<DateTime>("CreatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("created_at");
 
                     b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("created_by");
 
                     b.Property<string>("Description")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("description");
 
                     b.Property<DateTime>("POCreatedDate")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("po_created_date");
 
                     b.Property<DateTime?>("PODDate")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("pod_date");
 
                     b.Property<string>("PONo")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("po_no");
 
                     b.Property<string>("PartNumber")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("part_number");
 
                     b.Property<DateTime?>("PartReceiveDate")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("part_receive_date");
 
                     b.Property<DateTime?>("PartReleasedDate")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("part_released_date");
 
                     b.Property<string>("Remark")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("remark");
 
                     b.Property<DateTime>("ReturnDueDate")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("return_due_date");
 
                     b.Property<DateTime?>("ReturnProcessedDate")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("return_processed_date");
 
                     b.Property<string>("ReturnedPart")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("returned_part");
 
                     b.Property<string>("Status")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("status");
 
                     b.Property<string>("StockNo")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("stock_no");
 
                     b.Property<string>("TailNo")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("tail_no");
 
                     b.Property<DateTime?>("UpdatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("updated_at");
 
                     b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("updated_by");
 
                     b.Property<string>("Vendor")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("vendor");
 
                     b.HasKey("Id");
@@ -210,52 +213,52 @@ namespace AOGSystem.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
                     b.Property<DateTime?>("CNDate")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("cn_date");
 
                     b.Property<DateTime>("CreatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("created_at");
 
                     b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("created_by");
 
                     b.Property<bool?>("IsPurchaseOrder")
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("bit")
                         .HasColumnName("is_purchase_order");
 
                     b.Property<bool?>("IsRepairOrder")
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("bit")
                         .HasColumnName("is_repair_order");
 
                     b.Property<DateTime?>("IssueDate")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("issue_date");
 
                     b.Property<string>("NewPO")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("new_po");
 
                     b.Property<decimal?>("NewPrice")
-                        .HasColumnType("decimal(65,30)")
+                        .HasColumnType("decimal(18,2)")
                         .HasColumnName("new_price");
 
                     b.Property<string>("OldPO")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("old_po");
 
                     b.Property<decimal?>("OldPrice")
-                        .HasColumnType("decimal(65,30)")
+                        .HasColumnType("decimal(18,2)")
                         .HasColumnName("old_price");
 
                     b.Property<decimal?>("PriceVariance")
-                        .HasColumnType("decimal(65,30)")
+                        .HasColumnType("decimal(18,2)")
                         .HasColumnName("price_variance");
 
                     b.Property<int?>("Quantity")
@@ -263,31 +266,31 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnName("quantity");
 
                     b.Property<string>("Remark")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("remark");
 
                     b.Property<string>("SavedBy")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("saved_by");
 
                     b.Property<decimal?>("SavingInETB")
-                        .HasColumnType("decimal(65,30)")
+                        .HasColumnType("decimal(18,2)")
                         .HasColumnName("saving_in_ETB");
 
                     b.Property<decimal?>("SavingInUSD")
-                        .HasColumnType("decimal(65,30)")
+                        .HasColumnType("decimal(18,2)")
                         .HasColumnName("saving_in_USD");
 
                     b.Property<string>("Status")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("status");
 
                     b.Property<DateTime?>("UpdatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("updated_at");
 
                     b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -299,63 +302,63 @@ namespace AOGSystem.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
                     b.Property<string>("AOGStation")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("aog_station");
 
                     b.Property<string>("AWBNo")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("awb_no");
 
                     b.Property<string>("AirCraft")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("air_craft");
 
                     b.Property<DateTime>("CreatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("created_at");
 
                     b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("created_by");
 
                     b.Property<string>("Customer")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("customer");
 
                     b.Property<DateTime?>("EDD")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("edd");
 
                     b.Property<string>("FlightNo")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("flight_no");
 
                     b.Property<Guid>("FollowUpTabsId")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("follow_up_tabs");
 
                     b.Property<bool>("NeedHigherMgntAttn")
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("bit")
                         .HasColumnName("need_higher_mgnt_attn");
 
                     b.Property<string>("OrderType")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("order_type");
 
                     b.Property<string>("PONumber")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("po_number");
 
                     b.Property<Guid?>("PartId")
                         .IsRequired()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("part_id");
 
                     b.Property<int>("Quantity")
@@ -364,40 +367,40 @@ namespace AOGSystem.Persistence.Migrations
 
                     b.Property<string>("RID")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("rid");
 
                     b.Property<DateTime>("RequestDate")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("request_date");
 
                     b.Property<string>("Status")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("status");
 
                     b.Property<string>("TailNo")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("tail_no");
 
                     b.Property<string>("UOM")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("uom");
 
                     b.Property<DateTime?>("UpdatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("updated_at");
 
                     b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("updated_by");
 
                     b.Property<string>("Vendor")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("vendor");
 
                     b.Property<string>("WorkLocation")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("work_location");
 
                     b.HasKey("Id");
@@ -413,91 +416,91 @@ namespace AOGSystem.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
                     b.Property<Guid?>("AssignedTo")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("assigned_to");
 
                     b.Property<DateTime?>("ClosedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ClosedBy")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("created_at");
 
                     b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("created_by");
 
                     b.Property<string>("Description")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("description");
 
                     b.Property<DateTime?>("DueDate")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("due_date");
 
                     b.Property<DateTime?>("ExpectedFinishedDate")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("expected_finished_date");
 
                     b.Property<Guid?>("FinishedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("finished_by");
 
                     b.Property<DateTime?>("FinishedDate")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("finished_date");
 
                     b.Property<DateTime?>("ReAssignedAt")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("reassigned_at");
 
                     b.Property<Guid?>("ReAssignedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("reassigned_by");
 
                     b.Property<Guid?>("ReAssignedTo")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("reassigned_to");
 
                     b.Property<DateTime?>("ReOpenedAt")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("reopned_at");
 
                     b.Property<Guid?>("ReOpenedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("reopned_by");
 
                     b.Property<Guid?>("StartBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("start_by");
 
                     b.Property<DateTime?>("StartDate")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("start_date");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("status");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("title");
 
                     b.Property<DateTime?>("UpdatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("updated_at");
 
                     b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -509,38 +512,38 @@ namespace AOGSystem.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
                     b.Property<string>("Color")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("color");
 
                     b.Property<DateTime>("CreatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("created_at");
 
                     b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("created_by");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("status");
 
                     b.Property<DateTime?>("UpdatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("updated_at");
 
                     b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -552,31 +555,31 @@ namespace AOGSystem.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
                     b.Property<Guid>("AOGFollowUpId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("created_at");
 
                     b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("created_by");
 
                     b.Property<string>("Message")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("message");
 
                     b.Property<DateTime?>("UpdatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("updated_at");
 
                     b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -590,63 +593,62 @@ namespace AOGSystem.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
                     b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("address");
 
                     b.Property<string>("BillToAddress")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("bill_to_address");
 
                     b.Property<string>("City")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("city");
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("code");
 
                     b.Property<string>("Country")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("country");
 
                     b.Property<DateTime>("CreatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("created_at");
 
                     b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("created_by");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
 
                     b.Property<string>("PaymentTerm")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("payment_term");
 
                     b.Property<string>("Phone")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("phone");
 
                     b.Property<string>("ShipToAddress")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("ship_to_address");
 
                     b.Property<DateTime?>("UpdatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("updated_at");
 
                     b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -658,52 +660,52 @@ namespace AOGSystem.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("created_at");
 
                     b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("created_by");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("description");
 
                     b.Property<string>("FinancialClass")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("financial_class");
 
                     b.Property<string>("Manufacturer")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("manufacturer");
 
                     b.Property<string>("PartNumber")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("part_number");
 
                     b.Property<string>("PartType")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("part_type");
 
                     b.Property<Guid?>("QuotationPartListId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("StockNo")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("stock_no");
 
                     b.Property<DateTime?>("UpdatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("updated_at");
 
                     b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -717,7 +719,7 @@ namespace AOGSystem.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
                     b.Property<int>("AccessFailedCount")
@@ -725,82 +727,82 @@ namespace AOGSystem.Persistence.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("created_at");
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("created_by");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)")
+                        .HasColumnType("nvarchar(256)")
                         .HasColumnName("email");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("first_name");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("last_name");
 
                     b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("phone_number");
 
                     b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("UpdatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("updated_at");
 
                     b.Property<string>("UpdatedBy")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("updated_by");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("UserStatus")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -809,7 +811,8 @@ namespace AOGSystem.Persistence.Migrations
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasDatabaseName("UserNameIndex");
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -818,70 +821,70 @@ namespace AOGSystem.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("created_at");
 
                     b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("created_by");
 
                     b.Property<DateTime?>("DueDate")
                         .IsRequired()
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("due_date");
 
                     b.Property<DateTime>("InvoiceDate")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("invoice_date");
 
                     b.Property<string>("InvoiceNo")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("invoice_no");
 
                     b.Property<bool>("IsApproved")
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("bit")
                         .HasColumnName("is_approved");
 
                     b.Property<Guid?>("LoanOrderId")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("loan_order_id");
 
                     b.Property<DateTime?>("POPDate")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("pop_date");
 
                     b.Property<string>("POPReference")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("pop_reference");
 
                     b.Property<string>("Remark")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("remark");
 
                     b.Property<Guid?>("SalesOrderId")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("sales_order_id");
 
                     b.Property<string>("Status")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("status");
 
                     b.Property<string>("TransactionType")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("transaction_type");
 
                     b.Property<DateTime?>("UpdatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("updated_at");
 
                     b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -895,30 +898,30 @@ namespace AOGSystem.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("created_at");
 
                     b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("created_by");
 
                     b.Property<string>("Currency")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("currency");
 
                     b.Property<Guid?>("InvoiceId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Offers")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("offers");
 
                     b.Property<Guid>("PartId")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("part_id");
 
                     b.Property<int>("Quantity")
@@ -926,34 +929,34 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnName("quantity");
 
                     b.Property<string>("RID")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("rid");
 
                     b.Property<string>("SerialNo")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("serila_no");
 
                     b.Property<double?>("TotalPrice")
                         .IsRequired()
-                        .HasColumnType("double")
+                        .HasColumnType("float")
                         .HasColumnName("total_price");
 
                     b.Property<string>("UOM")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("uom");
 
                     b.Property<double?>("UnitPrice")
                         .IsRequired()
-                        .HasColumnType("double")
+                        .HasColumnType("float")
                         .HasColumnName("unit_price");
 
                     b.Property<DateTime?>("UpdatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("updated_at");
 
                     b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -969,61 +972,61 @@ namespace AOGSystem.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
                     b.Property<Guid>("CompanyId")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("company_id");
 
                     b.Property<DateTime>("CreatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("created_at");
 
                     b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("created_by");
 
                     b.Property<string>("CustomerOrderNo")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("customer_order_no");
 
                     b.Property<bool>("IsApproved")
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("bit")
                         .HasColumnName("is_approve");
 
                     b.Property<string>("Note")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("note");
 
                     b.Property<string>("OrderNo")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "order_no");
 
                     b.Property<string>("OrderedByEmail")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("ordered_by_email");
 
                     b.Property<string>("OrderedByName")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("ordered_by_name");
 
                     b.Property<string>("ShipToAddress")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("ship_to_address");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "status");
 
                     b.Property<DateTime?>("UpdatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("updated_at");
 
                     b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -1037,30 +1040,30 @@ namespace AOGSystem.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("created_at");
 
                     b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("created_by");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("bit")
                         .HasColumnName("is_deleted");
 
                     b.Property<bool>("IsInvoiced")
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("bit")
                         .HasColumnName("is_invoice");
 
                     b.Property<Guid?>("LoanId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("PartId")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("part_id");
 
                     b.Property<int>("Quantity")
@@ -1068,44 +1071,44 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnName("quantity");
 
                     b.Property<string>("RID")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("rid");
 
                     b.Property<DateTime?>("ReceivedDate")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("received_date");
 
                     b.Property<string>("ReceivingDefect")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("receiving_defect");
 
                     b.Property<string>("ReceivingReference")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("receiving_reference");
 
                     b.Property<string>("SerialNo")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("serila_no");
 
                     b.Property<DateTime?>("ShipDate")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("ship_date");
 
                     b.Property<string>("ShippingReference")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("shipping_reference");
 
                     b.Property<string>("UOM")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("uom");
 
                     b.Property<DateTime?>("UpdatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("updated_at");
 
                     b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -1121,52 +1124,52 @@ namespace AOGSystem.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
                     b.Property<double>("BasePrice")
-                        .HasColumnType("double")
+                        .HasColumnType("float")
                         .HasColumnName("base_price");
 
                     b.Property<DateTime>("CreatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("created_at");
 
                     b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("created_by");
 
                     b.Property<string>("Currency")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("currency");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("description");
 
                     b.Property<Guid?>("LoanPartListId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int")
                         .HasColumnName("quantity");
 
                     b.Property<double>("TotalPrice")
-                        .HasColumnType("double")
+                        .HasColumnType("float")
                         .HasColumnName("total_price");
 
                     b.Property<double>("UnitPrice")
-                        .HasColumnType("double")
+                        .HasColumnType("float")
                         .HasColumnName("unit_price");
 
                     b.Property<DateTime?>("UpdatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("updated_at");
 
                     b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -1180,61 +1183,61 @@ namespace AOGSystem.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
                     b.Property<Guid>("CompanyId")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("company_id");
 
                     b.Property<DateTime>("CreatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("created_at");
 
                     b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("created_by");
 
                     b.Property<bool>("Exchange")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("bit")
                         .HasDefaultValue(false)
                         .HasColumnName("exchange");
 
                     b.Property<bool>("Loan")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("bit")
                         .HasDefaultValue(false)
                         .HasColumnName("loan");
 
                     b.Property<Guid?>("OfferedById")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("offered_by_id");
 
                     b.Property<string>("RequestedByEmail")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("requested_by_email");
 
                     b.Property<string>("RequestedByName")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("requested_by_name");
 
                     b.Property<string>("RequestedByPhone")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("requested_by_phone");
 
                     b.Property<bool>("Sales")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("bit")
                         .HasDefaultValue(false)
                         .HasColumnName("sales");
 
                     b.Property<DateTime?>("UpdatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("updated_at");
 
                     b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -1250,60 +1253,60 @@ namespace AOGSystem.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
                     b.Property<string>("Condition")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("condition");
 
                     b.Property<DateTime>("CreatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("created_at");
 
                     b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("created_by");
 
                     b.Property<decimal>("CurrentPrice")
-                        .HasColumnType("decimal(65,30)")
+                        .HasColumnType("decimal(18,2)")
                         .HasColumnName("current_price");
 
                     b.Property<decimal>("ExchangePrice")
-                        .HasColumnType("decimal(65,30)")
+                        .HasColumnType("decimal(18,2)")
                         .HasColumnName("exchange_price");
 
                     b.Property<decimal>("FixedLoanPrice")
-                        .HasColumnType("decimal(65,30)")
+                        .HasColumnType("decimal(18,2)")
                         .HasColumnName("fixed_loan_price");
 
                     b.Property<decimal>("LoanPricePerDay")
-                        .HasColumnType("decimal(65,30)")
+                        .HasColumnType("decimal(18,2)")
                         .HasColumnName("loan_price_per_day");
 
                     b.Property<Guid>("PartId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("QuotationId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("SalesPrice")
-                        .HasColumnType("decimal(65,30)")
+                        .HasColumnType("decimal(18,2)")
                         .HasColumnName("sales_price");
 
                     b.Property<string>("SerialNumber")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StockLocation")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("stock_location");
 
                     b.Property<DateTime?>("UpdatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("updated_at");
 
                     b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -1319,31 +1322,31 @@ namespace AOGSystem.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("created_at");
 
                     b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("created_by");
 
                     b.Property<Guid?>("InvoiceListId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Message")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("message");
 
                     b.Property<DateTime?>("UpdatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("updated_at");
 
                     b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -1357,31 +1360,31 @@ namespace AOGSystem.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("created_at");
 
                     b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("created_by");
 
                     b.Property<Guid?>("InvoiceListId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Message")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("message");
 
                     b.Property<DateTime?>("UpdatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("updated_at");
 
                     b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -1395,71 +1398,71 @@ namespace AOGSystem.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<double>("Amount")
-                        .HasColumnType("double");
+                        .HasColumnType("float");
 
                     b.Property<string>("BuyerName")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ChargeType")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAT")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Currency")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DueDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("InvoiceDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("InvoiceNo")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ManagerName")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PONo")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("POPDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("POPReference")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("PaymentProcessedDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TLName")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UnderFollowup")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAT")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("VendorId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -1472,107 +1475,107 @@ namespace AOGSystem.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("address");
 
                     b.Property<DateTime?>("AssessmentDate")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("AssessmentDate");
 
                     b.Property<DateTime?>("CertificateExpiryDate")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("certificate_expiry_date");
 
                     b.Property<DateTime>("CreatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("created_at");
 
                     b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("created_by");
 
                     b.Property<double?>("CreditLimit")
-                        .HasColumnType("double")
+                        .HasColumnType("float")
                         .HasColumnName("credit_limit");
 
                     b.Property<string>("ETFinanceContactEmail")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("et_finance_contact_email");
 
                     b.Property<string>("ETFinanceContactName")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("et_finance_contact_name");
 
                     b.Property<double?>("PaidAmount")
-                        .HasColumnType("double")
+                        .HasColumnType("float")
                         .HasColumnName("paid_amount");
 
                     b.Property<string>("Remark")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("remark");
 
                     b.Property<Guid?>("SOAHandlerBuyerId")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("soa_handler_buyer_id");
 
                     b.Property<string>("SOAHandlerBuyerName")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("soa_handler_buyer_name");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("status");
 
                     b.Property<double?>("TotalOutstanding")
-                        .HasColumnType("double")
+                        .HasColumnType("float")
                         .HasColumnName("total_outstanding");
 
                     b.Property<double?>("UnderDispute")
-                        .HasColumnType("double")
+                        .HasColumnType("float")
                         .HasColumnName("under_dispute");
 
                     b.Property<double?>("UnderProcess")
-                        .HasColumnType("double")
+                        .HasColumnType("float")
                         .HasColumnName("under_process");
 
                     b.Property<DateTime?>("UpdatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("updated_at");
 
                     b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("updated_by");
 
                     b.Property<string>("VendorAccountManagerEmail")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("vendor_account_manager_email");
 
                     b.Property<string>("VendorAccountManagerName")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("vendor_account_manager_name");
 
                     b.Property<string>("VendorCode")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("vendor_code");
 
                     b.Property<string>("VendorFinanceContactEmail")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("vendor_finance_contact_email");
 
                     b.Property<string>("VendorFinanceContactName")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("vendor_finance_contact_name");
 
                     b.Property<string>("VendorName")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("vendor_name");
 
                     b.HasKey("Id");
@@ -1584,81 +1587,81 @@ namespace AOGSystem.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
                     b.Property<string>("AWBNo")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("awb_no");
 
                     b.Property<Guid>("CompanyId")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("company_id");
 
                     b.Property<DateTime>("CreatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("created_at");
 
                     b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("created_by");
 
                     b.Property<string>("CustomerOrderNo")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("customer_order_no");
 
                     b.Property<bool>("IsApproved")
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("bit")
                         .HasColumnName("is_approve");
 
                     b.Property<bool>("IsFullyShipped")
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("bit")
                         .HasColumnName("is_fully_shipped");
 
                     b.Property<string>("Note")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("note");
 
                     b.Property<string>("OrderByEmail")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("order_by_email");
 
                     b.Property<string>("OrderByName")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("ordered_by_name");
 
                     b.Property<string>("OrderNo")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("order_no");
 
                     b.Property<bool>("ReceivedByCustomer")
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("bit")
                         .HasColumnName("received_bu_customer");
 
                     b.Property<DateTime?>("ReceivedDate")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("received_date");
 
                     b.Property<DateTime?>("ShipDate")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("ship_date");
 
                     b.Property<string>("ShipToAddress")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("ship_to_address");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "status");
 
                     b.Property<DateTime?>("UpdatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("updated_at");
 
                     b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -1672,32 +1675,32 @@ namespace AOGSystem.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("created_at");
 
                     b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("created_by");
 
                     b.Property<string>("Currency")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("currency");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("bit")
                         .HasColumnName("is_deleted");
 
                     b.Property<bool>("IsInvoiced")
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("bit")
                         .HasColumnName("is_invoice");
 
                     b.Property<Guid>("PartId")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("part_id");
 
                     b.Property<int>("Quantity")
@@ -1705,35 +1708,35 @@ namespace AOGSystem.Persistence.Migrations
                         .HasColumnName("quantity");
 
                     b.Property<string>("RID")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("rid");
 
                     b.Property<Guid?>("SalesId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("SerialNo")
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("serila_no");
 
                     b.Property<double>("TotalPrice")
-                        .HasColumnType("double")
+                        .HasColumnType("float")
                         .HasColumnName("total_price");
 
                     b.Property<string>("UOM")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("uom");
 
                     b.Property<double>("UnitPrice")
-                        .HasColumnType("double")
+                        .HasColumnType("float")
                         .HasColumnName("unit_price");
 
                     b.Property<DateTime?>("UpdatedAT")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("datetime2")
                         .HasColumnName("updated_at");
 
                     b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("updated_by");
 
                     b.HasKey("Id");
@@ -1749,25 +1752,26 @@ namespace AOGSystem.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasDatabaseName("RoleNameIndex");
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
                 });
@@ -1778,14 +1782,16 @@ namespace AOGSystem.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<string>("ClaimType")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("RoleId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -1800,14 +1806,16 @@ namespace AOGSystem.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<string>("ClaimType")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -1819,16 +1827,16 @@ namespace AOGSystem.Persistence.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -1840,10 +1848,10 @@ namespace AOGSystem.Persistence.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
                     b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("RoleId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -1855,16 +1863,16 @@ namespace AOGSystem.Persistence.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
                     b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 

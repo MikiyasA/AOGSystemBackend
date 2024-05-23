@@ -22,6 +22,7 @@ namespace AOGSystem.API.Controllers
             _companyRepository = companyRepository;
         }
 
+        [Authorize(Policy = "RequireAdminOrCoordinatorOrTLRole")]
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -41,6 +42,7 @@ namespace AOGSystem.API.Controllers
             }
         }
 
+        [Authorize(Policy = "RequireAdminOrCoordinatorOrTLRole")]
         [HttpPut]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -60,6 +62,7 @@ namespace AOGSystem.API.Controllers
             }
         }
 
+        [Authorize(Policy = "RequireAdminOrCoordinatorOrTLRole")]
         [HttpDelete]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
