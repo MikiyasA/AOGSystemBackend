@@ -20,7 +20,7 @@ namespace AOGSystem.Application.General.Commands.Users
         public async Task<IdentityResult> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             var user = new User(request.FirstName, request.LastName, request.UserName, request.PhoneNumber, request.Email);
-            user.UpdatedAT= DateTime.UtcNow;
+            user.CreatedAT= DateTime.Now;
             if(request.Password != request.ConfirmPassword)
             {
                 return IdentityResult.Failed(new IdentityError { Description = "Password and ConfirmPassword do not match." });

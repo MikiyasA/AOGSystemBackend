@@ -50,7 +50,11 @@ namespace AOGSystem.Persistence.Repository.SOA
             {
                 query = query.Where(predicate);
             }
-            var result = await PaginatedList<Vendor>.ToPagedList(query.OrderByDescending(x => x.CreatedAT), page, pageSize);
+            var result = await PaginatedList<Vendor>.ToPagedList(query.Include(x => x.InvoiceLists).OrderByDescending(x => x.CreatedAT), page, pageSize);
+            foreach (var vendor in result)
+            {
+                vendor.UpdateFinancialData();
+            }
             return result;
         }
 
@@ -129,9 +133,15 @@ namespace AOGSystem.Persistence.Repository.SOA
 
         public async Task<List<Vendor>> GetActiveVendorSOAByUserIdAsync(Guid? userId, string userFullName)
         {
-            var vendor = await _context.Vendors.Where(x => x.Status != "Closed" &&
-                            (userId == null || x.SOAHandlerBuyerId == userId || x.ETFinanceContactName.Contains(userFullName))).ToListAsync();
-            return vendor;
+            var vendors = await _context.Vendors.Where(x => x.Status != "Closed" &&
+                            (userId == null || x.SOAHandlerBuyerId == userId || x.ETFinanceContactName.Contains(userFullName))).Include(x => x.InvoiceLists).ToListAsync();
+
+            foreach (var vendor in vendors)
+            {
+                vendor.UpdateFinancialData();
+            }
+
+            return vendors;
         }
     }
 }

@@ -136,7 +136,7 @@ namespace AOGSystem.API.Controllers
         {
             try
             {
-                command.SetUpdatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
+                command.SetCreatedBy(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
                 var commandResult = await _mediator.Send(command);
 
                 return commandResult != null ? Ok(commandResult) : BadRequest();

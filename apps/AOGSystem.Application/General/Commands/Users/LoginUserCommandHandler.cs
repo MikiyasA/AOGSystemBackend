@@ -70,7 +70,7 @@ namespace AOGSystem.Application.General.Commands.Users
 
             return new LoginResponse
             {
-                IdentityResult = IdentityResult.Failed(new IdentityError { Description = "Invalid username or password." }),
+                Error = "Incorrect password.",
                 Token = null
             };
 

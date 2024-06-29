@@ -38,8 +38,8 @@ namespace AOGSystem.Application.Loans.Command
             model.SetUnitPrice(request.UnitPrice);
             model.SetTotalPrice(totalPrice);
             model.SetCurrency(request.Currency);
-            model.CreatedAT = DateTime.Now;
-            model.CreatedBy = request.UpdatedBy;
+            model.UpdatedAT = DateTime.Now;
+            model.UpdatedBy = request.UpdatedBy;
 
             _offerRepository.Update(model);
             var result = await _offerRepository.SaveChangesAsync();

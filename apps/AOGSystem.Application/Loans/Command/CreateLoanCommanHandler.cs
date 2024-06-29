@@ -32,6 +32,8 @@ namespace AOGSystem.Application.Loans.Command
             model.CreatedBy = request.CreatedBy;
 
             var newPartlist = new LoanPartList(request.PartId, request.Quantity, request.UOM);
+            newPartlist.CreatedAT = DateTime.Now;
+            newPartlist.CreatedBy = request.CreatedBy;
 
             foreach(var description in request.Description)
             {

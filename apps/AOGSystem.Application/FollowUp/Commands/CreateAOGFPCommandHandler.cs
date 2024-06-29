@@ -6,6 +6,7 @@ using AOGSystem.Domain.FollowUp;
 using AOGSystem.Domain.General;
 using Kros.Extensions;
 using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,6 +59,7 @@ namespace AOGSystem.Application.FollowUp.Commands
             {
                 part = new Part(request.PartNumber, request.Description, request.StockNo, request.FinancialClass, request.Manufacturer, request.PartType);
                 part.CreatedAT = DateTime.Now;
+                part.CreatedBy = request.CreatedBy;
                 _partRepository.Add(part);
                 await _partRepository.SaveChangesAsync();
             }
@@ -82,6 +84,7 @@ namespace AOGSystem.Application.FollowUp.Commands
                     request.FlightNo,
                     request.NeedHigherMgntAttn);
             model.CreatedAT = DateTime.Now;
+            model.CreatedBy = request.CreatedBy;
 
             #region Core follow up logic 
             var coreFPExists = await _coreFollowUpRepository.GetCoreFollowUpByPONoAsync(model.PONumber);
@@ -93,6 +96,7 @@ namespace AOGSystem.Application.FollowUp.Commands
                     var coreFollowup = new CoreFollowUp(model.PONumber, DateTime.Now, model.AirCraft, model.TailNo, part.PartNumber,
                         part.Description, part.StockNo, model.Vendor, returnDueDate);
                     coreFollowup.CreatedAT = DateTime.Now;
+                    coreFollowup.CreatedBy = request.CreatedBy;
                     _coreFollowUpRepository.Add(coreFollowup);
                     await _coreFollowUpRepository.SaveChangesAsync();
                 }
@@ -130,7 +134,7 @@ namespace AOGSystem.Application.FollowUp.Commands
 
             var newRemark = new Remark(model.Id, request.Message);
             newRemark.CreatedAT = DateTime.Now;
-            newRemark.UpdatedBy = request.UpdatedBy;
+            newRemark.CreatedBy = request.CreatedBy;
             model.AddRemark(newRemark);
 
             tab.AddFollowUp(model);
@@ -210,6 +214,9 @@ namespace AOGSystem.Application.FollowUp.Commands
         public Guid? UpdatedBy { get; private set; }
         public void SetUpdatedBy(Guid updatedBy) { UpdatedBy = updatedBy; }
 
+        [JsonIgnore]
+        public Guid? CreatedBy { get; private set; }
+        public void SetCreatedBy(Guid createdBy) { CreatedBy = createdBy; }
 
         public CreateAOGFPCommand() { }
 

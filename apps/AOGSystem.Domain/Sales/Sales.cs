@@ -69,7 +69,7 @@ namespace AOGSystem.Domain.Sales
             AddSalesPartList(newItem);
         }
 
-        public void UpdateSalesPartList(Guid id, Guid partId, int quantity, string uom, int unitPrice, int totalPrice, string currency, string rid, string serialNo, bool isDeleted)
+        public void UpdateSalesPartList(Guid id, Guid partId, int quantity, string uom, int unitPrice, int totalPrice, string currency, string rid, string serialNo, bool isDeleted, DateTime updatedAt, Guid? updatedBy)
         {
             var existing = salesPartLists.FirstOrDefault(s => s.Id == id);
             if (existing != null)
@@ -83,6 +83,8 @@ namespace AOGSystem.Domain.Sales
                 existing.SetRID(rid);
                 existing.SetSerialNo(serialNo);
                 existing.SetIsDeleted(isDeleted);
+                existing.UpdatedAT = updatedAt;
+                existing.UpdatedBy = updatedBy;
             }
         }
 

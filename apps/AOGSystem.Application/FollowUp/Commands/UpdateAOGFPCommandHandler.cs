@@ -5,6 +5,7 @@ using AOGSystem.Domain.CostSavings;
 using AOGSystem.Domain.FollowUp;
 using AOGSystem.Domain.General;
 using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,6 +56,7 @@ namespace AOGSystem.Application.FollowUp.Commands
             {
                 part = new Part(request.PartNumber, request.Description, request.StockNo, request.FinancialClass, request.Manufacturer, request.PartType);
                 part.CreatedAT = DateTime.Now;
+                part.CreatedBy = request.UpdatedBy;
                 _partRepository.Add(part);
                 await _partRepository.SaveChangesAsync();
             } else
@@ -62,6 +64,7 @@ namespace AOGSystem.Application.FollowUp.Commands
                 part.SetDescription(request.Description);
                 part.SetStockNo(request.StockNo);
                 part.SetFinancialClass(request.FinancialClass);
+                part.UpdatedBy = request.UpdatedBy;
                 await _partRepository.SaveChangesAsync();
             }
 
@@ -84,7 +87,8 @@ namespace AOGSystem.Application.FollowUp.Commands
             model.SetFlightNo(request.FlightNo);
             model.SetNeedHigherMgntAttn(request.NeedHigherMgntAttn);
             model.UpdatedAT = DateTime.Now;
-            if(part != null)
+            model.UpdatedBy = request.UpdatedBy;
+            if (part != null)
                 model.SetPartId(part.Id);
 
 
@@ -98,6 +102,7 @@ namespace AOGSystem.Application.FollowUp.Commands
                     var coreFollowup = new CoreFollowUp(model.PONumber, DateTime.Now, model.AirCraft, model.TailNo, part.PartNumber,
                         part.Description, part.StockNo, model.Vendor, returnDueDate);
                     coreFollowup.CreatedAT = DateTime.Now;
+                    coreFollowup.CreatedBy = request.UpdatedBy;
                     _coreFollowUpRepository.Add(coreFollowup);
                     await _coreFollowUpRepository.SaveChangesAsync();
                 }
@@ -115,12 +120,15 @@ namespace AOGSystem.Application.FollowUp.Commands
                     coreFPExists.SetStockNo(request.StockNo);
                     coreFPExists.SetVendor(model.Vendor);
                     coreFPExists.UpdatedAT = DateTime.Now;
+                    coreFPExists.UpdatedBy = request.UpdatedBy;
                     _coreFollowUpRepository.Update(coreFPExists);
                     var r = await _coreFollowUpRepository.SaveChangesAsync();
                 }
                 else
                 {
                     coreFPExists.SetStatus(CoreFollowUp.STATUS_TRANSACTION_CHANGED);
+                    coreFPExists.UpdatedAT = DateTime.Now;
+                    coreFPExists.UpdatedBy = request.UpdatedBy;
                     _coreFollowUpRepository.Update(coreFPExists);
                 }
             }

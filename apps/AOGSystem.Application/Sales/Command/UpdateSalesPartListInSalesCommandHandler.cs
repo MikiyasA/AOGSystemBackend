@@ -31,7 +31,7 @@ namespace AOGSystem.Application.Sales.Command
                     Message = "Sales order can not be found",
                 };
             var totalPrice = request.Quantity * request.UnitPrice;
-            model.UpdateSalesPartList(request.Id, request.PartId, request.Quantity, request.UOM, request.UnitPrice, totalPrice, request.Currency, request.RID, request.SerialNo, request.IsDeleted);
+            model.UpdateSalesPartList(request.Id, request.PartId, request.Quantity, request.UOM, request.UnitPrice, totalPrice, request.Currency, request.RID, request.SerialNo, request.IsDeleted, DateTime.Now, request.UpdatedBy);
             
             model.UpdatedAT = DateTime.Now;
             model.UpdatedBy = request.UpdatedBy;

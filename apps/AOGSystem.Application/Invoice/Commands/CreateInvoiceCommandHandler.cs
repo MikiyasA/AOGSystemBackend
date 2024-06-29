@@ -56,6 +56,8 @@ namespace AOGSystem.Application.Invoice.Commands
                     salesPartList.SetIsInvoiced(true);
                     _salePartListRepository.Update(salesPartList);
                     partList.Id = Guid.Empty;
+                    partList.CreatedAT = DateTime.Now;
+                    partList.CreatedBy = request.CreatedBy;
                     model.AddInvoicePartList(partList);
                 }
                 if (request.TransactionType == "Loan")
@@ -68,6 +70,8 @@ namespace AOGSystem.Application.Invoice.Commands
                     partList.SetUnitPrice(unitPrice);
                     partList.SetTotalPrice(totalPrice);
                     partList.Id = Guid.Empty;
+                    partList.CreatedAT = DateTime.Now;
+                    partList.CreatedBy = request.CreatedBy;
                     model.AddInvoicePartList(partList);
                 }
             }
